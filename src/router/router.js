@@ -15,7 +15,7 @@ import NotFound from '../views/NotFound.vue';
 const routes = [
     { name: "home-link", path: "/", component: Home },
     { name: "notfound-link", path: "/:pathMatch(.*)*", component: NotFound },
-    // ...Member,
+    ...Member,
     ...Product,
     // ...Order,
     // ...Customer,
