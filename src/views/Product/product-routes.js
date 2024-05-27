@@ -8,6 +8,7 @@ import ChineseProduct from "./ChineseProduct.vue"
 import JpKrProduct from "./JpKrProduct.vue";
 import EnglishProduct from "./EnglishProduct.vue";
 import SearchProduct from "./CriteriaSearch.vue";
+import WishList from "./WishList.vue";
 
 
 export default [
@@ -20,4 +21,5 @@ export default [
     { name: "prodJPKR-link", path: "/product/JpKr", component: JpKrProduct },
     { name: "prodEN-link", path: "/product/en", component: EnglishProduct },
     { name: "prodSearch-link", path: "/product/search", component: SearchProduct },
+    { name: "wishList-link", path: "/wishList", component: WishList },
 ]

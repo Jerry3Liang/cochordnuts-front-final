@@ -88,6 +88,9 @@
             <RouterLink class="nav-link active" aria-current="page" to="/cart">購物車</RouterLink>
           </li>
           <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/wishList">願望清單</RouterLink>
+          </li>
+          <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" :to="loginOrLogoutLink">
               {{ loginOrLogoutText }}
             </RouterLink>
