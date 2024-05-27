@@ -1,0 +1,112 @@
+<template data-bs-theme="auto">
+
+    <form class="form-signin w-60 m-auto">
+        <h1 class="h3 mb-3 fw-normal"  style="margin-top: 40px">登入</h1>
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email"
+                v-model="email">
+            <span class="error">{{ message }}</span>
+            <label for="floatingInput">Email address</label>
+        </div><br>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"
+                v-model="password">
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <div class="form-check text-start my-3">
+            <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault"
+                @click="myFunction()">
+            <label class="form-check-label" for="flexCheckDefault">
+                顯示密碼
+            </label>
+        </div>
+        <button class="btn btn-primary w-15 py-1" type="button" @click="login()">Sign in</button>
+    </form>
+
+</template>
+
+<script setup>
+import Swal from 'sweetalert2'
+import axiosapi from '@/plugins/axios.js'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router';
+
+const email = ref("");
+const password = ref("");
+const message = ref("");
+const router = useRouter();
+
+function myFunction() {
+    var x = document.getElementById("floatingPassword");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+
+function login() {
+    Swal.fire({
+        text: "Loading......",
+        showConfirmButton: false,
+        allowOutsideClick: false,
+    });
+
+    if (email.value === "") {
+        email.value = null
+    }
+
+    if (password.value === "") {
+        password.value = null
+    }
+
+    let data = {
+        "email": email.value,
+        "password": password.value
+    };
+
+    axiosapi.defaults.headers.authorization = "";
+    sessionStorage.removeItem("user");
+    axiosapi.post("/login", data).then((response) => {
+        if (response.data.success) {
+            Swal.fire({
+                text: response.data.message,
+                icon: 'success',
+                allowOutsideClick: false,
+                confirmButtonText: '確認',
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    //window.location.href = path;
+                    axiosapi.defaults.headers.authorization = 'Bearer ' + response.data.token;
+                    sessionStorage.setItem("userName", response.data.userName);
+                    sessionStorage.setItem("user", response.data.user);
+                    sessionStorage.setItem("lastLoginTime", response.data.lastLoginTime);
+                    sessionStorage.setItem("memberNo", response.data.memberNo);
+                    sessionStorage.setItem("isLoggedIn", true);
+                    router.push({ name: "home-link" })
+                }
+            });
+        } else {
+            this.message = response.data.message;
+            setTimeout(function () {
+                Swal.close();
+            }, 500);
+        }
+    }).catch(function (error) {
+        console.log("error", error);
+        Swal.fire({
+            text: '登入失敗：' + error.message,
+            icon: 'error',
+            allowOutsideClick: false,
+            confirmButtonText: '確認',
+        })
+
+    });
+}
+
+
+
+</script>
+
+<style></style>
