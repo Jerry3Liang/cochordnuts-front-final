@@ -1,13 +1,13 @@
 //引入 SFC 元件
-// import Products from "./Products.vue";
-// import ProductDetail from "./ProductDetail.vue";
-// import BestSell from "./BestProducts.vue";
-// import DiscountSell from "./DiscountProducts.vue";
-// import PreorderSell from "./PreorderProducts.vue";
-// import ChineseProduct from "./ChineseProduct.vue"
-// import JpKrProduct from "./JpKrProduct.vue";
-// import EnglishProduct from "./EnglishProduct.vue";
-// import SearchProduct from "./CriteriaSearch.vue";
+import Products from "./Products.vue";
+import ProductDetail from "./ProductDetail.vue";
+import BestSell from "./BestProducts.vue";
+import DiscountSell from "./DiscountProducts.vue";
+import PreorderSell from "./PreorderProducts.vue";
+import ChineseProduct from "./ChineseProduct.vue"
+import JpKrProduct from "./JpKrProduct.vue";
+import EnglishProduct from "./EnglishProduct.vue";
+import SearchProduct from "./CriteriaSearch.vue";
 
 
 export default [
