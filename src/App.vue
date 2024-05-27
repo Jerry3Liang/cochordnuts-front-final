@@ -1,5 +1,5 @@
 <template>
-  <NavigationBar></NavigationBar>
+  <NavigationBar :isLoggedIn="isLoggedIn"></NavigationBar>
   <RouterView></RouterView>
 </template>
 
@@ -8,9 +8,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import NavigationBar from "@/views/Navbar.vue";
 
+import { useRouter } from 'vue-router';
+import { ref } from "vue";
+
+const router = useRouter();
+const isLoggedIn = ref(null);
+
+router.afterEach(() => {
+
+  const currentRoute = router.currentRoute.value;
+
+  if (currentRoute.name === "home-link") {
+    isLoggedIn.value = sessionStorage.getItem("isLoggedIn") === "true";
+  }
+});
+
 </script>
 
 
-<style>
-
-</style>
+<style></style>
