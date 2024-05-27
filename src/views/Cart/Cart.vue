@@ -7,15 +7,13 @@
           <h2>Shopping cart {{ memberNo }} : {{ user }}</h2>
         </div>
   
-          <!-- <CartItem v-for="item in inCart" v-model="inCart" :key="item.productId" :eachCartItem="item"
-              @increaseOne="increaseQuanty" @decreaseOne="decreaseQuanty" ></CartItem> -->
           <CartItem v-for="item in inCart" v-model="inCart" :key="item.productId" :eachCartItem="item"
               @increaseOne="increaseQuanty" @decreaseOne="decreaseQuanty" ></CartItem>
   
   
         <div class="row; d-flex flex-row align-items-center mt-3 p-2 bg-white rounded" style="margin-bottom: .4cm;">
           <div class="col text-start"> <RouterLink class="btn btn-outline-warning btn-sm ml-2 end" type="button" to="/">回商品頁面</RouterLink></div>
-          <div class="col text-end" >總金額: {{totalAmount}}</div>
+          <div class="col text-end"  >總金額: {{totalAmount}}</div>
           <div class="rounded col text-end"><button class="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button">確認購買</button></div> 
         </div>
       </div>
@@ -33,14 +31,13 @@
   import router from '@/router/router'
   import { ref } from 'vue'
   
-  const totalAmount = ref(0);
+  const totalAmount = ref(null);
   const inCart = ref(null);
-  // r
   
-  //function listCart(){
   
     let user=sessionStorage.getItem("userName")
-    
+    let memberNo=sessionStorage.getItem("memberNo");
+  
     Swal.fire({
       title: "loading...",
       text: "購物車",
@@ -51,8 +48,7 @@
       
     })
     
-    
-    
+    function listItems(){
     let memberNo=sessionStorage.getItem("memberNo");
     if(memberNo=== null) {
       memberNo= "0"
@@ -61,8 +57,6 @@
       }
       
       axiosapi.post("/cart/list", obj).then(function(response){
-        // inCart.value = response.data.list;
-        // console.log("response: ", response.data.list);
         console.log("response: ", response);
         Swal.fire({
           title: response.data.message,
@@ -71,7 +65,6 @@
           showCancelButton: false,
           showConfirmButton: true,
           //   timer: 1000
-          
         })
         router.push({name: "login-link"})
       })
@@ -88,112 +81,82 @@
         // console.log("response: ", response.data.list[0]);
         console.log("response.data.list.length: ", response.data.list.length);
         
-        
+        totalAmount.value=0;
         let xx=0
         for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-          totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count);
+          totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
         }
       })
     }
-    //}
-    
-  // function increaseQuanty(id) {
-  //      this.item.count++;
-  //   Swal.fire({
-  //     title: "loading...",
-  //     text: "購物車",
-  //     icon: "success",
-  //     showCancelButton: false,
-  //     showConfirmButton: false,
-  //     timer: 300
-  //  
-  //   })
-  //  
-  //   let obj = {
-  //     productId: id,
-  //     memberNo: memberNo}
-  //  
-  //     axiosapi.post("/cart/addOne", obj).then(function(response){
-  //       inCart.value = response.data.list;
-  //       console.log("response: ",response);
-  //          axiosapi.post("/cart/list", memberId).then(function(response){
-  //             inCart.value = response.data.list;
-  //              console.log("response: ", response.data.list);
-  //            })
-  //         router.push({name: "Cart"})
-  //       }
-  //     );
-  //   }
-  //  
-  //   function decreaseQuanty(id) {
-  //        this.item.count--;
-  //     let obj = {
-  //       productId: id,
-  //       memberNo: memberNo
-  //     }
-  //     axiosapi.post("/cart/minusOne", obj).then(function(response){
-  //       inCart.value = response.data.list;
-  //       console.log("response: ",response);
-  //          axiosapi.post("/cart/list", memberId).then(function(response){
-  //              inCart.value = response.data.list;
-  //              console.log("response: ", response.data.list);
-  // })
-  // 
-  //         router.push({name: "Cart"})
-  //   }
-  // );
-  // }
+  }
+  listItems();
+  
     function increaseQuanty(id) {
+      inCart.count=id.count++;
       let obj = {
         productId: id.productId,
         memberNo: memberNo
       }
       
       axiosapi.post("/cart/addOne", obj).then(function(response){
-        //inCart.value = response.data.list;
+        inCart.value = response.data.list;
         console.log("response: ",response);
+        // listItems();
+        let memberNo=sessionStorage.getItem("memberNo");
+        let obj1 = {
+          memberNo: memberNo
+        }
+        axiosapi.post("/cart/list", obj1).then(function(response){
+          console.log("response: ", response);
+          totalAmount.value=0;
+          let xx=0
+          for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+            totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+            listItems();
+          }
+        })
         
       }
     );
-    inCart.count=id.count++;
-    countTotal()
     }
                           
                           
     function decreaseQuanty(id) {
-      if(id.count>0)
+      // if(id.count>0){
         inCart.count=id.count--;
+        
+    
         let obj = {
         productId: id.productId,
         memberNo: memberNo
       }
   
       axiosapi.post("/cart/minusOne", obj).then(function(response){
-      //inCart.value = response.data.list;
+      inCart.value = response.data.list;
       console.log("response: ",response);
-      }
-      );
-      countTotal()
-    }
-  
-    function countTotal(){
-      
+      // listItems();
       let memberNo=sessionStorage.getItem("memberNo");
-      let obj = {
+      let obj1 = {
         memberNo: memberNo
       }
-      axiosapi.post("/cart/list", obj).then(function(response){
-        
+      axiosapi.post("/cart/list", obj1).then(function(response){
+        console.log("response: ", response);
         let xx=0
+        totalAmount.value=0;
         for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-          totalAmount.value=0;
-          totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count);
+          totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+          listItems();
         }
-      })
-    }
+      }
+      );
+      });
+      }
+    // }
+  
+    
   
   
-                    </script>
+  </script>
   
   <style scoped >
   /* 
