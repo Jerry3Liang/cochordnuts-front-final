@@ -1,11 +1,11 @@
 //引入 SFC 元件
-// import Login from '../views/secure/Login.vue';
-// import Logout from '../views/secure/Logout.vue';
-// import Register from '../views/secure/Register.vue';
-// import Member from '../views/secure/Member.vue';
-// import Modify from '../views/secure/Modify.vue';
-// import ModifyPwd from '../views/secure/ModifyPwd.vue';
-// import Delete from '../views/secure/Delete.vue';
+import Login from "./Login.vue";
+import Logout from './Logout.vue';
+import Register from './Register.vue';
+import Member from './Member.vue';
+import Modify from './Modify.vue';
+import ModifyPwd from './ModifyPwd.vue';
+import Delete from './Delete.vue';
 
 //設定路由網址
 export default [
