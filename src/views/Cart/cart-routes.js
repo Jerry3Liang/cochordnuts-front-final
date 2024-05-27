@@ -1,5 +1,5 @@
 //引入SFC元件
-// import Cart from '@/views/Cart.vue';
+import Cart from '@/views/Cart/Cart.vue';
 
 //設定路由網址
 export default [
