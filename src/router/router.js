@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 //
 // //引入 SFC 元件
 import Home from '../views/Home.vue';
-// import Member from '../views/Member/member-routes.js';
+import Member from '../views/Member/member-routes.js';
 import Product from '../views/Product/product-routes.js';
 // import Order from '../views/Order/order-routes.js';
 // import Customer from '../views/Customer/customer-routes.js';
