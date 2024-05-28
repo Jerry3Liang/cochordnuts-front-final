@@ -154,7 +154,7 @@ if (result.isConfirmed) {
                     icon: 'error',
                     allowOutsideClick: false,
                     confirmButtonText: '確認',
-                }); router.push({ name: "modify-link" });
+                }); router.push({ name: "memberModify-link" });
             }
         })
         .catch(function (error) {
