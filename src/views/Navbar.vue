@@ -101,6 +101,12 @@
         </ul>
       </div>
     </div>
+
+    <div v-if="isLoggedIn">
+      <div>{{ user.name }}</div>
+      <div>上次登入時間:{{ user.loginTime }}</div>
+    </div>
+    
   </nav>
 
 </template>
@@ -110,7 +116,7 @@ import { ref } from 'vue';
 import Search from '@/components/Search.vue';
 import { computed } from 'vue';
 
-const props = defineProps({ isLoggedIn: Boolean });
+const props = defineProps({ isLoggedIn: Boolean,user: Object  });
 
 const loginOrLogoutText = computed(() => props.isLoggedIn ? '登出' : '登入');
 const loginOrLogoutLink = computed(() => props.isLoggedIn ? '/secure/logout' : '/secure/login');
