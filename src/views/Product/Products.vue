@@ -32,7 +32,7 @@
     const pages = ref(100);
     const initial = ref(1);
     const start = ref(0);
-    const rows = ref(4);
+    const rows = ref(20);
     const total = ref(0);
     // const lastPageRows = ref(0);
     

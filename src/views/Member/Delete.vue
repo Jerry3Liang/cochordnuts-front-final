@@ -23,8 +23,8 @@ Swal.fire({
     }
 }).then(function (result) {
     if (result.isConfirmed) {
-        let memberNo=sessionStorage.getItem("memberNo");
-        let password = result.value;
+        const memberNo=sessionStorage.getItem("memberNo");
+        const password = result.value;
         axiosapi.delete(`/members/${memberNo}`,{ data: { password } })
             .then(function (response) {
                 if (response.data.success) {

@@ -10,17 +10,17 @@
         </div>
 
     <!-- Modal -->
-    <div class="modalSet" v-show="showModal" style="width: 22%; filter: opacity(95%);">
+    <div class="modalSet" v-show="showModal" style="width: 23%; filter: opacity(95%);">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" style="text-align: center;">
             <h5>請輸入詳細條件</h5>
         </div>
         <div class="modal-body">
             <table>
-                <tr><td>商品名稱：</td><td><input type="text" v-model="productName"></td></tr>
+                <tr><td style="width: 15%;">商品名稱：</td><td style="width: 50%;"><input type="text" v-model="productName"></td></tr>
                 <tr><td>演唱者：</td><td><input type="text" v-model="artistName"></td></tr>
                 <tr><td>價格：</td><td><input type="text" size="8" v-model="startPrice">~<input type="text" size="8" v-model="endPrice" :min="priceMin" @blur="updatePriceMin"></td></tr>
-                <tr><td>發行日：</td><td><input type="date" v-model="startDate"  @change="updateEndDateMin">~<input type="date" v-model="endDate" :min="endDateMin"></td></tr>
+                <tr><td>發行日：</td><td style="width: fit-content;"><input type="date" v-model="startDate"  @change="updateEndDateMin">~<input type="date" v-model="endDate" :min="endDateMin"></td></tr>
             </table>
         </div>
 

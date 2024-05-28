@@ -1,20 +1,24 @@
 <template>
     <div style="text-align: center; margin-top: 1%;">
         <h3 v-if="products">搜尋結果</h3>
-        <h3 v-if="!products">查無資料</h3>
+        <h3 v-if="!products">查無資料，您可能會喜歡……</h3>
         <hr>
     </div>
     <div class="row">
         <ProductCard v-for="product in products" :key="product.productNo" :item="product"></ProductCard>
     </div>
+    <div v-if="!products">
+        <BestProducts></BestProducts>
+    </div>
 </template>
     
 <script setup>
-    import { ref, onMounted, onBeforeUpdate, watch } from 'vue';
+    import { ref, onMounted, watch } from 'vue';
     import { useRoute } from 'vue-router';
     import axios from '@/plugins/axios.js';
 
     import ProductCard from '@/components/ProductCard.vue';
+    import BestProducts from './BestProducts.vue';
 
     const route = useRoute();
     

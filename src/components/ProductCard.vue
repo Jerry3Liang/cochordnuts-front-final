@@ -6,7 +6,14 @@
                     <img :src="`${path}${item.productNo}`" class="card-img-top" :alt="`${path}${1}`" style="height: 18rem;">
                     <div class="card-body">
                         <p class="card-text">{{ item.productName }}</p>
-                        <p class="card-text">NT. {{ item.unitPrice }}</p>
+                        <div v-show="item.discount == 1">
+                            <span class="card-text">NT. {{ item.unitPrice }}</span>
+                        </div>
+                        <div v-show="item.discount != 1">
+                            <span class="card-text" style="text-decoration: line-through;">NT. {{ item.unitPrice }}</span>
+                            <span class="card-text" style="color: red; float: right;">NT. {{ Math.round(item.unitPrice * item.discount) }}</span>
+                        </div>
+                        
                     </div>
                 </div>
             </RouterLink>
