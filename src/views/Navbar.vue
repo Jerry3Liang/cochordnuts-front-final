@@ -24,7 +24,7 @@
             <!--Product -->
             <RouterLink class="nav-link dropdown-toggle" to="/products" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
-              全部分類
+              熱門分類
             </RouterLink>
             <ul class="dropdown-menu">
               <li>
@@ -37,9 +37,6 @@
                 <RouterLink to="/product/en" class="dropdown-item">西洋</RouterLink>
               </li>
               <li>
-                <RouterLink to="/products" class="dropdown-item">全部商品</RouterLink>
-              </li>
-              <li>
                 <RouterLink to="/product/isBest" class="dropdown-item">熱銷商品</RouterLink>
               </li>
               <li>
@@ -49,6 +46,9 @@
                 <RouterLink to="/product/isPreorder" class="dropdown-item">預購商品</RouterLink>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/products">全部商品</RouterLink>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
