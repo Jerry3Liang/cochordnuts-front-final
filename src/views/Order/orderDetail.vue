@@ -256,7 +256,7 @@ onMounted(function(){
 
 //Order.value丟給CustomerCase
 function contactService(){        
-        // router.push({path:"/order/modify",query:{"order": JSON.stringify(order.value)})
+        router.push({path:"/Customer/CustomerAnswerByOrderId",query:{"orderNo":id.value }})
 
 }
 function doModify(){

@@ -4,7 +4,7 @@
       客服提問
     </div>
     <div class="card-body">
-      <span style="font-size: 30px; font-weight: 500; margin-bottom: 30px" class="card-text">訂單編號：</span>
+      <span style="font-size: 30px; font-weight: 500; margin-bottom: 30px" class="card-text">訂單編號：{{orderNo}}</span>
       <div class="form-floating card-text">
         <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="subject"></textarea>
         <label for="floatingTextarea2">請輸入問題</label>
@@ -19,14 +19,15 @@
 import axiosApi from '@/plugins/axios.js';
 import Swal from 'sweetalert2';
 import {ref} from 'vue';
-import {useRouter} from 'vue-router';
+import {useRouter , useRoute} from 'vue-router';
 const customerCase = ref({ });
 const memberNo = sessionStorage.getItem("memberNo");
-const orderNo = sessionStorage.getItem("orderNo");
+// const orderNo = sessionStorage.getItem("orderNo");
 const subject = ref("");
 const router = useRouter();
-
-
+const route = useRoute();
+const orderNo=ref(route.query.orderNo)
+console.log(orderNo)
 //
 function callCreateMessage() {
 
