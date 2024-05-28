@@ -1,14 +1,14 @@
 <template>
   
-  <div  class="container mt-5 mb-5">
-    <div class="d-flex justify-content-center row">
-      <div class="col-md-10" style="background-color: aliceblue;">
+  <div  class="container mt-5 mb-5 flex">
+    <div class="flex justify-content-center row">
+      <div style="background-color: aliceblue;">
         <div class="p-5">
           <h2>Shopping cart {{ memberNo }} : {{ user }}</h2>
         </div>
   
           <CartItem v-for="item in inCart" v-model="inCart" :key="item.productId" :eachCartItem="item"
-              @increaseOne="increaseQuanty" @decreaseOne="decreaseQuanty" ></CartItem>
+              @increaseOne="increaseQuanty" @decreaseOne="decreaseQuanty" @deleteThisItem="deleteThisItem"></CartItem>
   
   
         <div class="row; d-flex flex-row align-items-center mt-3 p-2 bg-white rounded" style="margin-bottom: .4cm;">
@@ -84,7 +84,7 @@
         totalAmount.value=0;
         let xx=0
         for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-          totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+          totalAmount.value = totalAmount.value+(response.data.list[xx].count*Math.round(response.data.list[xx].price*response.data.list[xx].discount));
         }
       })
     }
@@ -153,17 +153,52 @@
       }
     // }
   
-    
+    function deleteThisItem(id){
+      Swal.fire({
+        text: `確定刪除${id.productName}?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          let obj = {
+        productId: id.productId,
+        memberNo: memberNo
+      }
+          axiosapi.post("/cart/deleteItem", obj).then(function(response){
+            axiosapi.post("/cart/list", obj).then(function(response){
+        console.log("response: ", response);
+        let xx=0
+        totalAmount.value=0;
+        for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+          totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+          listItems();
+        }
+      }
+      );
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+          })
+        }
+      });
+    }
+  
   
   
   </script>
   
   <style scoped >
-  /* 
+  
   body {
     font-family: 'Manrope', sans-serif;
     background:#eee;
-  } */
+  }
   
   .size span {
     font-size: 11px;
