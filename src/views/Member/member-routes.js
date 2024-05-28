@@ -13,7 +13,7 @@ export default [
     { name: "logout-link", path: "/secure/logout", component: Logout },
     { name: "register-link", path: "/register", component: Register },
     { name: "member-link", path: "/member", component: Member },
-    { name: "modify-link", path: "/modify", component: Modify },
+    { name: "memberModify-link", path: "/memberModify", component: Modify },
     { name: "modifyPwd-link", path: "/modifyPwd", component: ModifyPwd },
-    { name: "delete-link", path: "/delete", component: Delete }
+    { name: "memberDelete-link", path: "/memberDelete", component: Delete }
 ];
