@@ -77,26 +77,29 @@ function login() {
                 confirmButtonText: '確認',
             }).then(function (result) {
                 if (result.isConfirmed) {
-                    //window.location.href = path;
+                    console.log(response.data);
                     axiosapi.defaults.headers.authorization = 'Bearer ' + response.data.token;
                     sessionStorage.setItem("userName", response.data.userName);
                     sessionStorage.setItem("user", response.data.user);
                     sessionStorage.setItem("lastLoginTime", response.data.lastLoginTime);
                     sessionStorage.setItem("memberNo", response.data.memberNo);
                     sessionStorage.setItem("isLoggedIn", true);
+                    sessionStorage.setItem("loginTime", response.data.loginTime);
                     router.push({ name: "home-link" })
                 }
             });
         } else {
-            this.message = response.data.message;
-            setTimeout(function () {
-                Swal.close();
-            }, 500);
+            Swal.fire({
+                text: response.data.message,
+                icon: 'error',
+                allowOutsideClick: false,
+                confirmButtonText: '確認',
+            })
         }
     }).catch(function (error) {
-        console.log("error", error);
+        console.log(error);
         Swal.fire({
-            text: '登入失敗：' + error.message,
+            text: '請檢查帳號和密碼! ( '+'狀態碼 : '+error.response.data.status+' )',
             icon: 'error',
             allowOutsideClick: false,
             confirmButtonText: '確認',
@@ -104,7 +107,6 @@ function login() {
 
     });
 }
-
 
 
 </script>
