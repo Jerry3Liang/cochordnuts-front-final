@@ -66,6 +66,16 @@
                 <input type="text" class="form-control" placeholder="地址(選填)" aria-label="Username"
                     v-model="form.address" aria-describedby="basic-addon1">
             </div>
+    
+            <div class="form-check" v-for="(item, index) in productStyles" :key="item.id">
+                <input class="form-check-input" type="checkbox" :id="'flexCheck' + index" :value="item.id"
+                        v-model="form.favoriteIds">
+                <label class="form-check-label" :for="'flexCheck' + index">
+                        {{ item.name }}
+                </label>
+            </div>
+
+            
             <div class="input-group" style="display: flex;justify-content: right;">
                 <button class="btn btn-primary  mt-2" type="submit" @click="callCreate()"
                     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">下一步</button>
@@ -90,8 +100,17 @@ const form = ref({
     confirmPassword: '',
     phone: '',
     email: '',
-    address: ''
+    address: '',
+    favoriteIds: []
 });
+
+const productStyles = ref([
+    { id: 1, name: '流行' },
+    { id: 2, name: '搖滾' },
+    { id: 3, name: '爵士' },
+    { id: 4, name: '古典' },
+    { id: 5, name: '民謠' },
+]);
 
 function myFunction1() {
     var x = document.getElementById("myInput1");
