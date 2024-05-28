@@ -14,7 +14,7 @@
         <div class="row; d-flex flex-row align-items-center mt-3 p-2 bg-white rounded" style="margin-bottom: .4cm;">
           <div class="col text-start"> <RouterLink class="btn btn-outline-warning btn-sm ml-2 end" type="button" to="/">回商品頁面</RouterLink></div>
           <div class="col text-end"  >總金額: {{totalAmount}}</div>
-          <div class="rounded col text-end"><button class="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button">確認購買</button></div> 
+          <div class="rounded col text-end"><RouterLink class="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button" to="/order/insert">確認購買</RouterLink></div> 
         </div>
       </div>
     </div>
