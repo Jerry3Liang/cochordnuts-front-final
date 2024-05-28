@@ -59,13 +59,13 @@
                 <RouterLink to="/member" class="dropdown-item">會員基本資料</RouterLink>
               </li>
               <li>
-                <RouterLink to="/modify" class="dropdown-item">修改會員資料</RouterLink>
+                <RouterLink to="/memberModify" class="dropdown-item">修改會員資料</RouterLink>
               </li>
               <li>
                 <RouterLink to="/modifyPwd" class="dropdown-item">修改密碼</RouterLink>
               </li>
               <li>
-                <RouterLink to="/delete" class="dropdown-item">刪除帳號</RouterLink>
+                <RouterLink to="/memberDelete" class="dropdown-item">刪除帳號</RouterLink>
               </li>
               <li>
                 <RouterLink to="/order/userFindAllOrders" class="dropdown-item">使用者訂單紀錄</RouterLink>
