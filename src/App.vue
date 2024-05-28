@@ -1,5 +1,5 @@
 <template>
-  <NavigationBar :isLoggedIn="isLoggedIn"></NavigationBar>
+  <NavigationBar :isLoggedIn="isLoggedIn" :user="user"></NavigationBar>
   <RouterView></RouterView>
 </template>
 
@@ -13,6 +13,7 @@ import { ref } from "vue";
 
 const router = useRouter();
 const isLoggedIn = ref(null);
+  const user = ref(null);
 
 router.afterEach(() => {
 
@@ -20,6 +21,14 @@ router.afterEach(() => {
 
   if (currentRoute.name === "home-link") {
     isLoggedIn.value = sessionStorage.getItem("isLoggedIn") === "true";
+    if (isLoggedIn.value) {
+      user.value = {
+        name: sessionStorage.getItem("userName"),
+        loginTime: sessionStorage.getItem("loginTime")
+      };
+    } else {
+      user.value = null;
+    }
   }
 });
 
