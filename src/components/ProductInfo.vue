@@ -7,8 +7,14 @@
             <h2>{{ productObj.productName }}</h2>
             <h5>演出者：{{ productObj.artistType }}</h5>
             <h5>發行日：{{ productObj.publishedDate }}</h5>
-            <h5>NT.{{ productObj.unitPrice }}</h5>
-            <h5>售價： {{ Math.round(productObj.unitPrice * productObj.discount) }}</h5>
+            <div v-show="productObj.discount != 1">
+                <h6 style="text-decoration: line-through;">定價：{{ productObj.unitPrice }}</h6>
+                <h5 style="color: red;">售價：{{ Math.round(productObj.unitPrice * productObj.discount) }}</h5>
+            </div>
+            <div v-show="productObj.discount == 1">
+                <h5>定價：{{ productObj.unitPrice }}</h5>
+            </div>
+        
             <div style="margin: 2%;">
                 <button v-if="!showMinusBtn" type="button" class="countBtn" disabled>–</button>
                 <button v-if="showMinusBtn" type="button" class="countBtn" @click="minusItem">–</button>
@@ -20,7 +26,6 @@
                 <button type="button" class="btn btn-outline-primary" @click="wishAdd(productObj.productNo)">🤍加入願望清單</button>
             </div>
         </div>
-        
     
     <nav style="margin: 2%;">
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -134,13 +139,21 @@
             "memberId" : memberId.value,
             "productNo" : productNo
         }
-        console.log(data);
+        console.log("data=", data);
 
         axios.post(`/wishlist/add`, data).then(function(response){
             console.log("response=", response);
+            Toast.fire({
+                icon: "success",
+                title: "已加入願望清單"
+            });
 
         }).catch(function(error){
             console.log("error=", error);
+            Toast.fire({
+                icon: "warning",
+                title: "此商品已在您的願望清單"
+            });
 
         })
     }

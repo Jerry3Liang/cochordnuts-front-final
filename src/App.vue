@@ -1,12 +1,14 @@
 <template>
   <NavigationBar :isLoggedIn="isLoggedIn" :user="user"></NavigationBar>
   <RouterView></RouterView>
+  <Footer></Footer>
 </template>
 
 <script setup>
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import NavigationBar from "@/views/Navbar.vue";
+import Footer from './views/Footer.vue';
 
 import { useRouter } from 'vue-router';
 import { ref } from "vue";
