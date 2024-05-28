@@ -29,7 +29,7 @@
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0" style="white-space: pre-wrap;">
             <h5>{{ productObj.describe }}</h5>
         </div>
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
@@ -50,7 +50,7 @@
 
     const count = ref(1);
     const showMinusBtn = ref(false);
-    const memberId = ref(1);
+    const memberId = ref(null);
 
     function plusItem(){
         count.value++;
@@ -70,6 +70,9 @@
     }
 
     function wishAdd(productNo){
+
+        memberId.value = sessionStorage.getItem("memberNo");
+
         let data = {
             "memberId" : memberId.value,
             "productNo" : productNo
