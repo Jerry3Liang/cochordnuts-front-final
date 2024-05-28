@@ -22,11 +22,10 @@ import {ref} from 'vue';
 import {useRouter , useRoute} from 'vue-router';
 const customerCase = ref({ });
 const memberNo = sessionStorage.getItem("memberNo");
-// const orderNo = sessionStorage.getItem("orderNo");
 const subject = ref("");
 const router = useRouter();
 const route = useRoute();
-const orderNo=ref(route.query.orderNo)
+const orderNo = ref(route.query.orderNo)
 console.log(orderNo)
 //
 function callCreateMessage() {

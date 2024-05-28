@@ -70,6 +70,9 @@
               <li>
                 <RouterLink to="/order/userFindAllOrders" class="dropdown-item">使用者訂單紀錄</RouterLink>
               </li>
+              <li>
+                <RouterLink to="/Customer/CustomerCaseByMemberId" class="dropdown-item">客服回覆</RouterLink>
+              </li>
             </ul>
           </li>
           <li class="nav-item dropdown">

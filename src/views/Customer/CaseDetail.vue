@@ -4,8 +4,8 @@
 
   <div class="card" v-for="msg in caseMessages" :key="msg.id" v-if="caseNo !== null">
     <div class="card-header">
-      <span>時間：{{msg.messageTime}}</span><span style="margin: 50px">{{msg.employeeName}}</span>
-      <span style="float: right"><button type="button" class="btn btn-outline-info" @click="callUpdateMsgByCaseDetailNo(msg.caseDetailNo)">編輯</button></span>
+      <span>時間：{{msg.messageTime}}</span><span style="margin: 50px" v-show="msg.employeeName != null">{{msg.employeeName}}</span><span style="margin: 50px" v-show="msg.memberName != null">{{msg.memberName}}</span>
+      <span style="float: right" v-show="msg.memberName != null"><button type="button" class="btn btn-outline-info" @click="callUpdateMsgByCaseDetailNo(msg.caseDetailNo)" >編輯</button></span>
     </div>
     <div class="card-body">
       <p class="card-text"><h3>{{msg.message}}</h3></p>
@@ -32,6 +32,7 @@ import {ref, onMounted} from 'vue';
 import {useRoute} from 'vue-router';
 const route = useRoute();
 const id = ref(route.query.caseNumber);
+const mNO =  ref(route.query.mNo);
 //跳轉用
 import {useRouter} from 'vue-router';
 const router = useRouter();
@@ -62,7 +63,6 @@ const answerMessage = ref("");
 
 
 function callCreateMessage(){
-
   console.log("Call create message");
   Swal.fire({
     text:"loading......",
@@ -70,20 +70,22 @@ function callCreateMessage(){
     allowOutsideClick: false
   });
 
-  if(customerCase.value.memberNo === ""){
-    customerCase.value.memberNo = null;
-  }
+  // if(customerCase.value.memberNo === ""){
+  //   customerCase.value.memberNo = null;
+  // }
 
+  console.log(mNO.value);
 
   let data = {
     "customerCaseNo": id.value,
     "answerMessage" : answerMessage.value,
-    "employeeNo": 1
+    "memberNo": mNO.value
   }
 
   axiosApi.post("/rest/Answer", data)
       .then(function(response) {
         console.log(response.data);
+        console.log(response.data.memberNo);
         if(response.data){
           Swal.fire({
             text: response.data.message,
@@ -114,6 +116,7 @@ function callCreateMessage(){
 }
 
 function callFindMsgByCaseNo(caseNo) {
+  console.log("call findMsgByCaseNo");
   axiosApi.get(`/rest/findCaseContent/${caseNo}`).then(function(response) {
     caseMessages.value = response.data;
     console.log(response.data);

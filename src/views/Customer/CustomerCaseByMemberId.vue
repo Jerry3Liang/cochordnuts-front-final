@@ -1,10 +1,9 @@
 <template>
-  <h1>顯示客服提問列表</h1>
+  <h1>顯示客服回覆列表</h1>
   <table class="table">
     <thead>
     <tr>
       <th scope="col">案件編號</th>
-      <th scope="col">客戶姓名</th>
       <th scope="col">問題</th>
       <th scope="col">最後回覆時間</th>
       <th scope="col">回覆員工姓名</th>
@@ -15,15 +14,11 @@
     <tbody>
     <tr v-for="cstCase in customerCases" :key="cstCase.id">
       <th scope="row">
-<!--        <RouterLink to="/Customer/FinishCaseDetail" @click="callFinishFindMsgByCaseNo(cstCase.caseNo)">{{cstCase.caseNo}}</RouterLink>-->
-<!--        <RouterView></RouterView>-->
-<!--        <a @click="callFinishFindMsgByCaseNo(cstCase.caseNo)">{{cstCase.caseNo}}</a>-->
         <button type="button" class="btn btn-link" @click="callFinishFindMsgByCaseNo(cstCase.caseNo)" :disabled="isDisabled(cstCase.status)">{{cstCase.caseNo}}</button>
       </th>
-      <td>{{cstCase.customerName}}</td>
       <td>{{cstCase.subject}}</td>
-      <td>{{cstCase.lastAnswerDate}}</td>
-      <td>{{cstCase.answerEmployee}}</td>
+      <td>{{cstCase.messageTime}}</td>
+      <td>{{cstCase.empName}}</td>
       <td>
         <div v-if="cstCase.status ===0">未回覆</div>
         <div v-else-if="cstCase.status ===1">回覆中</div>
@@ -31,20 +26,19 @@
       </td>
       <td>
         <div v-show="cstCase.status ===1"></div>
-        <button type="button" class="btn btn-primary" @click="callFindMsgByCaseNo(cstCase.caseNo)" v-show="cstCase.status ===1 || cstCase.status === 0" style="margin: 3px">回覆</button>
-        <button type="button" class="btn btn-success" @click="callModify(cstCase.caseNo)" v-show="cstCase.status ===1 || cstCase.status === 0" style="margin: 3px">結案</button>
+        <button type="button" class="btn btn-primary" @click="callFindMsgByCaseNo(cstCase.caseNo)" v-show="cstCase.status ===1 || cstCase.status === 0" style="margin: 3px">詳細回覆內容</button>
       </td>
     </tr>
     </tbody>
   </table>
 
-  <div class="col-4 justify-content-center">
-    <Paginate :first-last-button="true" first-button-text="&lt;&lt;"
-              last-button-text="&gt;&gt;" prev-text="&lt;" next-text="&gt;"
-              :page-count="pages" :initial-page="current" v-model="current"
-              :click-handler="callFind">
-    </Paginate>
-  </div>
+<!--  <div class="col-4 justify-content-center">-->
+<!--    <Paginate :first-last-button="true" first-button-text="&lt;&lt;"-->
+<!--              last-button-text="&gt;&gt;" prev-text="&lt;" next-text="&gt;"-->
+<!--              :page-count="pages" :initial-page="current" v-model="current"-->
+<!--              :click-handler="callFind">-->
+<!--    </Paginate>-->
+<!--  </div>-->
 </template>
 
 <script setup>
@@ -60,11 +54,11 @@ const router = useRouter();
 
 
 
-//顯示全部回覆訊息
+//顯示全部發問列表
 const customerCases = ref(null);
 
-//根據 caseNo 顯示全部訊息
-const caseNo = ref(0);
+//根據 memberNo 顯示全部發問列表
+const memberNo = sessionStorage.getItem("memberNo");
 
 //提交問題
 const customerCase = ref({ });
@@ -79,34 +73,14 @@ const lastPageRows = ref(0);
 // //pagination end
 
 onMounted(function(){
-  callFind();
+  callFindByMemberNo(memberNo);
 });
 
-function callFind(page) {
-  // Swal.fire({
-  //     text: "Loading......",
-  //     showConfirmButton: false,
-  //     allowOutsideClick: false,
-  // });
-  console.log("callFind", page)
-  //計算分頁資訊
-  if(page) {
-    start.value = (page-1) * rows.value;
-    current.value = page;
-  } else {
-    start.value = 0;
-    current.value = 1;
-  }
-
-  axiosApi.get("/rest/allCase", {params: {offset: start.value, fetch:rows.value}}).then(function(response) {
-    customerCases.value = response.data.results;
-    console.log(response.data.results);
-
-    //pagination start
-    total.value =  response.data.total;
-    pages.value = Math.ceil(response.data.total / rows.value)
-    lastPageRows.value = response.data.total % rows.value;
-    //pagination end
+function callFindByMemberNo(memberNo) {
+  console.log("callFindByMemberNo");
+  axiosApi.get(`/rest/findMemberCase/${memberNo}`).then(function(response) {
+    customerCases.value = response.data;
+    console.log(response.data);
     setTimeout(function() {
       Swal.close();
     }, 500);
@@ -124,6 +98,49 @@ function callFind(page) {
     });
   });
 }
+
+// function callFind(page) {
+//   // Swal.fire({
+//   //     text: "Loading......",
+//   //     showConfirmButton: false,
+//   //     allowOutsideClick: false,
+//   // });
+//   console.log("callFind", page)
+//   //計算分頁資訊
+//   if(page) {
+//     start.value = (page-1) * rows.value;
+//     current.value = page;
+//   } else {
+//     start.value = 0;
+//     current.value = 1;
+//   }
+//
+//   axiosApi.get("/rest/allCase", {params: {offset: start.value, fetch:rows.value}}).then(function(response) {
+//     customerCases.value = response.data.results;
+//     console.log(response.data.results);
+//
+//     //pagination start
+//     total.value =  response.data.total;
+//     pages.value = Math.ceil(response.data.total / rows.value)
+//     lastPageRows.value = response.data.total % rows.value;
+//     //pagination end
+//     setTimeout(function() {
+//       Swal.close();
+//     }, 500);
+//   }).catch(function(error) {
+//     console.log("callFind error", error);
+//     Swal.fire({
+//       text: '失敗：'+error.message,
+//       icon: 'error',
+//       allowOutsideClick: false,
+//       confirmButtonText: '確認',
+//     }).then(function() {
+//       if(error && error.response.status && error.response.status===403) {
+//         // router.push("/secure/login");
+//       }
+//     });
+//   });
+// }
 
 function callModify(caseNo) {
   Swal.fire({
@@ -191,7 +208,7 @@ function callFindMsgByCaseNo(caseNo) {
     setTimeout(function() {
       Swal.close();
     }, 500);
-    router.push({path:"/Customer/CaseDetail", query:{caseNumber:caseNo}});//跳轉到根據 caseNo 的回覆畫面
+    router.push({path:"/Customer/CaseDetail", query:{caseNumber:caseNo, mNo:memberNo}});//跳轉到根據 caseNo 的回覆畫面
   }).catch(function(error) {
     console.log("callFind error", error);
     Swal.fire({
