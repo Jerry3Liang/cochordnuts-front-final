@@ -67,7 +67,7 @@ onMounted(() => {
 });
 
 function newPage(){
-    router.push({ name: "modify-link" });
+    router.push({ name: "memberModify-link" });
 }
 
 const formatBirthday = (dateString) => {
