@@ -3,7 +3,7 @@
     <RouterLink to="/" class="dropdown-item" style="width: 15%;">
       <img src="/logo.jpeg" style="width: 100%;">
     </RouterLink>
-    <div style="width: 25%; margin-left: 20%; margin-top: 4%;">
+    <div style="width: 25%; margin-left: 20%; margin-top: 2%;">
       <Search @searchcons="dosearch"></Search>
     </div>
 
