@@ -41,7 +41,7 @@
                 </div>
         </div>
 <label for="outputMember" class="form-label"><h2>購買商品明細</h2></label> 
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover table-custom-width">
 
         <thead>
         <tr>
@@ -55,7 +55,7 @@
         </thead>
         <tbody>
         <tr v-for="(anOrderDetail,index) in OrderDetailDto" :key="index">
-                <th  scope="row" >{{index+1}}</th>
+                <td  scope="row" >{{index+1}}</td>
                 <td>{{anOrderDetail.productName}}</td>
                 <td>{{anOrderDetail.price}}</td>
                 <td>{{anOrderDetail.discount}}</td>
@@ -78,16 +78,16 @@
         </thead>
         <tbody>
         <tr>
-                <th scope="row">運送方式</th>
+                <td scope="row">運送方式：</td>
                 <td>{{deliveryType}}</td>
                 <td></td>
                 <td></td>
         </tr>
         <tr>
                 <th scope="row">{{homeOrConvinientStore}}</th>
-                <td>{{address}}</td>
-                <td></td>
-                <td></td>
+                <th>{{address}}</th>
+                <th></th>
+                <th></th>
         </tr>
         </tbody>
         </table> 
@@ -96,6 +96,7 @@
 
 <!-- 收件人資料 -->
 <label for="outputMember" class="form-label"><h2>收件人資料</h2></label> 
+
 <table class="table">
         <thead>     
         <tr>
@@ -107,22 +108,23 @@
         </thead>
         <tbody>
         <tr>
-                <th scope="row">姓名</th>
+                <td scope="row">姓名：</td>
                 <td>{{recipientName}}</td>
                 <td></td>
                 <td></td>
         </tr>
         <tr>
-                <th scope="row">電話</th>
-                <td>{{recipientPhone}}</td>
-                <td></td>
-                <td></td>
+                <th scope="row">電話：</th>
+                <th>{{recipientPhone}}</th>
+                <th></th>
+                <th></th>
         </tr>
         </tbody>
         </table> 
 
 
 <!-- 訂單金額 -->
+<label for="outputOrder" class="form-label"><h2>訂單金額</h2></label> 
 
         <table class="table">
         <thead>
@@ -131,19 +133,25 @@
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
                 </tr>
         </thead>
         <thead>
                 <tr>
-                <th scope="col">運費</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col">60</th>
+                <td  scope="col">運費</td>
+                <td scope="col"></td>
+                <td scope="col"></td>
+                <td scope="col"></td>
+                <td scope="col"></td>
+                <td scope="col">60</td>
                 </tr>
         </thead>
         <thead>
                 <tr>
                 <th scope="col">訂單金額</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col">{{total}}</th>
@@ -167,22 +175,22 @@
         </thead>
         <tbody>
         <tr>
-                <th scope="row">付款方式</th>
+                <td scope="row">付款方式</td>
                 <td>{{payment}}</td>
                 <td>{{ isPayByCredit }}</td>
                 <td>{{ creditCardNo }}</td>
         </tr>
         <tr>
-                <th scope="row">發票方式</th>
+                <td scope="row">發票方式</td>
                 <td>{{receiptType}}</td>
                 <td></td>
                 <td></td>
         </tr>
         <tr>
                 <th scope="row">發票號碼</th>
-                <td>{{receipt}}</td>
-                <td></td>
-                <td></td>
+                <th>{{receipt}}</th>
+                <th></th>
+                <th></th>
         </tr>
         </tbody>
         </table> 
@@ -325,8 +333,18 @@ function cancelOrder(){
         }
 
 function buyAgain(){//再買一次  orderDetail及memberNo帶到下一頁    
-        console.log(OrderDetailDto.value)
-        console.log(order.value)
+console.log(order.value)
+        axiosapi.post(`/cart/buyAgain/${order.value.orderNo}`).then(function(response){
+                console.log("response=", response.data);
+                // Swal.fire("新增成功!");
+                // router.push({path:"/cart"})
+
+                
+        }).catch(function(error){
+                console.log("error=", error);
+
+        })
+
 }
 //取得Order&orderDetail       
 function  findOrderAndOrderDetail(){
@@ -405,12 +423,12 @@ function  findOrderAndOrderDetail(){
 </script>
 
 <style>
-    tr,td{
+        tr,td{
         border: none !important;
-    }
-.button-spacing {
-        margin-right: 5px; /* 設定按鈕間的右邊距為 10 像素 */
-}
+        }
+        .button-spacing {
+                margin-right: 5px; /* 設定按鈕間的右邊距為 10 像素 */
+        }
         body{margin-top:20px;}
         .timeline-steps {
         display: flex;
@@ -471,5 +489,41 @@ function  findOrderAndOrderDetail(){
         min-width: 3rem;
         border-radius: 6.25rem;
         opacity: .5
+        }
+
+
+        .table {
+                width: 100%;
+                border-collapse: collapse;
+                table-layout: fixed;
+                }
+
+                .table th {
+                padding: 8px;
+                text-align: left;
+                border-bottom: 2px solid #ddd; /* 下划线 */
+                }
+
+                .table td {
+                padding: 8px;
+                text-align: left;
+                border: none; /* 移除边框 */
+                }
+
+                .form-label {
+                display: block;
+                margin: 10px 0;
+                }
+
+                .button-spacing {
+                margin: 5px;
+        }
+        .table-custom-width th:nth-child(1),
+                .table-custom-width td:nth-child(1) {
+                width: 5%; /* 調整商品index寬度 */
+        }
+        .table-custom-width th:nth-child(2),
+                .table-custom-width td:nth-child(2) {
+                width: 30%; /* 商品第二欄寬度 */
         }
 </style>
