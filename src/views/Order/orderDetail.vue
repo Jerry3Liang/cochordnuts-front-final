@@ -333,8 +333,18 @@ function cancelOrder(){
         }
 
 function buyAgain(){//再買一次  orderDetail及memberNo帶到下一頁    
-        console.log(OrderDetailDto.value)
-        console.log(order.value)
+console.log(order.value)
+        axiosapi.post(`/cart/buyAgain/${order.value.orderNo}`).then(function(response){
+                console.log("response=", response.data);
+                // Swal.fire("新增成功!");
+                // router.push({path:"/cart"})
+
+                
+        }).catch(function(error){
+                console.log("error=", error);
+
+        })
+
 }
 //取得Order&orderDetail       
 function  findOrderAndOrderDetail(){
@@ -413,12 +423,12 @@ function  findOrderAndOrderDetail(){
 </script>
 
 <style>
-    tr,td{
+        tr,td{
         border: none !important;
-    }
-.button-spacing {
-        margin-right: 5px; /* 設定按鈕間的右邊距為 10 像素 */
-}
+        }
+        .button-spacing {
+                margin-right: 5px; /* 設定按鈕間的右邊距為 10 像素 */
+        }
         body{margin-top:20px;}
         .timeline-steps {
         display: flex;
