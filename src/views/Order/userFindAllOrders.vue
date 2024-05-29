@@ -37,6 +37,9 @@
 </template>
 
 <script setup>
+
+
+// console.log("window.location.href :",window.location.href )
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import axiosapi from '@/plugins/axios.js';
@@ -51,6 +54,7 @@ const start = ref(0)
 const rows = ref(10)
 const member = ref(sessionStorage.getItem("memberNo"))
 const orderSearch = ref('')
+
 function seeOrderDetail(orderNo) {
 
     router.push({ path: "/order/OrderDetail", query: { orderNumber: orderNo } })//跳頁 將orderNo帶到下一頁

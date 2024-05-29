@@ -240,7 +240,7 @@ const createDate = ref('')
 const originAdress=ref('')
 const freight=ref(60)
 const receiptNo=ref('')
-const memberNo=ref(0)
+const memberNo=ref(sessionStorage.getItem("memberNo"))
 const status=ref('')
 
 const newCreateDate=ref('')
