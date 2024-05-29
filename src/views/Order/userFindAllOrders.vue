@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             <tr v-for="(anOrder, index) in orders" :key="index">
-                <th scope="row">{{ index + 1 }}</th>
+                <td scope="row">{{ index + 1 }}</td>
                 <td>{{ anOrder.orderNo }}</td>
                 <td>{{ anOrder.memberNo }}</td>
                 <td>$ {{ anOrder.totalPay }}</td>
@@ -28,6 +28,7 @@
                 <td>{{ anOrder.status }}</td>
                 <button type="button" class="btn btn-outline-secondary"
                     @click="seeOrderDetail(anOrder.orderNo)">查看詳細內容</button>
+                
             </tr>
         </tbody>
     </table>
