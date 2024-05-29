@@ -16,7 +16,8 @@
                 </td>
                 <td>{{ product.unitPrice }}</td>
                 <td>{{ Math.round(product.unitPrice * product.discount)}}</td>
-                <td><button class="btn btn-outline-danger" @click="callRemoveWishList(product.productNo)">刪除</button></td>
+                <td><button class="btn btn-outline-danger button-spacing" @click="callRemoveWishList(product.productNo)">刪除</button>
+                <button class="btn btn-outline-danger" @click="addCart(product.productNo)">加入購物車</button></td>
             </tr>
         </table>
         </div>
@@ -40,6 +41,24 @@
     onMounted(function(){
         callFindWishList();
     })
+    function addCart(productNo){
+        let cartData={
+            "memberNo":memberId.value,
+            "productId":productNo,
+            "count":1
+        }
+
+        axiosapi.post(`/cart/add`,cartData).then(function(response){
+                console.log("response=", response.data);
+            
+                
+            }).catch(function(error){
+                console.log("error=", error);
+    
+            })
+
+
+    }
 
     function callFindWishList(){
 
@@ -97,5 +116,7 @@
     td{
         padding: 1%;
     }
-
+    .button-spacing {
+        margin-right: 5px; /* 設定按鈕間的右邊距為 10 像素 */
+}
 </style>
