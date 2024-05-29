@@ -1,6 +1,6 @@
 <template>
 
-    <form class="row g-3">
+    <form class="row g-3 " style="margin-top: 2%;">
 
         <label for="outputMember" class="form-label">
             <h2>購物車商品明細</h2>
@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 <tr v-for="(aCart, index) in cart" :key="index">
-                    <th scope="row">{{ index + 1 }}</th>
+                    <td scope="row">{{ index + 1 }}</td>
                     <td>{{ aCart.productName }}</td>
                     <td>{{ aCart.unitPrice }}</td>
                     <td>{{ aCart.discount }}</td>
@@ -48,28 +48,28 @@
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row">會員姓名:</th>
+                    <td scope="row">會員姓名:</td>
                     <td>{{ MemberName }}</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row">Email:</th>
+                    <td scope="row">Email:</td>
                     <td>{{ MemberEmail }}</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row">會員電話:</th>
+                    <td scope="row">會員電話:</td>
                     <td>{{ MemberPhone }}</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <th scope="row">會員地址:</th>
-                    <td>{{ MemberAddress }}</td>
-                    <td></td>
-                    <td></td>
+                    <th>{{ MemberAddress }}</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </tbody>
         </table>

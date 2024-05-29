@@ -199,6 +199,11 @@
                 <label for="floatingTextarea2">Comments</label>
         </div>
         <p></p>
+        <RouterLink to="/order/userFindAllOrders">
+
+                <button type="button" class="btn btn-primary button-spacing">回上頁</button>
+        </RouterLink>
+
         <button type="button" class="btn btn-primary button-spacing" @click="cancelOrder">取消訂單</button><!-- 狀態改為已取消 -->
         <button type="button" class="btn btn-primary button-spacing" @click="contactService">聯絡客服</button>
         <!-- <button type="button" class="btn btn-primary button-spacing">退貨</button>狀態改為退貨確認中 -->
@@ -333,17 +338,19 @@ function cancelOrder(){
         }
 
 function buyAgain(){//再買一次  orderDetail及memberNo帶到下一頁    
-console.log(order.value)
-        axiosapi.post(`/cart/buyAgain/${order.value.orderNo}`).then(function(response){
-                console.log("response=", response.data);
-                // Swal.fire("新增成功!");
-                // router.push({path:"/cart"})
+        console.log(order.value)
+                axiosapi.post(`/cart/buyAgain/${order.value.orderNo}`).then(function(response){
+                        console.log("response=", response.data);
+                        if(response.data.result==true){
+                                router.push({path:"/cart"})
+                        }
+                        
 
-                
-        }).catch(function(error){
-                console.log("error=", error);
+                        
+                }).catch(function(error){
+                        console.log("error=", error);
 
-        })
+                })
 
 }
 //取得Order&orderDetail       

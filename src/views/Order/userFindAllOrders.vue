@@ -74,28 +74,29 @@ function doSearch() {
         "num": orderSearch.value
     }
     axiosapi.post("/orders/findBymemberNo", data).then(function (response) {
-        console.log(orderSearch.value)
-        orders.value = []
-        // console.log(response)   
+        if(response.data.result==true){
+            console.log(orderSearch.value)
+        orders.value = [] 
         console.log(response.data.count)
-        // console.log(orderSearch.value)  
-        // console.log(rows.value)
         pages.value = Math.ceil(response.data.count / rows.value)
-        // console.log(pages.value)
         for (let i = 0; i < response.data.memberOrders.length; i++) {
             orders.value.push(response.data.memberOrders[i]);
             orders.value[i].lastModifiedDate = moment(orders.value[i].lastModifiedDate).format('YYYY-MM-DD HH:mm:ss')
         }
-
-
-    }).catch(function (error) {
-        console.log("error", error);
-        Swal.fire({
+        }else{
+            Swal.fire({
             text: '查無資料：',
             icon: 'error',
             allowOutsideClick: false,
             confirmButtonText: '確認',
         });
+        }
+    
+
+
+    }).catch(function (error) {
+        console.log("error", error);
+        
     });
 }
 
