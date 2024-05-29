@@ -1,4 +1,5 @@
 <template>
+
 <label for="outputMember" class="form-label"><h2>運送狀態</h2></label> <br/>
         <div class="row text-center justify-content-center mb-5">
                 
@@ -404,6 +405,9 @@ function  findOrderAndOrderDetail(){
 </script>
 
 <style>
+    tr,td{
+        border: none !important;
+    }
 .button-spacing {
         margin-right: 5px; /* 設定按鈕間的右邊距為 10 像素 */
 }
