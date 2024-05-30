@@ -25,13 +25,13 @@ background:#eee;">
             <!-- <h5 class="text-grey" :value="modelValue" @change="emits('update:modelValue', $event.target.value)" style="margin: 0.5cm; "min="1">{{ eachCartItem.count }}</h5> -->
             <button v-if="eachCartItem.inventory>eachCartItem.count" type="button" class="btn btn-outline-info" @click="increaseOne(eachCartItem)" >+</button>
             <button v-if="eachCartItem.inventory===eachCartItem.count" type="button" class="btn btn-outline-info" @click="increaseOne(eachCartItem)" disabled >+</button>
-        </div>
-            <div  class="col-6" >
+            <div  class="col-12" >
                 <h5 class="text-grey " style="font:bold;"> 金額： ＄{{Math.round(eachCartItem.discount*eachCartItem.price)*eachCartItem.count}}</h5>
             </div>
-            <div  class=" col col-6" >
+            <div  class=" col col-10" >
                 <img type="button" src="/delete.png" title="刪除品項" width="25px" alt="刪除品項" style="border-left: .5cm;" @click="deleteThisItem(eachCartItem)" ></img>
             </div>
+        </div>
         </div>                   
             <!-- <h5 style="color:#D4DFD6;">_____________________________________________________________________________________________________________________________</h5> -->
             <!-- <h5 class="d-flex " style="color:#E7ECEA ;">___________________________________________________________________________________________________</h5> -->
@@ -58,5 +58,7 @@ function deleteThisItem(id){
 font-family: 'Manrope', sans-serif;
 background:#eee;
 } */
-
+input {
+    border: cm;
+}
 </style>

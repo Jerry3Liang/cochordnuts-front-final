@@ -132,10 +132,10 @@
               //   listItems();
               // }
       inCart.count=id.count++;
-      if (response.data.inventory=id.count) {
+      totalAmount.value=totalAmount.value+Math.round(id.price*id.discount)
+      if (response.data.inventory===id.count) {
       // inCart.count=id.count++;
       // console.log("id.count111 =" , id.count);
-      totalAmount.value=totalAmount.value+(id.price*id.discount)
       console.log("id.count: ", id.count);
       Swal.fire({
       // title: "loading...",
@@ -160,7 +160,7 @@
         inCart.count=id.count--;
       // }
 
-      totalAmount.value=totalAmount.value-(id.price*id.discount)
+      totalAmount.value=totalAmount.value-Math.round(id.price*id.discount)
         let obj = {
         productId: id.productId,
         memberNo: memberNo
