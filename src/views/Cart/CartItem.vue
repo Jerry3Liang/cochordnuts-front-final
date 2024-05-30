@@ -19,12 +19,12 @@ background:#eee;">
         <!-- <div class="d-flex align-items-center"><i class="fa fa-trash mb-1 text-danger">123211231231</i></div> -->
         <div class="text-center d-flex align-items-center col-2 " >
             
-            <button v-if="eachCartItem.count===1" type="button" class="btn btn-outline-info" @click="decreaseOne(eachCartItem)" disabled >-</button>
-            <button v-if="eachCartItem.count!=1" type="button" class="btn btn-outline-info" @click="decreaseOne(eachCartItem)" >-</button>
-            <input type="text" size="2" :value="eachCartItem.count" @change="emits('update:modelValue', $event.target.value)">
-            <!-- <h5 class="text-grey" :value="modelValue" @change="emits('update:modelValue', $event.target.value)" style="margin: 0.5cm; "min="1">{{ eachCartItem.count }}</h5> -->
-            <button v-if="eachCartItem.inventory>eachCartItem.count" type="button" class="btn btn-outline-info" @click="increaseOne(eachCartItem)" >+</button>
-            <button v-if="eachCartItem.inventory===eachCartItem.count" type="button" class="btn btn-outline-info" @click="increaseOne(eachCartItem)" disabled >+</button>
+            <button v-if="eachCartItem.count===1" type="button" class="btn btn-outline-secondary" @click="decreaseOne(eachCartItem)" disabled >-</button>
+            <button v-if="eachCartItem.count!=1" type="button" class="btn btn-outline-secondary" @click="decreaseOne(eachCartItem)" >-</button>
+            <!-- <input type="text" size="2" :value="eachCartItem.count" @change="emits('update:modelValue', $event.target.value)"> -->
+            <h5 class="text-grey" :value="modelValue" @change="emits('update:modelValue', $event.target.value)" style="margin: 0.5cm; "min="1">{{ eachCartItem.count }}</h5>
+            <button v-if="eachCartItem.inventory>eachCartItem.count" type="button" class="btn btn-outline-dark" @click="increaseOne(eachCartItem)" >+</button>
+            <button v-if="eachCartItem.inventory===eachCartItem.count" type="button" class="btn btn-outline-dark" @click="increaseOne(eachCartItem)" disabled >+</button>
             <div  class="col-12" >
                 <h5 class="text-grey " style="font:bold;"> 金額： ＄{{Math.round(eachCartItem.discount*eachCartItem.price)*eachCartItem.count}}</h5>
             </div>
@@ -58,7 +58,7 @@ function deleteThisItem(id){
 font-family: 'Manrope', sans-serif;
 background:#eee;
 } */
-input {
-    border: cm;
-}
+/* button {
+    border: .5cm;
+} */
 </style>

@@ -2,7 +2,7 @@
   
   <div  class="container mt-5 mb-5 flex">
     <div class="flex justify-content-center row">
-      <div style="background-color: aliceblue;">
+      <div style="background-color: rgb(19, 99, 173, 0.214);">
         <div class="p-5">
           <h2>Shopping cart {{ memberNo }} : {{ user }}</h2>
         </div>
@@ -15,7 +15,7 @@
           <div class="col text-start"> <RouterLink class="btn btn-outline-warning btn-sm ml-2 end" type="button" to="/">回商品頁面</RouterLink></div>
           <div class="col text-end"  >總金額: {{totalAmount}}</div>
           <!-- <CartItem></CartItem> -->
-          <div class="rounded col text-end"><button @click="goInertOrder" type="button">確認購買</button></div> 
+          <div class="rounded col text-end"><button @click="goInertOrder" type="button" class="btn btn-danger btn-block btn-lg ml-2 pay-button">確認購買</button></div> 
         </div>
       </div>
     </div>
