@@ -7,13 +7,14 @@
           <h2>Shopping cart {{ memberNo }} : {{ user }}</h2>
         </div>
   
-          <CartItem v-for="item in inCart" v-model="inCart" :key="item.productId" :eachCartItem="item"
+          <CartItem v-for="item in inCart"  :key="item.productId" :eachCartItem="item" 
               @increaseOne="increaseQuanty" @decreaseOne="decreaseQuanty" @deleteThisItem="deleteThisItem"></CartItem>
   
   
         <div class="row; d-flex flex-row align-items-center mt-3 p-2 bg-white rounded" style="margin-bottom: .4cm;">
           <div class="col text-start"> <RouterLink class="btn btn-outline-warning btn-sm ml-2 end" type="button" to="/">回商品頁面</RouterLink></div>
           <div class="col text-end"  >總金額: {{totalAmount}}</div>
+          <!-- <CartItem></CartItem> -->
           <div class="rounded col text-end"><RouterLink class="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button" to="/order/insert">確認購買</RouterLink></div> 
         </div>
       </div>
@@ -29,11 +30,21 @@
   import axiosapi from '@/plugins/axios.js'
   import CartItem from './CartItem.vue'
   import router from '@/router/router'
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
   
   const totalAmount = ref(null);
   const inCart = ref(null);
-  
+  const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+        });
   
     let user=sessionStorage.getItem("userName")
     let memberNo=sessionStorage.getItem("memberNo");
@@ -75,7 +86,7 @@
       }
       axiosapi.post("/cart/list", obj).then(function(response){
         inCart.value = response.data.list;
-        // console.log("response: ", response.data.list);
+        console.log("response.data.list: ", response.data.list);
         // console.log("response.data.list[0].price: ", response.data.list[0].price);
         // console.log("response.data.list[0].count: ", response.data.list[0].count);
         // console.log("response: ", response.data.list[0]);
@@ -92,66 +103,89 @@
   listItems();
   
     function increaseQuanty(id) {
-      inCart.count=id.count++;
+      
       let obj = {
         productId: id.productId,
         memberNo: memberNo
       }
       
       axiosapi.post("/cart/addOne", obj).then(function(response){
-        inCart.value = response.data.list;
+        // inCart.value = response.data.list;
         console.log("response: ",response);
+        console.log("response.data.inventory: ",response.data.inventory);
+        Toast.fire({
+                icon: "success",
+                title: `${response.data.productName}數量＋1`
+            });
+        // totalAmount.value=0
         // listItems();
-        let memberNo=sessionStorage.getItem("memberNo");
-        let obj1 = {
-          memberNo: memberNo
-        }
-        axiosapi.post("/cart/list", obj1).then(function(response){
-          console.log("response: ", response);
-          totalAmount.value=0;
-          let xx=0
-          for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-            totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
-            listItems();
-          }
-        })
-        
+        // let memberNo=sessionStorage.getItem("memberNo");
+        // let obj1 = {
+          //   memberNo: memberNo
+          // }
+          // axiosapi.post("/cart/list", obj1).then(function(response){
+            //   console.log("response: ", response);
+            // totalAmount.value=item.price;
+            // let xx=0
+            // for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+              //   totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+              //   listItems();
+              // }
+      inCart.count=id.count++;
+      if (response.data.inventory=id.count) {
+      // inCart.count=id.count++;
+      // console.log("id.count111 =" , id.count);
+      totalAmount.value=totalAmount.value+(id.price*id.discount)
+      console.log("id.count: ", id.count);
+      Swal.fire({
+      // title: "loading...",
+      text: `已達所有"${response.data.productName}"的庫存`,
+      // icon: "success",
+      showCancelButton: false,
+      showConfirmButton: true,
+      // timer: 500
+      
+    })
+
+  }
+      })
+      
       }
-    );
-    }
+    // );
+    // }
                           
                           
     function decreaseQuanty(id) {
       // if(id.count>0){
         inCart.count=id.count--;
-        
-    
+      // }
+
+      totalAmount.value=totalAmount.value-(id.price*id.discount)
         let obj = {
         productId: id.productId,
         memberNo: memberNo
       }
   
       axiosapi.post("/cart/minusOne", obj).then(function(response){
-      inCart.value = response.data.list;
+      // inCart.value = response.data.list;
       console.log("response: ",response);
-      // listItems();
-      let memberNo=sessionStorage.getItem("memberNo");
-      let obj1 = {
-        memberNo: memberNo
-      }
-      axiosapi.post("/cart/list", obj1).then(function(response){
-        console.log("response: ", response);
-        let xx=0
-        totalAmount.value=0;
-        for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-          totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
-          listItems();
-        }
+      // // listItems();
+      // let memberNo=sessionStorage.getItem("memberNo");
+      // let obj1 = {
+      //   memberNo: memberNo
+      // }
+      // axiosapi.post("/cart/list", obj1).then(function(response){
+      //   console.log("response: ", response);
+      //   let xx=0
+      //   totalAmount.value=0;
+      //   for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+      //     totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+      //     listItems();
+        // }
       }
       );
-      });
+      // });
       }
-    // }
   
     function deleteThisItem(id){
       Swal.fire({
@@ -184,6 +218,7 @@
             text: "Your file has been deleted.",
             icon: "success"
           });
+          listItems();
           })
         }
       });

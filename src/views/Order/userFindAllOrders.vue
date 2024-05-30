@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             <tr v-for="(anOrder, index) in orders" :key="index">
-                <th scope="row">{{ index + 1 }}</th>
+                <td scope="row">{{ index + 1 }}</td>
                 <td>{{ anOrder.orderNo }}</td>
                 <td>{{ anOrder.memberNo }}</td>
                 <td>$ {{ anOrder.totalPay }}</td>
@@ -28,6 +28,7 @@
                 <td>{{ anOrder.status }}</td>
                 <button type="button" class="btn btn-outline-secondary"
                     @click="seeOrderDetail(anOrder.orderNo)">查看詳細內容</button>
+                
             </tr>
         </tbody>
     </table>
@@ -37,6 +38,9 @@
 </template>
 
 <script setup>
+
+
+// console.log("window.location.href :",window.location.href )
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import axiosapi from '@/plugins/axios.js';
@@ -51,6 +55,7 @@ const start = ref(0)
 const rows = ref(10)
 const member = ref(sessionStorage.getItem("memberNo"))
 const orderSearch = ref('')
+
 function seeOrderDetail(orderNo) {
 
     router.push({ path: "/order/OrderDetail", query: { orderNumber: orderNo } })//跳頁 將orderNo帶到下一頁
@@ -69,28 +74,29 @@ function doSearch() {
         "num": orderSearch.value
     }
     axiosapi.post("/orders/findBymemberNo", data).then(function (response) {
-        console.log(orderSearch.value)
-        orders.value = []
-        // console.log(response)   
+        if(response.data.result==true){
+            console.log(orderSearch.value)
+        orders.value = [] 
         console.log(response.data.count)
-        // console.log(orderSearch.value)  
-        // console.log(rows.value)
         pages.value = Math.ceil(response.data.count / rows.value)
-        // console.log(pages.value)
         for (let i = 0; i < response.data.memberOrders.length; i++) {
             orders.value.push(response.data.memberOrders[i]);
             orders.value[i].lastModifiedDate = moment(orders.value[i].lastModifiedDate).format('YYYY-MM-DD HH:mm:ss')
         }
-
-
-    }).catch(function (error) {
-        console.log("error", error);
-        Swal.fire({
+        }else{
+            Swal.fire({
             text: '查無資料：',
             icon: 'error',
             allowOutsideClick: false,
             confirmButtonText: '確認',
         });
+        }
+    
+
+
+    }).catch(function (error) {
+        console.log("error", error);
+        
     });
 }
 

@@ -1,6 +1,6 @@
 <template>
 
-    <form class="row g-3">
+    <form class="row g-3 " style="margin-top: 2%;">
 
         <label for="outputMember" class="form-label">
             <h2>購物車商品明細</h2>
@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 <tr v-for="(aCart, index) in cart" :key="index">
-                    <th scope="row">{{ index + 1 }}</th>
+                    <td scope="row">{{ index + 1 }}</td>
                     <td>{{ aCart.productName }}</td>
                     <td>{{ aCart.unitPrice }}</td>
                     <td>{{ aCart.discount }}</td>
@@ -48,28 +48,28 @@
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row">會員姓名:</th>
+                    <td scope="row">會員姓名:</td>
                     <td>{{ MemberName }}</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row">Email:</th>
+                    <td scope="row">Email:</td>
                     <td>{{ MemberEmail }}</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row">會員電話:</th>
+                    <td scope="row">會員電話:</td>
                     <td>{{ MemberPhone }}</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <th scope="row">會員地址:</th>
-                    <td>{{ MemberAddress }}</td>
-                    <td></td>
-                    <td></td>
+                    <th>{{ MemberAddress }}</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </tbody>
         </table>
@@ -191,6 +191,7 @@
                 <option value="" selected>請選擇</option>
                 <option value="現金">現金(僅限超商取貨)</option>
                 <option value="信用卡">信用卡</option>
+                <option value="LinePay">LinePay</option>
             </select>
             <div class="invalid-feedback">Example invalid select feedback</div>
         </div>
@@ -289,6 +290,9 @@ const cityData = ref([])
 const areaData = ref([])
 const isShowInsertRecipient = ref(true)//是否顯示加入常用收件人Button
 const isRecipientImfoChecked = ref(false)
+const memberNo = ref(sessionStorage.getItem("memberNo"))
+const url = new URL(window.location.href);
+const host = ref(url.origin);
 onMounted(function () {
     getCart()
 })
@@ -309,25 +313,25 @@ function changeCity() {
     }
 }
 
-function selectPayment() {
-    if (payment.value == '信用卡') {
-        isPayByCredit.value = true
-    } else {
-        if (delivertype.value == "宅配") {
-            Swal.fire({
-                text: '宅配僅供信用卡付款',
-                icon: 'error',
-                allowOutsideClick: false,
-                confirmButtonText: '確認',
-            });
-            payment.value = "信用卡"
-            isPayByCredit.value = true
-        } else {
-            isPayByCredit.value = false
+function selectPayment(){
+        if(payment.value=='信用卡'){
+            isPayByCredit.value=true
+        }else{
+            if(payment.value=='現金' && delivertype.value=='宅配'){
+                Swal.fire({
+                    text: '宅配不可現金付款',
+                    icon: 'error',
+                    allowOutsideClick: false,
+                    confirmButtonText: '確認',
+                });
+                payment.value="信用卡"
+                isPayByCredit.value=true
+            }else{
+                isPayByCredit.value=false
+            }
+            
         }
-
     }
-}
 function checkBankNo() {
 
     if (bankNo.value == "") {
@@ -354,7 +358,7 @@ function checkCreditNo() { //信用卡驗證
     }
 
     if (resultNum !== creditNoStr[15] * 1) {
-        console.log("INVALID");
+        
         isCreditNoCorrect.value = true;
     } else {
         if (creditNoStr[0] === "5") {
@@ -440,7 +444,7 @@ function insertRecipient() {
         console.log((recipientName.value != "") && (recipientPhone.value != ""))
         member.value.recipient = recipientName.value
         member.value.recipientPhone = recipientPhone.value
-        axiosapi.put(`/members/${member.value.memberNo}`, member.value).then(function (response) {
+        axiosapi.put(`/members/${memberNo.value}`, member.value).then(function (response) {
             Swal.fire({
                 text: "新增成功",
                 icon: 'success',
@@ -470,7 +474,7 @@ function insertRecipient() {
 
 //取得購物車內容
 function getCart() {
-    axiosapi.get("/orders/findCartByMemberNo/1").then(function (response) {//預設會員1號
+    axiosapi.get(`/orders/findCartByMemberNo/${memberNo.value}`).then(function (response) {//預設會員1號
         member.value = response.data.member
         console.log(member.value.name)
         MemberName.value = response.data.name;
@@ -561,30 +565,72 @@ function ckeckOut() {//結帳
 
         } else {
 
-            axiosapi.post("/orders/insert/1", data).then(function (response) {//預設會員1號
-                Swal.fire({
-                    text: "下單成功",
-                    icon: 'success',
-                    allowOutsideClick: false,
-                    confirmButtonText: '確認',
-                });
-                console.log(response)
-                orderNo.value = response.data.orderNo;
-                console.log(orderNo.value)
-                route.push({ path: "/order/OrderDetail", query: { orderNumber: orderNo.value } })//跳頁 將orderNo帶到下一頁
-            }).catch(function (error) {
-                console.log("error", error);
-                Swal.fire({
-                    text: '失敗：' + error.message,
-                    icon: 'error',
-                    allowOutsideClick: false,
-                    confirmButtonText: '確認',
-                });
+            axiosapi.post(`/orders/insert/${memberNo.value}`,data).then(function(response){//預設會員1號
+                    Swal.fire({
+                                    text: "下單成功",
+                                    icon: 'success',
+                                    allowOutsideClick: false,
+                                    confirmButtonText: '確認',
+                            });
+                    console.log(response)
+                    orderNo.value=response.data.orderNo;
+                    if(payment.value=='LinePay'){
+                                        let linePayData={
+                                            "productName": "CoChordNut唱片行",
+                                            "amount": total.value,
+                                            "currency": "TWD",
+                                            "orderId": orderNo.value ,
+                                            "confirmUrl": `${host.value}/order/paymentSuccess?orderNumber=${orderNo.value}&amount=${total.value}`
+                                        }
 
-            });
+                                        axiosapi.post("/makePayment",linePayData).then(function(paymentResponse){
+                                    
+                                            if(paymentResponse.data.returnCode=='0000'){
+                                                let paymentUrl = paymentResponse.data.info.paymentUrl.web;
+                                                window.location.href = paymentUrl;
+                                            }else{
+                                                console.log('XXXXXXXXXXXXXXX')
+                                            }
+                                            
+
+                                                console.log(response)
+                                        }).catch(function (error) {
+                                            console.log(error)
+
+                                        });  
+
+                    }else{
+                        //非Linepay
+                        route.push({path: "/order/OrderDetail", query:{orderNumber:orderNo.value}})//跳頁 將orderNo帶到下一頁
+
+                    }
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+                
+                }).catch(function (error) {
+                        console.log("error", error);
+                        Swal.fire({
+                            text: '失敗：'+error.message,
+                            icon: 'error',
+                            allowOutsideClick: false,
+                            confirmButtonText: '確認',
+                        });
+                
+                });            
+            }
         }
     }
-}
 
 
 </script>
