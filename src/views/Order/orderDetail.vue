@@ -267,7 +267,7 @@ const newCreateDate=ref('')
 const newPreparationDate=ref('')
 const newDispatchDate=ref('')
 const newCompleteDate=ref('')
-
+const isCustomerCaseExist=ref(false)
 const order = ref(null)//丟給修改的order
 
 onMounted(function(){
@@ -277,8 +277,16 @@ id.value=route.query.orderNumber
 })
 
 //OrderNo丟給CustomerCase
-function contactService(){        
-        router.push({path:"/Customer/CustomerAnswerByOrderId",query:{"orderNo":id.value }})
+function contactService(){    
+        console.log("isCustomerCaseExist",isCustomerCaseExist.value)
+        if(isCustomerCaseExist.value==true){
+                console.log("TRUETRUETRUE")
+                router.push({path:"/Customer/CustomerCaseByMemberId"})
+        }else{
+                console.log("FALSSEFDGHJ")
+                router.push({path:"/Customer/CustomerAnswerByOrderId",query:{"orderNo":id.value }})
+        }    
+        
 
 }
 function doModify(){
@@ -363,6 +371,8 @@ function  findOrderAndOrderDetail(){
         axiosapi.get(`/orders/findByOrderNo/${id.value}`).then(function(response){
         console.log("dofind")
         console.log(response.data)
+        isCustomerCaseExist.value=response.data.isCustomerCaseExist;
+        console.log("isCustomerCaseExist",isCustomerCaseExist.value)
         order.value=response.data.order
         for(let i =0 ;i<response.data.orderDetailDto.length;i++){//讀取後端傳入OrderDetailDto
                 OrderDetailDto.value.push(response.data.orderDetailDto[i])//放入od陣列
