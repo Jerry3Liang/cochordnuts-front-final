@@ -194,7 +194,7 @@
         </tr>
         <tr>
                 <th scope="row">訂單編號</th>
-                <th>{{order.orderNo}}</th>
+                <th>{{id}}</th>
                 <th></th>
                 <th></th>
         </tr>
@@ -231,7 +231,7 @@ const route=useRoute();
 const router=useRouter();
 
 
-const id= ref(route.query.orderNumber)
+const id= ref(0)
 
 
 
@@ -271,10 +271,12 @@ const newCompleteDate=ref('')
 const order = ref(null)//丟給修改的order
 
 onMounted(function(){
+id.value=route.query.orderNumber
+
         findOrderAndOrderDetail()
 })
 
-//Order.value丟給CustomerCase
+//OrderNo丟給CustomerCase
 function contactService(){        
         router.push({path:"/Customer/CustomerAnswerByOrderId",query:{"orderNo":id.value }})
 
@@ -367,19 +369,19 @@ function  findOrderAndOrderDetail(){
         }
         if(response.data.order.createDate!=null){
                         createDate.value=new Date(response.data.order.createDate).toISOString();//轉換為Date物件 
-                        newCreateDate.value=moment(createDate.value).format('YYYY-MM-DD');//轉換格式顯示網頁
+                        newCreateDate.value=moment(createDate.value).format('YYYY-MM-DD HH:mm:ss');//轉換格式顯示網頁
                 }
                 if(response.data.order.preparationDate!=null){
                         preparationDate.value=new Date(response.data.order.preparationDate).toISOString();//轉換為Date物件
-                        newPreparationDate.value=moment(preparationDate.value).format('YYYY-MM-DD')//轉換格式顯示網頁
+                        newPreparationDate.value=moment(preparationDate.value).format('YYYY-MM-DD HH:mm:ss')//轉換格式顯示網頁
                 }
                 if(response.data.order.dispatchDate!=null){
                         dispatchDate.value=new Date(response.data.order.dispatchDate).toISOString();//轉換為Date物件
-                        newDispatchDate.value=moment(dispatchDate.value).format('YYYY-MM-DD')//轉換格式顯示網頁
+                        newDispatchDate.value=moment(dispatchDate.value).format('YYYY-MM-DD HH:mm:ss')//轉換格式顯示網頁
                 }
                 if(response.data.order.completeDate!=null){
                         completeDate.value=new Date(response.data.order.completeDate).toISOString();//轉換為Date物件
-                        newCompleteDate.value=moment(completeDate.value).format('YYYY-MM-DD') //轉換格式顯示網頁
+                        newCompleteDate.value=moment(completeDate.value).format('YYYY-MM-DD HH:mm:ss') //轉換格式顯示網頁
                 }
                 originAdress.value=response.data.order.address
                 receiptNo.value=response.data.order.receiptNo
