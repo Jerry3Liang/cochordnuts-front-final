@@ -15,7 +15,7 @@
           <div class="col text-start"> <RouterLink class="btn btn-outline-warning btn-sm ml-2 end" type="button" to="/">回商品頁面</RouterLink></div>
           <div class="col text-end"  >總金額: {{totalAmount}}</div>
           <!-- <CartItem></CartItem> -->
-          <div class="rounded col text-end"><RouterLink class="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button" to="/order/insert">確認購買</RouterLink></div> 
+          <div class="rounded col text-end"><button @click="goInertOrder" type="button">確認購買</button></div> 
         </div>
       </div>
     </div>
@@ -31,7 +31,9 @@
   import CartItem from './CartItem.vue'
   import router from '@/router/router'
   import { ref, watch } from 'vue'
-  
+  import { useRouter } from 'vue-router'
+  const cartList=ref([])
+  const routerr = useRouter();
   const totalAmount = ref(null);
   const inCart = ref(null);
   const Toast = Swal.mixin({
@@ -58,7 +60,9 @@
       timer: 500
       
     })
-    
+    function goInertOrder(){
+      routerr.push({path:"/order/insert" , query:{cartList:JSON.stringify(cartList.value)}})
+    }
     function listItems(){
     let memberNo=sessionStorage.getItem("memberNo");
     if(memberNo=== null) {
@@ -91,6 +95,11 @@
         // console.log("response.data.list[0].count: ", response.data.list[0].count);
         // console.log("response: ", response.data.list[0]);
         console.log("response.data.list.length: ", response.data.list.length);
+        for(let i = 0 ; i < response.data.list.length ; i++){
+          cartList.value.push(response.data.list[i])
+        }
+        console.log(cartList.value[0])
+        // cartList.value=response.data.list
         
         totalAmount.value=0;
         let xx=0

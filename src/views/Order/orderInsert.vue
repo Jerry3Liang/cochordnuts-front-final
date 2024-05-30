@@ -18,13 +18,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(aCart, index) in cart" :key="index">
+                <tr v-for="(aCart, index) in cartList" :key="index">
                     <td scope="row">{{ index + 1 }}</td>
                     <td>{{ aCart.productName }}</td>
-                    <td>{{ aCart.unitPrice }}</td>
+                    <td>{{ aCart.price }}</td>
                     <td>{{ aCart.discount }}</td>
                     <td>{{ aCart.count }}</td>
-                    <td>{{ aCart.total }}</td>
+                    <td>{{ aCart.price*aCart.count*aCart.discount }}</td>
                 </tr>
             </tbody>
 
@@ -257,9 +257,10 @@
 import Swal from 'sweetalert2';
 import axiosapi from '@/plugins/axios.js';
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter,useRoute } from 'vue-router';
 import { data as taiwanData } from "@/taiwan_districts.js"
-
+const routee=useRoute()
+const cartList=ref(JSON.parse(routee.query.cartList))
 const route = useRouter();
 const delivertype = ref("宅配")
 const delivertypeCheck = ref(true)
@@ -477,21 +478,22 @@ function insertRecipient() {
 
 //取得購物車內容
 function getCart() {
+
     axiosapi.get(`/orders/findCartByMemberNo/${memberNo.value}`).then(function (response) {//預設會員1號
         member.value = response.data.member
-        console.log(member.value.name)
+        // console.log(response.data.member.name)
         MemberName.value = response.data.name;
         MemberEmail.value = response.data.email;
         MemberPhone.value = response.data.phone;
         MemberAddress.value = response.data.address;
-        totalCount.value = 0;
+        
         total.value = 0;
-        cart.value = []
-        for (let i = 0; i < response.data.cartList.length; i++) {
-            cart.value.push(response.data.cartList[i])
-            total.value += Number(response.data.cartList[i].total)
-            totalCount.value += response.data.cartList[i].count
+        console.log(cartList.value.length)
+        for(let i = 0 ; i <cartList.value.length ; i++){
+            console.log(cartList.value)
+            total.value+=cartList.value[i].count*cartList.value[i].price*cartList.value[i].discount
         }
+      
         total.value += 60
 
 
