@@ -70,6 +70,7 @@
         userName.value = sessionStorage.getItem("userName");
         
         if(memberId.value == null){
+            router.push({path: "/secure/login"});
             Swal.fire({
             title: "尚未登入",
             text: "請先登入會員",
