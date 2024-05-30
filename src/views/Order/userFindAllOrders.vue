@@ -57,7 +57,7 @@ const member = ref(sessionStorage.getItem("memberNo"))
 const orderSearch = ref('')
 
 function seeOrderDetail(orderNo) {
-
+console.log(orderNo)
     router.push({ path: "/order/OrderDetail", query: { orderNumber: orderNo } })//跳頁 將orderNo帶到下一頁
 
 }
