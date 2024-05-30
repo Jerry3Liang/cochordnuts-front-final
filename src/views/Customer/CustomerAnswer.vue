@@ -83,7 +83,7 @@ function callCreateMessage() {
   width: 1000px;
   box-sizing: border-box;
   margin: 30px;
-  float: left;
+  //float: left;
 }
 
 .card-header {

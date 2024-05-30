@@ -3,7 +3,7 @@
 
   <div class="card" v-for="msg in caseMessages" :key="msg.id" v-if="caseNo !== null">
     <div class="card-header">
-      <span>時間：{{msg.messageTime}}</span><span style="margin: 50px" v-show="msg.employeeName != null">{{msg.employeeName}}</span><span style="margin: 50px" v-show="msg.memberName != null">{{msg.memberName}}</span>
+      <span>時間：{{msg.messageTime}}</span><span style="margin: 50px" v-show="msg.employeeName != null">客服： {{msg.employeeName}}</span><span style="margin: 50px" v-show="msg.memberName != null">會員： {{msg.memberName}}</span>
     </div>
     <div class="card-body">
       <p class="card-text"><h3>{{msg.message}}</h3></p>
