@@ -49,7 +49,7 @@ function callCreateMessage() {
     "subject": subject.value,
     "status": 0,
     "memberNo": memberNo,
-    "orderNo": orderNo
+    "orderNo": orderNo.value
   }
 
   axiosApi.post("/rest/createCustomerCase", data)
@@ -90,7 +90,6 @@ function callCreateMessage() {
   width: 1000px;
   box-sizing: border-box;
   margin: 30px;
-  float: left;
 }
 
 .card-header {

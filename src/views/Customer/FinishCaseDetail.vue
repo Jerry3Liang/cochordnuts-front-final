@@ -84,9 +84,17 @@ function callFindSubjectByCaseNo(caseNo) {
 </script>
 
 <style scoped>
+h3 {
+  margin: 5px;
+}
+
 .card {
   width: 1000px;
   box-sizing: border-box;
   margin: 30px;
+}
+
+.card-header {
+  font-size: 30px;
 }
 </style>

@@ -189,7 +189,7 @@ function callUpdateMsgByCaseDetailNo(caseDetailNo) {
 
 <style scoped>
 h3 {
-  margin: 30px;
+  margin: 5px;
 }
 
 .card {
@@ -202,7 +202,4 @@ h3 {
   font-size: 30px;
 }
 
-.idMsg {
-  margin: 20px
-}
 </style>
