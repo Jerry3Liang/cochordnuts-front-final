@@ -3,7 +3,7 @@
         <div class="col-3" style="margin-bottom: 25px; margin-top: 25px">
             <RouterLink :to="{path:'/product/detail', query: { id: item.productNo }}">
                 <div class="card" style="width: 18rem;">
-                    <img :src="`${path}${item.productNo}`" class="card-img-top" :alt="`${path}${1}`" style="height: 18rem;">
+                    <img :src="`${path}${item.productNo}`" class="card-img-top" alt="無法載入" style="height: 18rem;">
                     <div class="card-body">
                         <p class="card-text">{{ item.productName }}</p>
                         <div v-show="item.discount == 1">
