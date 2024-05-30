@@ -50,11 +50,15 @@
 
         axiosapi.post(`/cart/add`,cartData).then(function(response){
                 console.log("response=", response.data);
-            
+                Swal.fire({
+                icon: "success",
+                title: "已加入購物車"
+            });
                 
             }).catch(function(error){
                 console.log("error=", error);
-    
+                
+        
             })
 
 

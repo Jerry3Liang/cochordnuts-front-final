@@ -242,7 +242,10 @@
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-primary" type="button">回購物車</button>
+            <RouterLink to="/cart">
+                <button class="btn btn-primary" type="button">回購物車</button>
+            </RouterLink>
+            
             <button class="btn btn-primary" type="button" @click="ckeckOut">結帳</button>
         </div>
 
@@ -576,7 +579,7 @@ function ckeckOut() {//結帳
                     orderNo.value=response.data.orderNo;
                     if(payment.value=='LinePay'){
                                         let linePayData={
-                                            "productName": "CoChordNut唱片行",
+                                            "productName": `CoChordNut唱片行 訂單編號：${orderNo.value}`,
                                             "amount": total.value,
                                             "currency": "TWD",
                                             "orderId": orderNo.value ,
@@ -604,20 +607,7 @@ function ckeckOut() {//結帳
                         route.push({path: "/order/OrderDetail", query:{orderNumber:orderNo.value}})//跳頁 將orderNo帶到下一頁
 
                     }
-                    
-
-
-
-
-
-
-
-
-
-
-
-
-                
+                                    
                 }).catch(function (error) {
                         console.log("error", error);
                         Swal.fire({

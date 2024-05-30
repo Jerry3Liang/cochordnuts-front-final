@@ -187,8 +187,14 @@
                 <td></td>
         </tr>
         <tr>
-                <th scope="row">發票號碼</th>
-                <th>{{receipt}}</th>
+                <td scope="row">發票號碼</td>
+                <td>{{receipt}}</td>
+                <td></td>
+                <td></td>
+        </tr>
+        <tr>
+                <th scope="row">訂單編號</th>
+                <th>{{order.orderNo}}</th>
                 <th></th>
                 <th></th>
         </tr>
@@ -344,15 +350,12 @@ function buyAgain(){//再買一次  orderDetail及memberNo帶到下一頁
                         if(response.data.result==true){
                                 router.push({path:"/cart"})
                         }
-                        
-
-                        
                 }).catch(function(error){
                         console.log("error=", error);
 
                 })
-
 }
+
 //取得Order&orderDetail       
 function  findOrderAndOrderDetail(){
         axiosapi.get(`/orders/findByOrderNo/${id.value}`).then(function(response){

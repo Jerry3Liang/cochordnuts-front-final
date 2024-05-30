@@ -63,13 +63,15 @@ function seeOrderDetail(orderNo) {
 }
 onMounted(function () {
     doChangePage();
+    console.log(member.value)
 
 })
 
 function doSearch() {
+    current.value=1
     let data = {
         "memberNo": member.value,
-        "start": start.value,
+        "start":0,
         "rows": rows.value,
         "num": orderSearch.value
     }
@@ -86,7 +88,7 @@ function doSearch() {
         }else{
             Swal.fire({
             text: '查無資料：',
-            icon: 'error',
+            icon: 'warning',
             allowOutsideClick: false,
             confirmButtonText: '確認',
         });
@@ -104,7 +106,7 @@ function doChangePage(page) {
     if (member.value == null || member.value == "") {
         Swal.fire({
             text: '請先登入會員',
-            icon: 'error',
+            icon: 'warning',
             allowOutsideClick: false,
             confirmButtonText: '確認',
         });
@@ -141,7 +143,7 @@ function doChangePage(page) {
             console.log("error", error);
             Swal.fire({
                 text: '無訂單紀錄',
-                icon: 'error',
+                icon: 'warning',
                 allowOutsideClick: false,
                 confirmButtonText: '確認',
             });
