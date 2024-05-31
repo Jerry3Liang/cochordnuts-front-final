@@ -69,7 +69,8 @@ function login() {
     axiosapi.defaults.headers.authorization = "";
     sessionStorage.removeItem("user");
     axiosapi.post("/memberLogin", data).then((response) => {
-        if (response.data.success) {
+        if (response.data.success && response.data.memberStatus==1) {
+            console.log(response.data);
             Swal.fire({
                 text: response.data.message,
                 icon: 'success',
@@ -90,7 +91,7 @@ function login() {
             });
         } else {
             Swal.fire({
-                text: response.data.message,
+                text: '請檢查帳號和密碼',
                 icon: 'error',
                 allowOutsideClick: false,
                 confirmButtonText: '確認',
