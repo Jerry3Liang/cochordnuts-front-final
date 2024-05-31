@@ -10,11 +10,10 @@
     <!-- </div> -->
     <!-- <Products></Products> -->
     <div style="margin: 5%; text-align: center;" v-if="showRecommend">
-        <h3>為你推薦</h3>
-        <hr>
+        
         <Recommend></Recommend>
     </div>
-    
+
     <div style="margin: 5%; text-align: center;">
         <h3>熱銷商品</h3>
         <hr>
