@@ -5,13 +5,13 @@
                 <div class="card" style="width: 18rem;">
                     <img :src="`${path}${item.productNo}`" class="card-img-top" alt="無法載入" style="height: 18rem;">
                     <div class="card-body">
-                        <p class="card-text">{{ item.productName }}</p>
-                        <div v-show="item.discount == 1">
-                            <span class="card-text">NT. {{ item.unitPrice }}</span>
+                        <p class="prodtext">{{ item.productName }}</p>
+                        <div v-show="item.discount == 1" style="text-align: left;">
+                            <span  class="prodtext" style="font-size: large;">NT. {{ item.unitPrice }}</span>
                         </div>
-                        <div v-show="item.discount != 1">
-                            <span class="card-text" style="text-decoration: line-through;">NT. {{ item.unitPrice }}</span>
-                            <span class="card-text" style="color: red; float: right;">NT. {{ Math.round(item.unitPrice * item.discount) }}</span>
+                        <div v-show="item.discount != 1" style="text-align: left;">
+                            <span class="prodtext" style="text-decoration: line-through;">NT. {{ item.unitPrice }}</span>
+                            <span class="prodtext" style="color: red; float: right; font-size: large;">NT. {{ Math.round(item.unitPrice * item.discount) }}</span>
                         </div>
                         
                     </div>
@@ -30,5 +30,9 @@
 </script>
     
 <style>
-    
+    .prodtext{
+        text-align: left;
+        font-size: medium;
+        /* text-decoration: none; */
+    }
 </style>

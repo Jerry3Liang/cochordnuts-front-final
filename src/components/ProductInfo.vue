@@ -1,5 +1,5 @@
 <template>
-    <h3>Info</h3>
+    <!-- <h3>Info</h3> -->
         <figure class="card" style="width: 25rem; margin-right: 5%; float: left;">
             <img :src="`${path}${productObj.productNo}`" class="img-thumbnail" alt="無法載入">
         </figure>
@@ -51,9 +51,9 @@
     import axios from '@/plugins/axios';
     import ShoppingGuide from '@/components/ShoppingGuide.vue';
     const props = defineProps(["productObj"]);
-    // console.log(props.productObj);
-    // const pro = ref(props.productObj.productNo);
+    import { useRouter } from 'vue-router';
 
+    const router= useRouter();
     const count = ref(1);
     const showMinusBtn = ref(false);
     const memberId = ref(null);
@@ -135,27 +135,47 @@
 
         memberId.value = sessionStorage.getItem("memberNo");
 
-        let data = {
-            "memberId" : memberId.value,
-            "productNo" : productNo
+        if(memberId.value == null){
+            Swal.fire({
+            title: "尚未登入",
+            text: "請先登入會員",
+            icon: "warning",
+            showConfirmButton: true,
+            confirmButtonText: "前往登入",
+            showCancelButton: true,
+            cancelButtonText: "返回商品頁",
+            }).then(function(result){
+                if(result.isConfirmed){
+                    router.push({path: "/secure/login"});
+                } 
+
+            });
+        } else {
+            
+            let data = {
+                "memberId" : memberId.value,
+                "productNo" : productNo
+            }
+            console.log("data=", data);
+    
+            axios.post(`/wishlist/add`, data).then(function(response){
+                console.log("response=", response);
+                Toast.fire({
+                    icon: "success",
+                    title: "已加入願望清單"
+                });
+            
+            }).catch(function(error){
+                console.log("error=", error);
+                Toast.fire({
+                    icon: "warning",
+                    title: "此商品已在您的願望清單"
+                });
+            
+            })
+            
         }
-        console.log("data=", data);
-
-        axios.post(`/wishlist/add`, data).then(function(response){
-            console.log("response=", response);
-            Toast.fire({
-                icon: "success",
-                title: "已加入願望清單"
-            });
-
-        }).catch(function(error){
-            console.log("error=", error);
-            Toast.fire({
-                icon: "warning",
-                title: "此商品已在您的願望清單"
-            });
-
-        })
+    
     }
 
     

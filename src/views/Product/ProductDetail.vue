@@ -1,6 +1,6 @@
 <template>
-    <h3>Detail</h3>
-    <div v-if="product">
+    <!-- <h3>Detail</h3> -->
+    <div v-if="product" style="margin-top: 5%">
         <ProductInfo :productObj="product"></ProductInfo>
     </div>
 

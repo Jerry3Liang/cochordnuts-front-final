@@ -9,7 +9,7 @@ import JpKrProduct from "./JpKrProduct.vue";
 import EnglishProduct from "./EnglishProduct.vue";
 import SearchProduct from "./CriteriaSearch.vue";
 import WishList from "./WishList.vue";
-// import Carousel from "@/components/Carousel.vue";
+import Recommend from "./Recommend.vue";
 
 
 export default [
@@ -23,5 +23,5 @@ export default [
     { name: "prodEN-link", path: "/product/en", component: EnglishProduct },
     { name: "prodSearch-link", path: "/product/search", component: SearchProduct },
     { name: "wishList-link", path: "/wishList", component: WishList },
-    // { name: "carousel-link", path: "/carousel", component: Carousel },
+    { name: "recommend-link", path: "/recommend", component: Recommend },
 ]
