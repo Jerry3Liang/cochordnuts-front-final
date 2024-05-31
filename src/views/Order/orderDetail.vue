@@ -181,6 +181,12 @@
                 <td>{{ creditCardNo }}</td>
         </tr>
         <tr>
+                <td scope="row">付款狀態</td>
+                <td>{{paymentStatus}}</td>
+                <td></td>
+                <td></td>
+        </tr>
+        <tr>
                 <td scope="row">發票方式</td>
                 <td>{{receiptType}}</td>
                 <td></td>
@@ -232,7 +238,7 @@ const router=useRouter();
 
 
 const id= ref(0)
-
+const paymentStatus=ref("")
 
 
 const homeOrConvinientStore = ref('')//判斷送貨方式
@@ -374,6 +380,7 @@ function  findOrderAndOrderDetail(){
         isCustomerCaseExist.value=response.data.isCustomerCaseExist;
         console.log("isCustomerCaseExist",isCustomerCaseExist.value)
         order.value=response.data.order
+        paymentStatus.value=response.data.order.paymentStatus
         for(let i =0 ;i<response.data.orderDetailDto.length;i++){//讀取後端傳入OrderDetailDto
                 OrderDetailDto.value.push(response.data.orderDetailDto[i])//放入od陣列
         }

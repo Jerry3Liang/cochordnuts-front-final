@@ -36,8 +36,8 @@ let confirmData={
     "amount": amount.value,
     "currency": "TWD"
 }
-console.log()
-axiosapi.post(`/makeConfirm/${transactionId.value}`,confirmData).then(function(response){
+
+axiosapi.post(`/makeConfirm/${transactionId.value}/${orderNumber.value}`,confirmData).then(function(response){
     if(response.data.returnCode=='0000'){
             isPay.value='付款成功(點擊查看訂單)'
             successP1.value=

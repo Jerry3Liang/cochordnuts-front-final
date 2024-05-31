@@ -89,10 +89,31 @@
         </div>
         <div class="col-12" v-show="delivertypeCheck">
             <label for="inputAddress2" class="form-label">請輸入地址</label>
-
+            <div class="form-check" v-show="delivertypeCheck">
+            <input class="form-check-input" type="checkbox" value="帶入收件人地址"
+                v-model="isMemberAddressImfoChecked" @change="takeRecipientAddress">
+            <label class="form-check-label" for="flexCheckChecked">
+                帶入收件人地址
+            </label>
+        </div>
             <input type="text" class="form-control" id="inputAddress2" placeholder="EX:台北市大安區信義路四段265巷12弄1號"
                 v-model="homedelivery">
         </div>
+
+    
+        <div class="col-12" v-show="delivertypeCheck">
+            <div class="d-grid gap-2 d-md-block">
+                <button class="btn btn-primary" type="button" @click="insertRecipient">加入常用收件人地址</button>
+            </div>
+        </div>
+    
+
+
+
+    
+
+
+
         <div class="col-md-4" v-show="!delivertypeCheck">
             <label for="inputState" class="form-label">縣市</label>
             <select id="inputState" class="form-select" v-model="convientStoreDelivery1" @change="changeCity">
@@ -236,6 +257,7 @@
             <label class="form-label">請輸入載具號碼</label>
             <input type="text" class="form-control" id="cloudInvoice" placeholder="">
         </div>
+        
         <div class="input-group">
             <span class="input-group-text">備註</span>
             <textarea class="form-control" aria-label="With textarea" v-model="note"></textarea>
@@ -259,6 +281,7 @@ import axiosapi from '@/plugins/axios.js';
 import { ref, onMounted } from 'vue';
 import { useRouter,useRoute } from 'vue-router';
 import { data as taiwanData } from "@/taiwan_districts.js"
+const isMemberAddressImfoChecked=ref(false)
 const routee=useRoute()
 const cartList=ref(JSON.parse(routee.query.cartList))
 const route = useRouter();
@@ -290,6 +313,7 @@ const MemberAddress=ref('')
 const MemberRecipient = ref('')//後端傳回的Member資料
 const MemberRecipientPhone = ref('')//後端傳回的Member資料
 const isMemberImfoChecked = ref(false)
+const MemberRecipientAddress=ref('')
 const orderNo = ref(0)
 
 const cityData = ref([])
@@ -319,7 +343,16 @@ function changeCity() {
         }
     }
 }
+function takeRecipientAddress(){
+    if(isMemberAddressImfoChecked.value==true){
+        
+        homedelivery.value=MemberRecipientAddress.value
+    }else{
+        isMemberAddressImfoChecked.value=false
+        homedelivery.value=""
+    }
 
+}
 function selectPayment(){
         if(payment.value=='信用卡'){
             isPayByCredit.value=true
@@ -448,14 +481,14 @@ console.log(MemberRecipientPhone.value)
 
 //insert常用收件人
 function insertRecipient() {
-    if (recipientName.value != "" && recipientPhone.value != "") {
+
         
         let memberData={
+            "recipientAddress":homedelivery.value,
             "recipient":recipientName.value,
             "recipientPhone":recipientPhone.value
         }
-        // member.value.recipient = recipientName.value
-        // member.value.recipientPhone = recipientPhone.value
+
         axiosapi.put(`/member/updateRecipient/${memberNo.value}`, memberData).then(function (response) {
             if(response.data.success==true){
                 Swal.fire({
@@ -482,14 +515,7 @@ function insertRecipient() {
                 confirmButtonText: '確認',
             });
         });
-    } else {
-        Swal.fire({
-            text: '請填入資料',
-            icon: 'error',
-            allowOutsideClick: false,
-            confirmButtonText: '確認',
-        });
-    }
+    
 
 }
 
@@ -502,11 +528,10 @@ console.log(memberNo.value)
         MemberEmail.value = response.data.email;
         MemberPhone.value = response.data.phone;
         MemberAddress.value = response.data.address;
-        
-            MemberRecipient.value= response.data.recipient;
-
-            MemberRecipientPhone.value= response.data.recipientPhone;
-        console.log(response.data.recipientPhone)
+        MemberRecipient.value= response.data.recipient;
+        MemberRecipientPhone.value= response.data.recipientPhone;
+        MemberRecipientAddress.value=response.data.recipientAddress;
+        console.log(response.data.recipientAddress)
         
         
     
@@ -519,7 +544,8 @@ console.log(memberNo.value)
         }
     
         total.value += 60
-
+        total.value=Math.ceil(total.value)
+console.log(total.value)
 
     }).catch(function (error) {
         console.log("error", error);
