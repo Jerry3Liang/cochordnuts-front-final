@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-if="products">
         <ProductCard v-for="product in products" :key="product.productNo" :item="product"></ProductCard>
     </div>
 </template>
