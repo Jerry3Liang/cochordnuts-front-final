@@ -1,6 +1,6 @@
 <template>
-
-    <form class="row g-3 " style="margin-top: 2%;">
+<div style="background-color: azure ; padding: 5%;">
+    <form class="row g-3 " style="margin-top: 2%;" >
 
         <label for="outputMember" class="form-label">
             <h2>購物車商品明細</h2>
@@ -272,7 +272,7 @@
         </div>
 
     </form>
-
+</div>
 </template>
 
 <script setup>
