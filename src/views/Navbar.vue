@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex;">
     <RouterLink to="/" class="dropdown-item" style="width: 15%;">
-      <img src="/logo.jpeg" style="width: 100%;">
+      <img src="/logo.png" style="width: 100%;">
     </RouterLink>
     <div style="width: 25%; margin-left: 20%; margin-top: 2%;">
       <Search @searchcons="dosearch"></Search>
