@@ -286,10 +286,12 @@ const member = ref(null)
 const MemberName = ref('')//後端傳回的Member資料
 const MemberEmail = ref('')//後端傳回的Member資料
 const MemberPhone = ref('')//後端傳回的Member資料
-const MemberAddress = ref('')//後端傳回的Member資料
+const MemberAddress=ref('')
+const MemberRecipient = ref('')//後端傳回的Member資料
+const MemberRecipientPhone = ref('')//後端傳回的Member資料
 const isMemberImfoChecked = ref(false)
 const orderNo = ref(0)
-const cart = ref([])
+
 const cityData = ref([])
 const areaData = ref([])
 const isShowInsertRecipient = ref(true)//是否顯示加入常用收件人Button
@@ -306,6 +308,7 @@ for (let i = 0; i < taiwanData.length; i++) {
 }
 //每當選擇縣市 就重新設定areaData
 function changeCity() {
+
     areaData.value = [];
     for (let i = 0; i < taiwanData.length; i++) {
         if (convientStoreDelivery1.value == taiwanData[i].name) {
@@ -427,11 +430,12 @@ function useMemberImformatuion() {//帶入會員資料
 }
 
 function useRecipientImformatuion() {//帶入常用收件人
-
+console.log(MemberRecipientPhone.value)
     if (isRecipientImfoChecked.value == true) {
+    
+        recipientName.value = MemberRecipient.value
+        recipientPhone.value =MemberRecipientPhone.value
         isMemberImfoChecked.value = false
-        recipientName.value = member.value.recipient
-        recipientPhone.value = member.value.recipientPhone
         isShowInsertRecipient.value = false
     } else {
         isShowInsertRecipient.value = true
@@ -445,16 +449,29 @@ function useRecipientImformatuion() {//帶入常用收件人
 //insert常用收件人
 function insertRecipient() {
     if (recipientName.value != "" && recipientPhone.value != "") {
-        console.log((recipientName.value != "") && (recipientPhone.value != ""))
-        member.value.recipient = recipientName.value
-        member.value.recipientPhone = recipientPhone.value
-        axiosapi.put(`/members/${memberNo.value}`, member.value).then(function (response) {
-            Swal.fire({
+        
+        let memberData={
+            "recipient":recipientName.value,
+            "recipientPhone":recipientPhone.value
+        }
+        // member.value.recipient = recipientName.value
+        // member.value.recipientPhone = recipientPhone.value
+        axiosapi.put(`/member/updateRecipient/${memberNo.value}`, memberData).then(function (response) {
+            if(response.data.success==true){
+                Swal.fire({
                 text: "新增成功",
                 icon: 'success',
                 allowOutsideClick: false,
                 confirmButtonText: '確認',
             });
+            }else{
+                Swal.fire({
+                text: "新增失敗",
+                icon: 'warning',
+                allowOutsideClick: false,
+                confirmButtonText: '確認',});
+            }
+            
             console.log(response)
         }).catch(function (error) {
             console.log("error", error);
@@ -478,22 +495,29 @@ function insertRecipient() {
 
 //取得購物車內容
 function getCart() {
-
+console.log(memberNo.value)
     axiosapi.get(`/orders/findCartByMemberNo/${memberNo.value}`).then(function (response) {//預設會員1號
-        member.value = response.data.member
-        // console.log(response.data.member.name)
+        // member.value=response.data.member
         MemberName.value = response.data.name;
         MemberEmail.value = response.data.email;
         MemberPhone.value = response.data.phone;
         MemberAddress.value = response.data.address;
         
+            MemberRecipient.value= response.data.recipient;
+
+            MemberRecipientPhone.value= response.data.recipientPhone;
+        console.log(response.data.recipientPhone)
+        
+        
+    
+        console.log(response.data)
         total.value = 0;
-        console.log(cartList.value.length)
+        
         for(let i = 0 ; i <cartList.value.length ; i++){
-            console.log(cartList.value)
+            
             total.value+=cartList.value[i].count*cartList.value[i].price*cartList.value[i].discount
         }
-      
+    
         total.value += 60
 
 
