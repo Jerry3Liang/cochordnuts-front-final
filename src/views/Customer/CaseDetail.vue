@@ -70,9 +70,9 @@ function callCreateMessage(){
     allowOutsideClick: false
   });
 
-  // if(customerCase.value.memberNo === ""){
-  //   customerCase.value.memberNo = null;
-  // }
+  if(customerCase.value.memberNo === ""){
+    customerCase.value.memberNo = null;
+  }
 
   console.log(mNO.value);
 
@@ -82,7 +82,7 @@ function callCreateMessage(){
     "memberNo": mNO.value
   }
 
-  axiosApi.post("/rest/Answer", data)
+  axiosApi.post("/rest/customerAnswer", data)
       .then(function(response) {
         console.log(response.data);
         console.log(response.data.memberNo);

@@ -89,10 +89,31 @@
         </div>
         <div class="col-12" v-show="delivertypeCheck">
             <label for="inputAddress2" class="form-label">請輸入地址</label>
-
+            <div class="form-check" v-show="delivertypeCheck">
+            <input class="form-check-input" type="checkbox" value="帶入收件人地址"
+                v-model="isMemberAddressImfoChecked" @change="takeRecipientAddress">
+            <label class="form-check-label" for="flexCheckChecked">
+                帶入收件人地址
+            </label>
+        </div>
             <input type="text" class="form-control" id="inputAddress2" placeholder="EX:台北市大安區信義路四段265巷12弄1號"
                 v-model="homedelivery">
         </div>
+
+    
+        <div class="col-12" v-show="delivertypeCheck">
+            <div class="d-grid gap-2 d-md-block">
+                <button class="btn btn-primary" type="button" @click="insertRecipient">加入常用收件人地址</button>
+            </div>
+        </div>
+    
+
+
+
+    
+
+
+
         <div class="col-md-4" v-show="!delivertypeCheck">
             <label for="inputState" class="form-label">縣市</label>
             <select id="inputState" class="form-select" v-model="convientStoreDelivery1" @change="changeCity">
@@ -236,6 +257,7 @@
             <label class="form-label">請輸入載具號碼</label>
             <input type="text" class="form-control" id="cloudInvoice" placeholder="">
         </div>
+        
         <div class="input-group">
             <span class="input-group-text">備註</span>
             <textarea class="form-control" aria-label="With textarea" v-model="note"></textarea>
@@ -259,6 +281,7 @@ import axiosapi from '@/plugins/axios.js';
 import { ref, onMounted } from 'vue';
 import { useRouter,useRoute } from 'vue-router';
 import { data as taiwanData } from "@/taiwan_districts.js"
+const isMemberAddressImfoChecked=ref(false)
 const routee=useRoute()
 const cartList=ref(JSON.parse(routee.query.cartList))
 const route = useRouter();
@@ -286,10 +309,13 @@ const member = ref(null)
 const MemberName = ref('')//後端傳回的Member資料
 const MemberEmail = ref('')//後端傳回的Member資料
 const MemberPhone = ref('')//後端傳回的Member資料
-const MemberAddress = ref('')//後端傳回的Member資料
+const MemberAddress=ref('')
+const MemberRecipient = ref('')//後端傳回的Member資料
+const MemberRecipientPhone = ref('')//後端傳回的Member資料
 const isMemberImfoChecked = ref(false)
+const MemberRecipientAddress=ref('')
 const orderNo = ref(0)
-const cart = ref([])
+
 const cityData = ref([])
 const areaData = ref([])
 const isShowInsertRecipient = ref(true)//是否顯示加入常用收件人Button
@@ -306,6 +332,7 @@ for (let i = 0; i < taiwanData.length; i++) {
 }
 //每當選擇縣市 就重新設定areaData
 function changeCity() {
+
     areaData.value = [];
     for (let i = 0; i < taiwanData.length; i++) {
         if (convientStoreDelivery1.value == taiwanData[i].name) {
@@ -316,7 +343,16 @@ function changeCity() {
         }
     }
 }
+function takeRecipientAddress(){
+    if(isMemberAddressImfoChecked.value==true){
+        
+        homedelivery.value=MemberRecipientAddress.value
+    }else{
+        isMemberAddressImfoChecked.value=false
+        homedelivery.value=""
+    }
 
+}
 function selectPayment(){
         if(payment.value=='信用卡'){
             isPayByCredit.value=true
@@ -427,11 +463,12 @@ function useMemberImformatuion() {//帶入會員資料
 }
 
 function useRecipientImformatuion() {//帶入常用收件人
-
+console.log(MemberRecipientPhone.value)
     if (isRecipientImfoChecked.value == true) {
+    
+        recipientName.value = MemberRecipient.value
+        recipientPhone.value =MemberRecipientPhone.value
         isMemberImfoChecked.value = false
-        recipientName.value = member.value.recipient
-        recipientPhone.value = member.value.recipientPhone
         isShowInsertRecipient.value = false
     } else {
         isShowInsertRecipient.value = true
@@ -444,17 +481,30 @@ function useRecipientImformatuion() {//帶入常用收件人
 
 //insert常用收件人
 function insertRecipient() {
-    if (recipientName.value != "" && recipientPhone.value != "") {
-        console.log((recipientName.value != "") && (recipientPhone.value != ""))
-        member.value.recipient = recipientName.value
-        member.value.recipientPhone = recipientPhone.value
-        axiosapi.put(`/members/${memberNo.value}`, member.value).then(function (response) {
-            Swal.fire({
+
+        
+        let memberData={
+            "recipientAddress":homedelivery.value,
+            "recipient":recipientName.value,
+            "recipientPhone":recipientPhone.value
+        }
+
+        axiosapi.put(`/member/updateRecipient/${memberNo.value}`, memberData).then(function (response) {
+            if(response.data.success==true){
+                Swal.fire({
                 text: "新增成功",
                 icon: 'success',
                 allowOutsideClick: false,
                 confirmButtonText: '確認',
             });
+            }else{
+                Swal.fire({
+                text: "新增失敗",
+                icon: 'warning',
+                allowOutsideClick: false,
+                confirmButtonText: '確認',});
+            }
+            
             console.log(response)
         }).catch(function (error) {
             console.log("error", error);
@@ -465,37 +515,37 @@ function insertRecipient() {
                 confirmButtonText: '確認',
             });
         });
-    } else {
-        Swal.fire({
-            text: '請填入資料',
-            icon: 'error',
-            allowOutsideClick: false,
-            confirmButtonText: '確認',
-        });
-    }
+    
 
 }
 
 //取得購物車內容
 function getCart() {
-
+console.log(memberNo.value)
     axiosapi.get(`/orders/findCartByMemberNo/${memberNo.value}`).then(function (response) {//預設會員1號
-        member.value = response.data.member
-        // console.log(response.data.member.name)
+        // member.value=response.data.member
         MemberName.value = response.data.name;
         MemberEmail.value = response.data.email;
         MemberPhone.value = response.data.phone;
         MemberAddress.value = response.data.address;
+        MemberRecipient.value= response.data.recipient;
+        MemberRecipientPhone.value= response.data.recipientPhone;
+        MemberRecipientAddress.value=response.data.recipientAddress;
+        console.log(response.data.recipientAddress)
         
+        
+    
+        console.log(response.data)
         total.value = 0;
-        console.log(cartList.value.length)
+        
         for(let i = 0 ; i <cartList.value.length ; i++){
-            console.log(cartList.value)
+            
             total.value+=cartList.value[i].count*cartList.value[i].price*cartList.value[i].discount
         }
-      
+    
         total.value += 60
-
+        total.value=Math.ceil(total.value)
+console.log(total.value)
 
     }).catch(function (error) {
         console.log("error", error);
