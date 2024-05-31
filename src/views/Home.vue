@@ -1,13 +1,13 @@
 <template>
     <!-- <h3>Home</h3> -->
-    <div class="col-6" style="margin: auto; margin-top: 5%">
-        <div
-            style="margin: 0; background-color: #E0E0E0; width: 30em; height: 22em; margin: auto; align-content: center;">
-            <div class="col-8" style="margin: auto;">
+    <!-- <div class="col-6" style="margin: auto; margin-top: 5%"> -->
+        <!-- <div
+            style="margin: 0; background-color: #E0E0E0; width: 30em; height: 22em; margin: auto; align-content: center;"> -->
+            <div  style="margin: auto;">
                 <Carousel></Carousel>
             </div>
-        </div>
-    </div>
+        <!-- </div> -->
+    <!-- </div> -->
     <!-- <Products></Products> -->
     <div style="margin: 5%; text-align: center;">
         <h3>熱銷商品</h3>
