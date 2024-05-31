@@ -68,7 +68,7 @@ function login() {
 
     axiosapi.defaults.headers.authorization = "";
     sessionStorage.removeItem("user");
-    axiosapi.post("/login", data).then((response) => {
+    axiosapi.post("/memberLogin", data).then((response) => {
         if (response.data.success) {
             Swal.fire({
                 text: response.data.message,
