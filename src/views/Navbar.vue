@@ -107,7 +107,7 @@
     </div>
 
     <div v-if="isLoggedIn">
-      <div>{{ user.name }}</div>
+      <div>{{ user.name }}，歡迎回來 ! </div>
       <div>上次登入時間:{{ user.loginTime }}</div>
     </div>
     
