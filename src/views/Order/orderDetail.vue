@@ -1,5 +1,5 @@
 <template>
-
+<div style="background-color: azure ; padding: 5%;">
 <label for="outputMember" class="form-label"><h2>運送狀態</h2></label> <br/>
         <div class="row text-center justify-content-center mb-5">
                 
@@ -221,7 +221,7 @@
         <!-- <button type="button" class="btn btn-primary button-spacing">退貨</button>狀態改為退貨確認中 -->
         <button type="button" class="btn btn-primary button-spacing" @click="buyAgain">再買一次</button><!-- insert OrderDetail至購物車 -->
         <button type="button" class="btn btn-primary button-spacing" @click="doModify" v-show="isModify">修改</button>
-
+</div>
 </template>
 
 <script setup >
