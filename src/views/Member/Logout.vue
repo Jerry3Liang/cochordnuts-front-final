@@ -31,7 +31,7 @@ Swal.fire({
             memberNo: memberNo
         };
         console.log('last=' + lastLoginTime);
-        axiosapi.post("/logout", jsonData)
+        axiosapi.post("/memberLogout", jsonData)
             .then(function (response) {
                 if (response.data.success) {
                     Swal.fire({
