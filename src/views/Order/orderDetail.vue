@@ -66,11 +66,11 @@
 
 </table>
 
-<label for="outputMember" class="form-label"><h2>運送方式</h2></label> 
+
 <table class="table">
         <thead>     
-        <tr>
-                <th scope="col"></th>
+        <tr >
+                <th scope="col"><h2>運送方式</h2></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -95,12 +95,12 @@
 
 
 <!-- 收件人資料 -->
-<label for="outputMember" class="form-label"><h2>收件人資料</h2></label> 
+
 
 <table class="table">
         <thead>     
         <tr>
-                <th scope="col"></th>
+                <th scope="col"><h2>收件人資料</h2></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -124,12 +124,12 @@
 
 
 <!-- 訂單金額 -->
-<label for="outputOrder" class="form-label"><h2>訂單金額</h2></label> 
+
 
         <table class="table">
         <thead>
                 <tr>
-                <th scope="col"></th>
+                <th scope="col"><h2>訂單金額</h2></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -163,11 +163,11 @@
 
 
 
-<label for="outputMember" class="form-label"><h2>付款方式</h2></label> 
+
 <table class="table">
         <thead>     
         <tr>
-                <th scope="col"></th>
+                <th scope="col"><h2 >付款方式</h2></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -218,7 +218,6 @@
 
         <button type="button" class="btn btn-primary button-spacing" @click="cancelOrder">取消訂單</button><!-- 狀態改為已取消 -->
         <button type="button" class="btn btn-primary button-spacing" @click="contactService">聯絡客服</button>
-        <!-- <button type="button" class="btn btn-primary button-spacing">退貨</button>狀態改為退貨確認中 -->
         <button type="button" class="btn btn-primary button-spacing" @click="buyAgain">再買一次</button><!-- insert OrderDetail至購物車 -->
         <button type="button" class="btn btn-primary button-spacing" @click="doModify" v-show="isModify">修改</button>
 </div>
@@ -303,27 +302,7 @@ function doModify(){
 // moment(createDate.value).format('YYYY-MM-DD')
 function cancelOrder(){
         if(status.value=='訂單成立'|| status.value=='備貨中'){
-                let data ={
-                "orderNo":id.value,
-                "creditCardNo":creditCardNo.value,
-                "receiptType":receiptType.value,
-                "payment":payment.value,
-                "totalCount":totalCount.value,
-                "totalPay":total.value,
-                "deliverType":deliveryType.value,
-                "recipientAddress":address.value,
-                "recipient":recipientName.value,
-                "recipientPhone":recipientPhone.value,
-                "note":note.value,
-                "preparationDate":preparationDate.value,
-                "createDate":createDate.value,
-                "address":originAdress.value,
-                "freight":freight.value,
-                "receiptNo":receiptNo.value,
-                "dispatchDate":dispatchDate.value,
-                "completeDate":completeDate.value,
-                "status":'訂單取消'
-        }
+                
                 Swal.fire({
                 title: "確認取消?",
                 icon: "warning",
@@ -333,12 +312,39 @@ function cancelOrder(){
                 confirmButtonText: "確認"
                 }).then((result) => {
                 if (result.isConfirmed) {
+                        if(paymentStatus.value=='已付款'){
+                                
+                                paymentStatus.value='待退款'
+                                console.log(paymentStatus.value)
+                        }
+                        let data ={
+                                "orderNo":id.value,
+                                "creditCardNo":creditCardNo.value,
+                                "receiptType":receiptType.value,
+                                "payment":payment.value,
+                                "totalCount":totalCount.value,
+                                "totalPay":total.value,
+                                "deliverType":deliveryType.value,
+                                "recipientAddress":address.value,
+                                "recipient":recipientName.value,
+                                "recipientPhone":recipientPhone.value,
+                                "note":note.value,
+                                "preparationDate":preparationDate.value,
+                                "createDate":createDate.value,
+                                "address":originAdress.value,
+                                "freight":freight.value,
+                                "receiptNo":receiptNo.value,
+                                "dispatchDate":dispatchDate.value,
+                                "completeDate":completeDate.value,
+                                "status":'訂單取消',
+                                "paymentStatus":paymentStatus.value
+                        }
                         axiosapi.put(`/orders/update/${memberNo.value}`,data).then(function(response){
                         Swal.fire({
                                 title: "取消成功!",
                                 icon: "success"
                         });
-                        router.push({path: "/"})
+                        router.push({path: "/order/userFindAllOrders"})
                         }).catch(function (error) {
                         Swal.fire({
                                 text: '失敗：'+error.message,
@@ -360,7 +366,7 @@ function cancelOrder(){
         }
 
 function buyAgain(){//再買一次  orderDetail及memberNo帶到下一頁    
-        console.log(order.value)
+        console.log(OrderDetailDto.value)
                 axiosapi.post(`/cart/buyAgain/${order.value.orderNo}`).then(function(response){
                         console.log("response=", response.data);
                         if(response.data.result==true){

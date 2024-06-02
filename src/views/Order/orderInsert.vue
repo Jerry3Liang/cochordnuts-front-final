@@ -101,7 +101,7 @@
         </div>
 
     
-        <div class="col-12" v-show="delivertypeCheck">
+        <div class="col-12" v-show="isUpadteRecipient">
             <div class="d-grid gap-2 d-md-block">
                 <button class="btn btn-primary" type="button" @click="insertRecipient">加入常用收件人地址</button>
             </div>
@@ -281,6 +281,7 @@ import axiosapi from '@/plugins/axios.js';
 import { ref, onMounted } from 'vue';
 import { useRouter,useRoute } from 'vue-router';
 import { data as taiwanData } from "@/taiwan_districts.js"
+const isUpadteRecipient=ref(true)
 const isMemberAddressImfoChecked=ref(false)
 const routee=useRoute()
 const cartList=ref(JSON.parse(routee.query.cartList))
@@ -345,9 +346,22 @@ function changeCity() {
 }
 function takeRecipientAddress(){
     if(isMemberAddressImfoChecked.value==true){
+        if(MemberRecipientAddress.value!=""){
+            isUpadteRecipient.value=false
+            homedelivery.value=MemberRecipientAddress.value
+        }else{
+            isUpadteRecipient.value=true
+            isMemberAddressImfoChecked.value=false
+            Swal.fire({
+                    text: '無收件人資料，請點選下方按鍵進行新增',
+                    icon: 'warning',
+                    allowOutsideClick: false,
+                    confirmButtonText: '確認',
+                });
+        }
         
-        homedelivery.value=MemberRecipientAddress.value
     }else{
+        isUpadteRecipient.value=true
         isMemberAddressImfoChecked.value=false
         homedelivery.value=""
     }
@@ -490,6 +504,7 @@ function insertRecipient() {
         }
 
         axiosapi.put(`/member/updateRecipient/${memberNo.value}`, memberData).then(function (response) {
+        console.log(response.data)
             if(response.data.success==true){
                 Swal.fire({
                 text: "新增成功",
@@ -537,9 +552,9 @@ console.log(memberNo.value)
     
         console.log(response.data)
         total.value = 0;
-        
+        totalCount.value=0
         for(let i = 0 ; i <cartList.value.length ; i++){
-            
+            totalCount.value+=cartList.value[i].count;
             total.value+=cartList.value[i].count*cartList.value[i].price*cartList.value[i].discount
         }
     
@@ -620,7 +635,14 @@ function ckeckOut() {//結帳
 
         } else {
 
-            axiosapi.post(`/orders/insert/${memberNo.value}`,data).then(function(response){//預設會員1號
+            Swal.fire({
+                        text: "Loading......",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        });
+            axiosapi.post(`/orders/insert/${memberNo.value}`,data).then(function(response){
+                
+                        
                     Swal.fire({
                                     text: "下單成功",
                                     icon: 'success',
