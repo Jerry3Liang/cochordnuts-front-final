@@ -21,12 +21,16 @@
     import BestProducts from './BestProducts.vue';
 
     const route = useRoute();
-    
     const products = ref(null);
-    // onBeforeUpdate(function(){
-    //     dosearch();
-    // })
 
+    const productName = ref(null);
+    const artistName = ref(null);
+    const startPrice = ref(null);
+    const endPrice = ref(null);
+    const startDate = ref(null);
+    const endDate = ref(null);
+
+    
     watch(function(){
         return route.query;
     },function(newQuery, oldQuery){
@@ -39,16 +43,36 @@
     })
 
     function dosearch(){
+        
+
+        if(route.query.startPrice == ""){
+            startPrice.value == null;
+        }else{
+            startPrice.value == route.query.startPrice;
+        }
+
+        if(route.query.endPrice == ""){
+            endPrice.value == null;
+        }else{
+            endPrice.value == route.query.endPrice;
+        }
+
+        goSearch();
+    }
+    
+    
+    function goSearch(){
+        
         let data = {
             "productName" : route.query.productName,
             "artistName" : route.query.artistName,
-            "startPrice" : route.query.startPrice,
-            "endPrice" : route.query.endPrice,
+            "startPrice" : startPrice.value,
+            "endPrice" : endPrice.value,
             "startDate" : route.query.startDate,
             "endDate" : route.query.endDate,
         }
         
-        console.log(data);
+        console.log("data=",data);
         axios.post("/products/search", data).then(function(response){
             console.log("response=", response);
             products.value = response.data;
@@ -56,9 +80,12 @@
             console.log("error=", error);
             products.value = null;
         })
-    
+        
 
     }
+
+
+
 
     
 </script>

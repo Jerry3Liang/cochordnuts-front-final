@@ -273,6 +273,7 @@
 
     </form>
 </div>
+<div id="formContainer"></div>
 </template>
 
 <script setup>
@@ -676,7 +677,24 @@ function ckeckOut() {//結帳
 
                                         });  
 
-                    }else{
+                    } else if (payment.value=='信用卡'){
+
+                        let ECdata = {
+                            "totalPay": total.value,
+                            "orderNo": orderNo.value,
+                            "memberNo" : sessionStorage.getItem("memberNo"),
+                        }
+                        axiosapi.post(`http://localhost:8080/ecpayCheckout`, ECdata).then(function(response){
+                            console.log("response=", response.data);
+                            document.getElementById("formContainer").innerHTML = response.data;
+                            document.getElementById("allPayAPIForm").submit();
+
+                        }).catch(function(error){
+                            console.log("error=", error);
+
+                        })
+
+                    } else {
                         //非Linepay
                         route.push({path: "/order/OrderDetail", query:{orderNumber:orderNo.value}})//跳頁 將orderNo帶到下一頁
 
