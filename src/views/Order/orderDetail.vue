@@ -315,7 +315,9 @@ function cancelOrder(){
                         if(paymentStatus.value=='已付款'){
                                 
                                 paymentStatus.value='待退款'
-                                console.log(paymentStatus.value)
+                                
+                        }else{
+                                paymentStatus.value='取消'
                         }
                         let data ={
                                 "orderNo":id.value,
