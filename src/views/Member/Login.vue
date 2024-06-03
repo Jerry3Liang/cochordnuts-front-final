@@ -21,7 +21,9 @@
                 顯示密碼
             </label>
         </div>
+        
         <button class="btn btn-primary w-15 py-1" type="button" @click="login()">Sign in</button>
+        <RouterLink style="margin-left: 20px;" to="/rePassword">忘記密碼</RouterLink>
     </form>
 
 </template>
@@ -30,7 +32,7 @@
 import Swal from 'sweetalert2'
 import axiosapi from '@/plugins/axios.js'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 
 const email = ref("");
 const password = ref("");
