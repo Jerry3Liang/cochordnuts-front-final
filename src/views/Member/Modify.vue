@@ -1,54 +1,106 @@
 <template>
-    <div class="center" v-if="member">
-        <div class="center-content">
-            <h1>修改基本資料</h1>
-            <form @submit.prevent="callModify" novalidate>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <span class="label">姓名:</span>
-                        <input type="text" class="label-modify" v-model="member.name" required>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">生日:</span>
-                        <input type="date" class="label-modify" v-model="member.birthday" :max="maxBirthday()"
-                            :min="minBirthday()" required>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">註冊日:</span><span class="label-in">{{ member.registerTime }}</span>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">上次登入日:</span> <span class="label-in">{{ member.lastLoginTime }}</span>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">Email:</span>
-                        <input type="email" class="label-modify" v-model="member.email" required>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">地址:</span>
-                        <input type="text" class="label-modify" v-model="member.address">
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">電話:</span>
-                        <input type="tel" class="label-modify" v-model="member.phone" required>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">常用收件人:</span>
-                        <input type="text" class="label-modify" v-model="member.recipient">
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">常用收件人地址:</span>
-                        <input type="text" class="label-modify" v-model="member.recipientAddress">
-                    </li>
-                    <li class="list-group-item">
-                        <span class="label">常用收件人電話:</span>
-                        <input type="tel" class="label-modify" v-model="member.recipientPhone">
-                    </li>
-                </ul>
-                <button class="btn btn-primary w-15 py-1" type="submit">確認修改</button>
-            </form>
+    <div class="container" v-if="member">
+
+        <div class="col-md-9" style="margin: auto;">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="col-md-12">
+                        <h3>修改會員資料</h3>
+                        <hr>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form>
+                                <div class="form-group row">
+                                    <label for="name" class="col-4 col-form-label">姓名:</label>
+                                    <div class="col-8">
+                                        <input id="name" name="name" placeholder="姓名" class="form-control here"
+                                            type="text" v-model="member.name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="birthday" class="col-4 col-form-label">生日:</label>
+                                    <div class="col-8">
+                                        <input id="birthday" name="birthday" placeholder="生日" class="form-control here"
+                                            type="date" v-model="member.birthday" :max="maxBirthday()"
+                                            :min="minBirthday()" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="registerTime" class="col-4 col-form-label">註冊日:</label>
+                                    <div class="col-8">
+                                        <input id="registerTime" name="registerTime" placeholder="註冊日"
+                                            class="form-control here" type="text" :value="member.registerTime" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="lastLoginTime" class="col-4 col-form-label">上次登入日:</label>
+                                    <div class="col-8">
+                                        <input id="lastLoginTime" name="lastLoginTime" placeholder="上次登入日"
+                                            class="form-control here" type="text" :value="member.lastLoginTime"
+                                            disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="email" class="col-4 col-form-label">Email:</label>
+                                    <div class="col-8">
+                                        <input id="email" name="email" placeholder="Email" class="form-control here"
+                                            type="email" v-model="member.email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="address" class="col-4 col-form-label">地址:</label>
+                                    <div class="col-8">
+                                        <input id="address" name="address" placeholder="地址" class="form-control here"
+                                            type="text" v-model="member.address">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="phone" class="col-4 col-form-label">電話:</label>
+                                    <div class="col-8">
+                                        <input id="phone" name="phone" placeholder="電話" class="form-control here"
+                                            type="tel" v-model="member.phone" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="recipient" class="col-4 col-form-label">常用收件人:</label>
+                                    <div class="col-8">
+                                        <input id="recipient" name="recipient" placeholder="常用收件人"
+                                            class="form-control here" type="text" v-model="member.recipient">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="recipientAddress" class="col-4 col-form-label">常用收件人地址:</label>
+                                    <div class="col-8">
+                                        <input id="recipientAddress" name="recipientAddress" placeholder="常用收件人地址"
+                                            class="form-control here" type="text" v-model="member.recipientAddress">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="recipientPhone" class="col-4 col-form-label">常用收件人電話:</label>
+                                    <div class="col-8">
+                                        <input id="recipientPhone" name="recipientPhone" placeholder="常用收件人電話"
+                                            class="form-control here" type="tel" v-model="member.recipientPhone">
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="button-container">
+                                <button class="btn btn-primary" type="button" @click="callModify()">確認修改</button>
+                                <RouterLink to="/member">
+                                    <button class="btn btn-primary" type="button">取消</button>
+                                </RouterLink>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 </template>
+
 <script setup>
 import Swal from 'sweetalert2'
 import axiosapi from '@/plugins/axios.js';
@@ -144,43 +196,48 @@ function callModify() {
     });
 }
 </script>
-<style>
-.center-content {
-    max-width: 100%;
+
+<style scoped>
+.container {
+
+    margin: auto;
+
+    max-width: 80%;
 }
 
-.center {
-    justify-content: center;
-    width: 900px;
-    /* Adjust as needed */
+.card {
+    margin-top: 40px;
 }
 
-.detail {
-    margin-bottom: 10px;
+h4 {
+    font-size: 24px;
 }
 
-.label {
-    font-weight: 900;
-    font-size: larger;
-    margin-left: 0;
-    padding-bottom: 0;
-    color: #494949;
+.form-group.row {
+    margin-bottom: 15px;
 }
 
-.label-modify {
+label {
     font-size: 18px;
-    margin-left: 150px;
-    border-width: 2px;
-    border-radius: 5px;
-    padding-left: 10px;
-    min-width: 200px;
+    font-weight: bold;
 }
 
-.list-group {
+.col-4 {
     display: flex;
-    margin-bottom: 5px;
-    width: 80%;
-    border-radius: 15px;
-    /* Adjust as needed */
+    align-items: center;
+    padding-right: 5px;
+}
+
+.col-8 {
+    padding-left: 5px;
+}
+
+.btn-primary {
+    margin-top: 20px;
+    margin-left: 20px
+}
+
+.button-container {
+    margin-left: 35%
 }
 </style>
