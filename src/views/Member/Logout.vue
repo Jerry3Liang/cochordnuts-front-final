@@ -9,16 +9,14 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-
 Swal.fire({
 
-    title: "Are you sure?",
-    text: "You will be logged out!",
+    title: "確認要登出嗎?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, logout!"
+    confirmButtonText: "確認!"
 }).then(function (result) {
     if (result.isConfirmed) {
 
@@ -30,21 +28,21 @@ Swal.fire({
             userName: userName,
             memberNo: memberNo
         };
-        console.log('last=' + lastLoginTime);
         axiosapi.post("/memberLogout", jsonData)
             .then(function (response) {
                 if (response.data.success) {
                     Swal.fire({
-                        title: "Logged out!",
-                        text: "You have been logged out.",
+                        title: "登出成功!",
+                        text: "您已被登出。",
                         icon: "success"
                     }).then(function () {
                         sessionStorage.clear();
+                        localStorage.clear();
                         router.push({ name: "home-link" });
                     });
                 } else {
                     Swal.fire({
-                        text: response.data.message || 'Logout failed!',
+                        text: response.data.message || '登出失敗!',
                         icon: 'error',
                         allowOutsideClick: false,
                         confirmButtonText: '確認',
@@ -52,7 +50,7 @@ Swal.fire({
                 }
             })
             .catch(function (error) {
-                console.error('Logout failed:', error);
+                console.error('登出失敗:', error);
                 Swal.fire({
                     text: '登出失敗：' + error.message,
                     icon: 'error',
@@ -64,9 +62,6 @@ Swal.fire({
         router.push({ name: "home-link" });
     };
 });
-
-
-
 
 </script>
 
