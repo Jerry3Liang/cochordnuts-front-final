@@ -88,6 +88,9 @@ function login() {
                     sessionStorage.setItem("memberNo", response.data.memberNo);
                     sessionStorage.setItem("isLoggedIn", true);
                     sessionStorage.setItem("loginTime", response.data.loginTime);
+                    localStorage.setItem("isLoggedIn", true);
+                    localStorage.setItem("userName", response.data.userName);
+                    localStorage.setItem("loginTime", response.data.loginTime);
                     router.push({ name: "home-link" })
                 }
             });
