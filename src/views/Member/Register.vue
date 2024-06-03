@@ -78,9 +78,12 @@
 
                     <div class="input-group mb-1">
                         <span class="input-group-text" id="basic-addon1">生日</span>
-                        <input type="date" class="user-control" v-model="user.birthday" :max="maxBirthday()"
-                            :min="minBirthday()" required aria-describedby="basic-addon1">
+
+                        <input id="birthday" name="birthday" placeholder="生日" class="form-control here" type="date"
+                            v-model="user.birthday" :max="maxBirthday()" :min="minBirthday()" required>
+
                     </div>
+
 
                     <div class="input-group mb-1">
                         <span class="input-group-text" id="basic-addon1">Email</span>
