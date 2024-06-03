@@ -6,16 +6,16 @@
       <th scope="col">案件編號</th>
       <th scope="col">問題</th>
       <th scope="col">最後回覆時間</th>
-      <th scope="col">回覆員工姓名</th>
+      <th scope="col">最後回覆員工姓名</th>
       <th scope="col">回覆狀態</th>
       <th scope="col">操作</th>
     </tr>
     </thead>
     <tbody>
     <tr v-for="cstCase in customerCases" :key="cstCase.id">
-      <th scope="row">
+      <td>
         <button type="button" class="btn btn-link" @click="callFinishFindMsgByCaseNo(cstCase.caseNo)" :disabled="isDisabled(cstCase.status)">{{cstCase.caseNo}}</button>
-      </th>
+      </td>
       <td>{{cstCase.subject}}</td>
       <td>{{cstCase.messageTime}}</td>
       <td>{{cstCase.empName}}</td>
@@ -142,65 +142,6 @@ function callFindByMemberNo(memberNo) {
 //   });
 // }
 
-function callModify(caseNo) {
-  Swal.fire({
-    text: "Loading......",
-    showConfirmButton: false,
-    allowOutsideClick: false,
-  });
-  if(customerCase.value.caseNo==="") {
-    customerCase.value.caseNo = null;
-  }
-  if(customerCase.value.customerName==="") {
-    customerCase.value.customerName = null;
-  }
-  if(customerCase.value.subject==="") {
-    customerCase.value.subject = null;
-  }
-  if(customerCase.value.lastAnswerDate==="") {
-    customerCase.value.lastAnswerDate = null;
-  }
-  if(customerCase.value.answerEmployee==="") {
-    customerCase.value.answerEmployee = null;
-  }
-  if(customerCase.value.status==="") {
-    customerCase.value.status = null;
-  }
-
-  let data = {
-    "status": 2
-  }
-
-
-  axiosApi.put(`/rest/customerCase/${caseNo}`, data).then(function (response) {
-    if(response.data) {
-      Swal.fire({
-        text: response.data.message,
-        icon: 'success',
-        allowOutsideClick: false,
-        confirmButtonText: '確認',
-      }).then(function() {
-        callFind(current.value);
-      });
-    } else {
-      Swal.fire({
-        text: response.data.message,
-        icon: 'warning',
-        allowOutsideClick: false,
-        confirmButtonText: '確認',
-      });
-    }
-  }).catch(function(error) {
-    console.log("callModify error", error);
-    Swal.fire({
-      text: '失敗：'+error.message,
-      icon: 'error',
-      allowOutsideClick: false,
-      confirmButtonText: '確認',
-    });
-  });
-}
-
 function callFindMsgByCaseNo(caseNo) {
   axiosApi.get(`/rest/findCaseContent/${caseNo}`).then(function(response) {
     customerCase.value = response.data;
@@ -255,5 +196,41 @@ function isDisabled(status) {
 </script>
 
 <style scoped>
+.table {
+  border-collapse: collapse;
+  /* 確保邊框不會重疊 */
+  width: 100%;
+
+}
+
+.table th,
+.table td
+{
+  border-left: none;
+  /* 移除左側邊框 */
+  border-top: none;
+  border-right: none;
+  /* 移除右側邊框 */
+  padding: 8px;
+
+}
+
+.table tr {
+
+  border-bottom: 1px solid #c4bfbf;
+  /* 設置行與行之間的邊框顏色 */
+
+}
+
+.table th {
+  background-color: #FCFCFC;
+  text-align: left;
+
+}
+
+.table tr:last-child {
+  border-bottom: none;
+  /* 移除最後一行的底部邊框 */
+}
 
 </style>
