@@ -15,23 +15,24 @@ import { ref } from "vue";
 
 const router = useRouter();
 const isLoggedIn = ref(null);
-  const user = ref(null);
+const user = ref(null);
+
+function checkLoginStatus() {
+  isLoggedIn.value = localStorage.getItem("isLoggedIn") === "true";
+  if (isLoggedIn.value) {
+    user.value = {
+      name: localStorage.getItem("userName"),
+      loginTime: localStorage.getItem("loginTime")
+    };
+  } else {
+    user.value = null;
+  }
+};
+
+checkLoginStatus();
 
 router.afterEach(() => {
-
-  const currentRoute = router.currentRoute.value;
-
-  if (currentRoute.name === "home-link") {
-    isLoggedIn.value = sessionStorage.getItem("isLoggedIn") === "true";
-    if (isLoggedIn.value) {
-      user.value = {
-        name: sessionStorage.getItem("userName"),
-        loginTime: sessionStorage.getItem("loginTime")
-      };
-    } else {
-      user.value = null;
-    }
-  }
+  checkLoginStatus();
 });
 
 </script>
