@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex;">
     <RouterLink to="/" class="dropdown-item" style="width: 15%;">
-      <img src="/logo.jpeg" style="width: 100%;">
+      <img src="/logo.png" style="width: 100%;">
     </RouterLink>
     <div style="width: 25%; margin-left: 20%; margin-top: 2%;">
       <Search @searchcons="dosearch"></Search>
@@ -10,7 +10,7 @@
   </div>
 
   <!-- <nav class="navbar navbar-expand-lg" style="background-color: white"> -->
-  <nav class="navbar navbar-expand-lg" style="background-color: #D1E9E9;">
+  <nav class="navbar navbar-expand-lg" style="background-color: #CC9999;">
 
     <div class="container-fluid">
       <!-- <a class="navbar-brand" href="#">CoChordNuts</a> -->
@@ -45,6 +45,7 @@
               <li>
                 <RouterLink to="/product/isPreorder" class="dropdown-item">預購商品</RouterLink>
               </li>
+              
               
             </ul>
           </li>
@@ -107,7 +108,7 @@
     </div>
 
     <div v-if="isLoggedIn">
-      <div>{{ user.name }}</div>
+      <div>{{ user.name }}，歡迎回來 ! </div>
       <div>上次登入時間:{{ user.loginTime }}</div>
     </div>
     

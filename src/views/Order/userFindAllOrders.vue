@@ -1,5 +1,6 @@
 <template>
-    <div class="row mt-5">
+    <div style="background-color: azure ; padding: 5%;">
+    <div class="row mt-5" style="margin-bottom: 20px;">
         <div class="col-md-5 mx-auto">
             <div class="input-group">
                 <input class="form-control border rounded-pill" type="text" placeholder="輸入訂單編號" v-model="orderSearch"
@@ -10,7 +11,7 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                
                 <th scope="col">訂單編號</th>
                 <th scope="col">會員編號</th>
                 <th scope="col">金額</th>
@@ -21,7 +22,7 @@
         </thead>
         <tbody>
             <tr v-for="(anOrder, index) in orders" :key="index">
-                <td scope="row">{{ index + 1 }}</td>
+            
                 <td>{{ anOrder.orderNo }}</td>
                 <td>{{ anOrder.memberNo }}</td>
                 <td>$ {{ anOrder.totalPay }}</td>
@@ -37,6 +38,8 @@
     <Paginate class="justify-content-center" first-button-text="&lt;&lt;" last-button-text="&gt;&gt;" prev-text="&lt;"
         next-text="&gt;" :page-count=pages :initial-page="current" v-model="current" :click-handler="doChangePage"
         :first-last-button="true"></Paginate>
+
+    </div>
 </template>
 
 <script setup>

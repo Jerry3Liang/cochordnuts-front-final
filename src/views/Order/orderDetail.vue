@@ -1,5 +1,5 @@
 <template>
-
+<div style="background-color: azure ; padding: 5%;">
 <label for="outputMember" class="form-label"><h2>運送狀態</h2></label> <br/>
         <div class="row text-center justify-content-center mb-5">
                 
@@ -41,6 +41,7 @@
                 </div>
         </div>
 <label for="outputMember" class="form-label"><h2>購買商品明細</h2></label> 
+
 <table class="table table-striped table-hover table-custom-width">
 
         <thead>
@@ -65,12 +66,54 @@
         </tbody>
 
 </table>
-
-<label for="outputMember" class="form-label"><h2>運送方式</h2></label> 
 <table class="table">
         <thead>     
         <tr>
+                <th scope="col"><h2 >付款資訊</h2></th>
                 <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+                <td scope="row">訂單編號</td>
+                <td>{{id}}</td>
+                <td></td>
+                <td></td>
+        </tr>
+        <tr>
+                <td scope="row">付款方式</td>
+                <td>{{payment}}</td>
+                <td>{{ isPayByCredit }}</td>
+                <td>{{ creditCardNo }}</td>
+        </tr>
+        <tr>
+                <td scope="row">付款狀態</td>
+                <td>{{paymentStatus}}</td>
+                <td></td>
+                <td></td>
+        </tr>
+        <tr>
+                <td scope="row">發票方式</td>
+                <td>{{receiptType}}</td>
+                <td></td>
+                <td></td>
+        </tr>
+        <tr>
+                <th scope="row">發票號碼</th>
+                <th>{{receipt}}</th>
+                <th></th>
+                <th></th>
+        </tr>
+
+        </tbody>
+        </table> 
+
+<table class="table">
+        <thead>     
+        <tr >
+                <th scope="col"><h2>運送方式</h2></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -95,12 +138,12 @@
 
 
 <!-- 收件人資料 -->
-<label for="outputMember" class="form-label"><h2>收件人資料</h2></label> 
+
 
 <table class="table">
         <thead>     
         <tr>
-                <th scope="col"></th>
+                <th scope="col"><h2>收件人資料</h2></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -123,13 +166,21 @@
         </table> 
 
 
-<!-- 訂單金額 -->
-<label for="outputOrder" class="form-label"><h2>訂單金額</h2></label> 
+
+
+
+
+
+
+
+
+        <!-- 訂單金額 -->
+
 
         <table class="table">
         <thead>
                 <tr>
-                <th scope="col"></th>
+                <th scope="col"><h2>訂單金額</h2></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -158,54 +209,6 @@
                 </tr>
         </thead>
         </table>
-
-
-
-
-
-<label for="outputMember" class="form-label"><h2>付款方式</h2></label> 
-<table class="table">
-        <thead>     
-        <tr>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-                <td scope="row">付款方式</td>
-                <td>{{payment}}</td>
-                <td>{{ isPayByCredit }}</td>
-                <td>{{ creditCardNo }}</td>
-        </tr>
-        <tr>
-                <td scope="row">付款狀態</td>
-                <td>{{paymentStatus}}</td>
-                <td></td>
-                <td></td>
-        </tr>
-        <tr>
-                <td scope="row">發票方式</td>
-                <td>{{receiptType}}</td>
-                <td></td>
-                <td></td>
-        </tr>
-        <tr>
-                <td scope="row">發票號碼</td>
-                <td>{{receipt}}</td>
-                <td></td>
-                <td></td>
-        </tr>
-        <tr>
-                <th scope="row">訂單編號</th>
-                <th>{{id}}</th>
-                <th></th>
-                <th></th>
-        </tr>
-        </tbody>
-        </table> 
         <div class="form-floating">
                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" disabled>{{ note }}</textarea>
                 <label for="floatingTextarea2">Comments</label>
@@ -216,12 +219,11 @@
                 <button type="button" class="btn btn-primary button-spacing">回上頁</button>
         </RouterLink>
 
-        <button type="button" class="btn btn-primary button-spacing" @click="cancelOrder">取消訂單</button><!-- 狀態改為已取消 -->
+        <button type="button" class="btn btn-primary button-spacing" @click="cancelOrder" v-show="isOrderCancel">取消訂單</button><!-- 狀態改為已取消 -->
         <button type="button" class="btn btn-primary button-spacing" @click="contactService">聯絡客服</button>
-        <!-- <button type="button" class="btn btn-primary button-spacing">退貨</button>狀態改為退貨確認中 -->
         <button type="button" class="btn btn-primary button-spacing" @click="buyAgain">再買一次</button><!-- insert OrderDetail至購物車 -->
         <button type="button" class="btn btn-primary button-spacing" @click="doModify" v-show="isModify">修改</button>
-
+</div>
 </template>
 
 <script setup >
@@ -245,7 +247,7 @@ const homeOrConvinientStore = ref('')//判斷送貨方式
 const OrderDetailDto=ref([])//orderDetailDto陣列\
 const isPayByCredit=ref('')
 const isModify=ref(true)//判斷是否顯示修改button
-
+const isOrderCancel = ref(true)
 const deliveryType = ref('')//送貨方式
 const address= ref('')//地址
 const recipientName=ref('')//收件人姓名
@@ -303,27 +305,7 @@ function doModify(){
 // moment(createDate.value).format('YYYY-MM-DD')
 function cancelOrder(){
         if(status.value=='訂單成立'|| status.value=='備貨中'){
-                let data ={
-                "orderNo":id.value,
-                "creditCardNo":creditCardNo.value,
-                "receiptType":receiptType.value,
-                "payment":payment.value,
-                "totalCount":totalCount.value,
-                "totalPay":total.value,
-                "deliverType":deliveryType.value,
-                "recipientAddress":address.value,
-                "recipient":recipientName.value,
-                "recipientPhone":recipientPhone.value,
-                "note":note.value,
-                "preparationDate":preparationDate.value,
-                "createDate":createDate.value,
-                "address":originAdress.value,
-                "freight":freight.value,
-                "receiptNo":receiptNo.value,
-                "dispatchDate":dispatchDate.value,
-                "completeDate":completeDate.value,
-                "status":'訂單取消'
-        }
+                
                 Swal.fire({
                 title: "確認取消?",
                 icon: "warning",
@@ -333,12 +315,35 @@ function cancelOrder(){
                 confirmButtonText: "確認"
                 }).then((result) => {
                 if (result.isConfirmed) {
+                        
+                        let data ={
+                                "orderNo":id.value,
+                                "creditCardNo":creditCardNo.value,
+                                "receiptType":receiptType.value,
+                                "payment":payment.value,
+                                "totalCount":totalCount.value,
+                                "totalPay":total.value,
+                                "deliverType":deliveryType.value,
+                                "recipientAddress":address.value,
+                                "recipient":recipientName.value,
+                                "recipientPhone":recipientPhone.value,
+                                "note":note.value,
+                                "preparationDate":preparationDate.value,
+                                "createDate":createDate.value,
+                                "address":originAdress.value,
+                                "freight":freight.value,
+                                "receiptNo":receiptNo.value,
+                                "dispatchDate":dispatchDate.value,
+                                "completeDate":completeDate.value,
+                                "status":'訂單取消'
+                        }
+                        console.log(paymentStatus.value)
                         axiosapi.put(`/orders/update/${memberNo.value}`,data).then(function(response){
                         Swal.fire({
                                 title: "取消成功!",
                                 icon: "success"
                         });
-                        router.push({path: "/"})
+                        router.push({path: "/order/userFindAllOrders"})
                         }).catch(function (error) {
                         Swal.fire({
                                 text: '失敗：'+error.message,
@@ -360,7 +365,7 @@ function cancelOrder(){
         }
 
 function buyAgain(){//再買一次  orderDetail及memberNo帶到下一頁    
-        console.log(order.value)
+        console.log(OrderDetailDto.value)
                 axiosapi.post(`/cart/buyAgain/${order.value.orderNo}`).then(function(response){
                         console.log("response=", response.data);
                         if(response.data.result==true){
@@ -414,6 +419,13 @@ function  findOrderAndOrderDetail(){
                 receipt.value=response.data.order.receiptNo
                 note.value=response.data.order.note
                 status.value=response.data.order.status
+                
+                if(status.value=='已出貨' ||status.value=='完成訂單'){
+                        console.log(status.value)
+                        isOrderCancel.value=false
+                }else{
+                        isOrderCancel.value=true 
+                }
 
                 if(status.value=='訂單成立'){
                         isModify.value=true

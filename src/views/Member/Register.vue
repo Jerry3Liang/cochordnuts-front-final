@@ -29,6 +29,9 @@
                 <button v-if="!emailSent" class="btn btn-outline-secondary" type="button" id="button-addon2"
                     @click="sendVerificationCode()" :disabled="emailSent">發送驗證碼</button>
             </div>
+            <div v-if="!emailSent && !emailVerified" style="margin-top: 40px;">
+                <RouterLink to="/secure/login">已有帳號</RouterLink>
+            </div>
         </div>
 
         <!-- 輸入驗證碼 -->

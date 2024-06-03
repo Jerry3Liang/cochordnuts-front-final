@@ -21,7 +21,9 @@
                 顯示密碼
             </label>
         </div>
+        
         <button class="btn btn-primary w-15 py-1" type="button" @click="login()">Sign in</button>
+        <RouterLink style="margin-left: 20px;" to="/rePassword">忘記密碼</RouterLink>
     </form>
 
 </template>
@@ -30,7 +32,7 @@
 import Swal from 'sweetalert2'
 import axiosapi from '@/plugins/axios.js'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 
 const email = ref("");
 const password = ref("");
@@ -69,7 +71,8 @@ function login() {
     axiosapi.defaults.headers.authorization = "";
     sessionStorage.removeItem("user");
     axiosapi.post("/memberLogin", data).then((response) => {
-        if (response.data.success) {
+        if (response.data.success && response.data.memberStatus==1) {
+            console.log(response.data);
             Swal.fire({
                 text: response.data.message,
                 icon: 'success',
@@ -90,7 +93,7 @@ function login() {
             });
         } else {
             Swal.fire({
-                text: response.data.message,
+                text: '請檢查帳號和密碼',
                 icon: 'error',
                 allowOutsideClick: false,
                 confirmButtonText: '確認',
