@@ -86,125 +86,108 @@
       })
     }
     else {
-    
       let obj = {
         memberNo: memberNo
       }
       axiosapi.post("/cart/list", obj).then(function(response){
-
         for (let x = 0; x < response.data.list.length; x++) {
-          
           if (response.data.list[x].inventory<=0) {
             Swal.fire({
-        text: `"${response.data.list[x].productName}"已無庫存`,
-        icon: "warning",
-        showCancelButton: false,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: `確定`,
-        // cancelButtonText: `取消`
+              text: `"${response.data.list[x].productName}"已無庫存`,
+              icon: "warning",
+              showCancelButton: false,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: `確定`,
+              // cancelButtonText: `取消`
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                let obj = {
+                  productId: response.data.list[x].productId,
+                  memberNo: memberNo
+                } 
+                axiosapi.post("/cart/deleteItem", obj)
+                location.reload();
+              }
+            })
+          }
+        inCart.value = response.data.list;
+        console.log("response.data.list: ", response.data.list);
+        // console.log("response.data.list[0].price: ", response.data.list[0].price);
+        // console.log("response.data.list[0].count: ", response.data.list[0].count);
+        // console.log("response: ", response.data.list[0]);
+        console.log("response.data.list.length: ", response.data.list.length);}
+        for(let i = 0 ; i < response.data.list.length ; i++){
+          cartList.value.push(response.data.list[i])
+        }
+        console.log(cartList.value[0])
+        // cartList.value=response.data.list
+        totalAmount.value=0;
+        let xx=0
+        for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+          totalAmount.value = totalAmount.value+(response.data.list[xx].count*Math.round(response.data.list[xx].price*response.data.list[xx].discount));
+        }
       })
-      .then((result) => {
-        if (result.isConfirmed) {
-          let obj = {
-        productId: response.data.list[x].productId,
-        memberNo: memberNo
-      }
-          axiosapi.post("/cart/deleteItem", obj)
-        location.reload();
-        }
-          })
-        }
-            inCart.value = response.data.list;
-            console.log("response.data.list: ", response.data.list);
-            // console.log("response.data.list[0].price: ", response.data.list[0].price);
-            // console.log("response.data.list[0].count: ", response.data.list[0].count);
-            // console.log("response: ", response.data.list[0]);
-            console.log("response.data.list.length: ", response.data.list.length);
-            for(let i = 0 ; i < response.data.list.length ; i++){
-              cartList.value.push(response.data.list[i])
-            }
-            console.log(cartList.value[0])
-            // cartList.value=response.data.list
-            
-            totalAmount.value=0;
-            let xx=0
-            for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-              totalAmount.value = totalAmount.value+(response.data.list[xx].count*Math.round(response.data.list[xx].price*response.data.list[xx].discount));
-            }
-          
-          
-          
-      }})
     }
   }
+
   listItems();
   
-    function increaseQuanty(id) {
-      
-      let obj = {
-        productId: id.productId,
-        memberNo: memberNo
-      }
-      
-      axiosapi.post("/cart/addOne", obj).then(function(response){
-        // inCart.value = response.data.list;
-        console.log("response: ",response);
-        console.log("response.data.inventory: ",response.data.inventory);
-        Toast.fire({
-                icon: "success",
-                title: `${response.data.productName}數量＋1`
-            });
-        // totalAmount.value=0
-        // listItems();
-        // let memberNo=sessionStorage.getItem("memberNo");
-        // let obj1 = {
-          //   memberNo: memberNo
-          // }
-          // axiosapi.post("/cart/list", obj1).then(function(response){
-            //   console.log("response: ", response);
-            // totalAmount.value=item.price;
-            // let xx=0
-            // for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-              //   totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
-              //   listItems();
-              // }
+  function increaseQuanty(id) {
+    let obj = {
+      productId: id.productId,
+      memberNo: memberNo
+    }
+    axiosapi.post("/cart/addOne", obj).then(function(response){
+      // inCart.value = response.data.list;
+      console.log("response: ",response);
+      console.log("response.data.inventory: ",response.data.inventory);
+      Toast.fire({
+        icon: "success",
+        title: `${response.data.productName}數量＋1`
+      });
+      // totalAmount.value=0
+      // listItems();
+      // let memberNo=sessionStorage.getItem("memberNo");
+      // let obj1 = {
+      //   memberNo: memberNo
+      // }
+      // axiosapi.post("/cart/list", obj1).then(function(response){
+      //   console.log("response: ", response);
+      // totalAmount.value=item.price;
+      // let xx=0
+      // for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+      //   totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+      //   listItems();
+      // }
       inCart.count=id.count++;
       totalAmount.value=totalAmount.value+Math.round(id.price*id.discount)
       if (response.data.inventory===id.count) {
-      // inCart.count=id.count++;
-      // console.log("id.count111 =" , id.count);
-      console.log("id.count: ", id.count);
-      Swal.fire({
-      // title: "loading...",
-      text: `已達所有"${response.data.productName}"的庫存`,
-      // icon: "success",
-      showCancelButton: false,
-      showConfirmButton: true,
-      // timer: 500
-      
+        // inCart.count=id.count++;
+        // console.log("id.count111 =" , id.count);
+        console.log("id.count: ", id.count);
+        Swal.fire({
+          // title: "loading...",
+          text: `已達所有"${response.data.productName}"的庫存`,
+          // icon: "success",
+          showCancelButton: false,
+          showConfirmButton: true,
+          // timer: 500
+        })
+      }
     })
-
   }
-      })
-      
-      }
-    // );
-    // }
-                          
-                          
-    function decreaseQuanty(id) {
-      // if(id.count>0){
-        inCart.count=id.count--;
-      // }
 
-      totalAmount.value=totalAmount.value-Math.round(id.price*id.discount)
-        let obj = {
-        productId: id.productId,
-        memberNo: memberNo
-      }
-  
-      axiosapi.post("/cart/minusOne", obj).then(function(response){
+
+  function decreaseQuanty(id) {
+    inCart.count=id.count--;
+    totalAmount.value=totalAmount.value-Math.round(id.price*id.discount)
+    let obj = {
+      productId: id.productId,
+      memberNo: memberNo
+    }
+    axiosapi.post("/cart/minusOne", obj).then(function(response){
       // inCart.value = response.data.list;
       console.log("response: ",response);
       // // listItems();
@@ -220,48 +203,45 @@
       //     totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
       //     listItems();
         // }
-      }
-      );
-      // });
-      }
-  
-    function deleteThisItem(id){
-      Swal.fire({
-        text: `確定刪除"${id.productName}"?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: `確定`,
-        cancelButtonText: `取消`
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          let obj = {
-        productId: id.productId,
-        memberNo: memberNo
-      }
-          axiosapi.post("/cart/deleteItem", obj).then(function(response){
-            axiosapi.post("/cart/list", obj).then(function(response){
-        console.log("response: ", response);
-        let xx=0
-        totalAmount.value=0;
-        for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-          totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
-          listItems();
+    });
+  }
+
+  function deleteThisItem(id){
+    Swal.fire({
+      text: `確定刪除"${id.productName}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `確定`,
+      cancelButtonText: `取消`
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        let obj = {
+          productId: id.productId,
+          memberNo: memberNo
         }
-      }
-      );
+        axiosapi.post("/cart/deleteItem", obj).then(function(response){
+          axiosapi.post("/cart/list", obj).then(function(response){
+            console.log("response: ", response);
+            let xx=0
+            totalAmount.value=0;
+            for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+              totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+              listItems();
+            }
+          });
           Swal.fire({
             title: "Deleted!",
             text: `您已從您的購物車移除"${id.productName}"`,
             icon: "success"
           });
-          listItems();
-          })
-        }
-      });
-    }
+          location.reload();
+        })
+      }
+    });
+  }
   
   
   
