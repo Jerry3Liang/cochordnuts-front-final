@@ -10,7 +10,7 @@
   </div>
 
   <!-- <nav class="navbar navbar-expand-lg" style="background-color: white"> -->
-  <nav class="navbar navbar-expand-lg" style="background-color: #D1E9E9;">
+  <nav class="navbar navbar-expand-lg" style="background-color: #CC9999;">
 
     <div class="container-fluid">
       <!-- <a class="navbar-brand" href="#">CoChordNuts</a> -->

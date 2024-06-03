@@ -3,8 +3,9 @@
   <div  class="container mt-5 mb-5 flex">
     <div class="flex justify-content-center row">
       <div style="background-color: rgb(19, 99, 173, 0.214);">
+      <!-- <div style="background-color: #cc9999;"> -->
         <div class="p-5">
-          <h2>Shopping cart {{ memberNo }} : {{ user }}</h2>
+          <h2>{{ user }} 的購物車 </h2>
         </div>
   
           <CartItem v-for="item in inCart"  :key="item.productId" :eachCartItem="item" 
@@ -84,29 +85,57 @@
         router.push({name: "login-link"})
       })
     }
-    else{
+    else {
+    
       let obj = {
         memberNo: memberNo
       }
       axiosapi.post("/cart/list", obj).then(function(response){
-        inCart.value = response.data.list;
-        console.log("response.data.list: ", response.data.list);
-        // console.log("response.data.list[0].price: ", response.data.list[0].price);
-        // console.log("response.data.list[0].count: ", response.data.list[0].count);
-        // console.log("response: ", response.data.list[0]);
-        console.log("response.data.list.length: ", response.data.list.length);
-        for(let i = 0 ; i < response.data.list.length ; i++){
-          cartList.value.push(response.data.list[i])
-        }
-        console.log(cartList.value[0])
-        // cartList.value=response.data.list
-        
-        totalAmount.value=0;
-        let xx=0
-        for (response.data.list[xx]; xx < response.data.list.length; xx++) {
-          totalAmount.value = totalAmount.value+(response.data.list[xx].count*Math.round(response.data.list[xx].price*response.data.list[xx].discount));
-        }
+
+        for (let x = 0; x < response.data.list.length; x++) {
+          
+          if (response.data.list[x].inventory<=0) {
+            Swal.fire({
+        text: `"${response.data.list[x].productName}"已無庫存`,
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: `確定`,
+        // cancelButtonText: `取消`
       })
+      .then((result) => {
+        if (result.isConfirmed) {
+          let obj = {
+        productId: response.data.list[x].productId,
+        memberNo: memberNo
+      }
+          axiosapi.post("/cart/deleteItem", obj)
+        location.reload();
+        }
+          })
+        }
+            inCart.value = response.data.list;
+            console.log("response.data.list: ", response.data.list);
+            // console.log("response.data.list[0].price: ", response.data.list[0].price);
+            // console.log("response.data.list[0].count: ", response.data.list[0].count);
+            // console.log("response: ", response.data.list[0]);
+            console.log("response.data.list.length: ", response.data.list.length);
+            for(let i = 0 ; i < response.data.list.length ; i++){
+              cartList.value.push(response.data.list[i])
+            }
+            console.log(cartList.value[0])
+            // cartList.value=response.data.list
+            
+            totalAmount.value=0;
+            let xx=0
+            for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+              totalAmount.value = totalAmount.value+(response.data.list[xx].count*Math.round(response.data.list[xx].price*response.data.list[xx].discount));
+            }
+          
+          
+          
+      }})
     }
   }
   listItems();
@@ -198,12 +227,13 @@
   
     function deleteThisItem(id){
       Swal.fire({
-        text: `確定刪除${id.productName}?`,
+        text: `確定刪除"${id.productName}"?`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonText: `確定`,
+        cancelButtonText: `取消`
       })
       .then((result) => {
         if (result.isConfirmed) {
@@ -224,7 +254,7 @@
       );
           Swal.fire({
             title: "Deleted!",
-            text: "Your file has been deleted.",
+            text: `您已從您的購物車移除"${id.productName}"`,
             icon: "success"
           });
           listItems();
@@ -241,7 +271,7 @@
   
   body {
     font-family: 'Manrope', sans-serif;
-    background:#eee;
+    /* background:#eee; */
   }
   
   .size span {
