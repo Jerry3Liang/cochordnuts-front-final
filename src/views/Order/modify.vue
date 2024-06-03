@@ -39,7 +39,7 @@
 <div class="col-12" v-show="delivertypeCheck" >
     <label for="inputAddress2" class="form-label">請輸入地址</label>
     
-    <input type="text" class="form-control" id="inputAddress2" placeholder="EX:台北市大安區信義路四段265巷12弄1號" v-model="order.address">
+    <input type="text" class="form-control" id="inputAddress2" placeholder="EX:台北市大安區信義路四段265巷12弄1號" v-model="order.recipientAddress">
 </div>
 <div class="col-md-4" v-show="!delivertypeCheck">
     <label for="inputState" class="form-label" >縣市</label>
@@ -131,7 +131,7 @@ if(order.value.deliverType=='宅配'){
 if(order.value.deliverType=='超商取貨'){
 const inputString=ref(order.value.recipientAddress)
 const stringInput = inputString.value.toString(); 
-const parts = stringInput.split(' ');
+const parts = stringInput.split(' ');//切割字串
 city.value = parts[0];
 district.value = parts[1];
 storeNumber.value = parts[2];

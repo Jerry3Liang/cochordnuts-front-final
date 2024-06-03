@@ -24,7 +24,7 @@
                     <td>{{ aCart.price }}</td>
                     <td>{{ aCart.discount }}</td>
                     <td>{{ aCart.count }}</td>
-                    <td>{{ aCart.price*aCart.count*aCart.discount }}</td>
+                    <td>{{Math.ceil( aCart.price*aCart.count*aCart.discount )}}</td>
                 </tr>
             </tbody>
 
@@ -126,9 +126,7 @@
             <select id="inputState" class="form-select" v-model="convientStoreDelivery2">
                 <option value="" selected>請選擇</option>
                 <option v-for="(area, index) in areaData" :key="index" :value="area">{{ area }}</option>
-                <option value="中正區">中正區</option>
-                <option value="大安區">大安區</option>
-                <option value="大同區">大同區</option>
+            
             </select>
         </div>
         <div class="col-md-2" v-show="!delivertypeCheck">
@@ -220,7 +218,7 @@
         <br>
 
 
-        <div class="col-md-3" v-show="isPayByCredit">
+        <!-- <div class="col-md-3" v-show="isPayByCredit">
             <label for="inputState" class="form-label">銀行代號</label>
             <select id="inputState" class="form-select" v-model="bankNo" @change="checkBankNo">
                 <option value="" selected>請選擇</option>
@@ -229,15 +227,15 @@
                 <option value="006">006合作金庫銀行</option>
             </select>
             <span style="color: red;" v-show="isBankNoNull">請選擇銀行代碼</span>
-        </div>
-        <div class="col-9" v-show="isPayByCredit">
+        </div> -->
+        <!-- <div class="col-9" v-show="isPayByCredit">
             <label for="inputCredit" class="form-label">請輸入信用卡號<span style="color: #004B97	;">{{ creditType
                     }}</span></label>
             <input type="number" class="form-control" id="inputCredit" placeholder="" @blur="checkCreditNo"
                 v-model="creditNo">
             <span style="color: red;" v-show="isCreditNoCorrect">請輸入正確信用卡號碼</span>
 
-        </div>
+        </div> -->
 
 
         <label for="inputEmail4" class="form-label">
@@ -285,7 +283,7 @@ import { data as taiwanData } from "@/taiwan_districts.js"
 const isUpadteRecipient=ref(true)
 const isMemberAddressImfoChecked=ref(false)
 const routee=useRoute()
-const cartList=ref(JSON.parse(routee.query.cartList))
+const cartList=ref(JSON.parse(routee.query.cartList))//取得購物車內容
 const route = useRouter();
 const delivertype = ref("宅配")
 const delivertypeCheck = ref(true)
@@ -298,16 +296,16 @@ const recipientName = ref('')
 const recipientPhone = ref('')
 const payment = ref('信用卡')
 const creditNo = ref('')//信用卡號碼
-const creditType = ref('')//信用卡類別Visa、masterCard
+// const creditType = ref('')//信用卡類別Visa、masterCard
 const receipType = ref('')
 const isReceipTypeCarrier = ref(false)
-const isCreditNoCorrect = ref(false)
-const bankNo = ref('')//銀行編號
-const isBankNoNull = ref(false)
+// const isCreditNoCorrect = ref(false)
+// const bankNo = ref('')//銀行編號
+// const isBankNoNull = ref(false)
 const total = ref(0)//所有購買商品金額相加
 const totalCount = ref(0)//所有購買商品數量
 const note = ref('')
-const member = ref(null)
+// const member = ref(null)
 const MemberName = ref('')//後端傳回的Member資料
 const MemberEmail = ref('')//後端傳回的Member資料
 const MemberPhone = ref('')//後端傳回的Member資料
@@ -387,73 +385,73 @@ function selectPayment(){
             
         }
     }
-function checkBankNo() {
+// function checkBankNo() {
 
-    if (bankNo.value == "") {
-        isBankNoNull.value = true
-    } else {
-        isBankNoNull.value = false
-    }
+//     if (bankNo.value == "") {
+//         isBankNoNull.value = true
+//     } else {
+//         isBankNoNull.value = false
+//     }
 
 
 
-}
-function checkCreditNo() { //信用卡驗證
+// }
+// function checkCreditNo() { //信用卡驗證
 
-    if (bankNo.value == "") {
-        isBankNoNull.value = true
-    } else {
-        isBankNoNull.value = false
-    }
-    let creditNoStr = creditNo.value.toString();//creditNo型態為number 轉型為String以做判斷
-    let sum = evenNum(creditNoStr) + oddNum(creditNoStr);
-    let resultNum = sum % 10;
-    if (resultNum != 0) {
-        resultNum = 10 - resultNum;
-    }
+//     if (bankNo.value == "") {
+//         isBankNoNull.value = true
+//     } else {
+//         isBankNoNull.value = false
+//     }
+//     let creditNoStr = creditNo.value.toString();//creditNo型態為number 轉型為String以做判斷
+//     let sum = evenNum(creditNoStr) + oddNum(creditNoStr);
+//     let resultNum = sum % 10;
+//     if (resultNum != 0) {
+//         resultNum = 10 - resultNum;
+//     }
 
-    if (resultNum !== creditNoStr[15] * 1) {
+//     if (resultNum !== creditNoStr[15] * 1) {
         
-        isCreditNoCorrect.value = true;
-    } else {
-        if (creditNoStr[0] === "5") {
-            console.log("MASTER CARD");
-            creditType.value = 'MASTER CARD'
-            isCreditNoCorrect.value = false;
-        } else {
-            console.log("VISA");
-            isCreditNoCorrect.value = false;
-            creditType.value = 'VISA'
-        }
-    }
+//         isCreditNoCorrect.value = true;
+//     } else {
+//         if (creditNoStr[0] === "5") {
+//             console.log("MASTER CARD");
+//             creditType.value = 'MASTER CARD'
+//             isCreditNoCorrect.value = false;
+//         } else {
+//             console.log("VISA");
+//             isCreditNoCorrect.value = false;
+//             creditType.value = 'VISA'
+//         }
+//     }
 
-    //偶數位加總
-    function evenNum(creditNoStr) {
-        let sum = 0;
-        for (let i = 1; i <= 13; i += 2) {
-            let resultNum = Number(creditNoStr[i]);
-            sum += resultNum;
-        }
-        return sum;
-    }
-    //奇數位加總
-    function oddNum(creditNoStr) {
-        let sum = 0;
-        for (let i = 0; i <= 15; i += 2) {
-            let resultNum = Number(creditNoStr[i]) * 2;
-            if (resultNum >= 10) {
-                resultNum -= 9;
-            }
-            sum += resultNum;
-        }
-        return sum;
-    }
-
-
+//     //偶數位加總
+//     function evenNum(creditNoStr) {
+//         let sum = 0;
+//         for (let i = 1; i <= 13; i += 2) {
+//             let resultNum = Number(creditNoStr[i]);
+//             sum += resultNum;
+//         }
+//         return sum;
+//     }
+//     //奇數位加總
+//     function oddNum(creditNoStr) {
+//         let sum = 0;
+//         for (let i = 0; i <= 15; i += 2) {
+//             let resultNum = Number(creditNoStr[i]) * 2;
+//             if (resultNum >= 10) {
+//                 resultNum -= 9;
+//             }
+//             sum += resultNum;
+//         }
+//         return sum;
+//     }
 
 
 
-}
+
+
+// }
 function selectReceipType() {
     if (receipType.value == "載具") {
         isReceipTypeCarrier.value = true
@@ -478,25 +476,33 @@ function useMemberImformatuion() {//帶入會員資料
 }
 
 function useRecipientImformatuion() {//帶入常用收件人
-console.log(MemberRecipientPhone.value)
-    if (isRecipientImfoChecked.value == true) {
-    
-        recipientName.value = MemberRecipient.value
-        recipientPhone.value =MemberRecipientPhone.value
-        isMemberImfoChecked.value = false
-        isShowInsertRecipient.value = false
+if(MemberRecipient.value!=null &&　MemberRecipient.value!='' && MemberRecipientPhone.value!=null && MemberRecipientPhone.value!=''){
+    if (isRecipientImfoChecked.value == true) {    
+    recipientName.value = MemberRecipient.value
+    recipientPhone.value =MemberRecipientPhone.value
+    isMemberImfoChecked.value = false
+    isShowInsertRecipient.value = false
     } else {
         isShowInsertRecipient.value = true
         isRecipientImfoChecked.value = false
         recipientName.value = ""
         recipientPhone.value = ""
     }
+}else{
+    isRecipientImfoChecked.value=false
+    Swal.fire({
+                    text: '無收件人資料，請點選下方按鍵進行新增',
+                    icon: 'warning',
+                    allowOutsideClick: false,
+                    confirmButtonText: '確認',
+                });
+}
+
 
 }
 
 //insert常用收件人
 function insertRecipient() {
-
         
         let memberData={
             "recipientAddress":homedelivery.value,
@@ -535,10 +541,10 @@ function insertRecipient() {
 
 }
 
-//取得購物車內容
+//取得會員詳細資料
 function getCart() {
 console.log(memberNo.value)
-    axiosapi.get(`/orders/findCartByMemberNo/${memberNo.value}`).then(function (response) {//預設會員1號
+    axiosapi.get(`/orders/findCartByMemberNo/${memberNo.value}`).then(function (response) {
         // member.value=response.data.member
         MemberName.value = response.data.name;
         MemberEmail.value = response.data.email;
@@ -561,7 +567,7 @@ console.log(memberNo.value)
     
         total.value += 60
         total.value=Math.ceil(total.value)
-console.log(total.value)
+        console.log(total.value)
 
     }).catch(function (error) {
         console.log("error", error);
@@ -579,10 +585,12 @@ console.log(total.value)
 
 function selectDeliveryType() {
     if (delivertype.value == "宅配") {
+        isUpadteRecipient.value=true
         isPayByCredit.value = true
         delivertypeCheck.value = true
         payment.value = "信用卡"
     } else {
+        isUpadteRecipient.value=false
 
         delivertypeCheck.value = false;
         payment.value = ""
@@ -626,15 +634,15 @@ function ckeckOut() {//結帳
 
         //若付款方式為信用卡 驗證信用卡號是否為空
     } else {
-        if (creditNo.value == '信用卡' && creditNo.value == "") {
-            Swal.fire({
-                text: '資料未填寫完整',
-                icon: 'error',
-                allowOutsideClick: false,
-                confirmButtonText: '確認',
-            });
+        // if (creditNo.value == '信用卡' && creditNo.value == "") {
+        //     Swal.fire({
+        //         text: '資料未填寫完整',
+        //         icon: 'error',
+        //         allowOutsideClick: false,
+        //         confirmButtonText: '確認',
+        //     });
 
-        } else {
+        // } else {
 
             Swal.fire({
                         text: "Loading......",
@@ -711,7 +719,7 @@ function ckeckOut() {//結帳
                 
                 });            
             }
-        }
+        // }
     }
 
 
