@@ -16,7 +16,7 @@ Swal.fire({
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "確認!"
+    confirmButtonText: "確認"
 }).then(function (result) {
     if (result.isConfirmed) {
 
@@ -33,7 +33,6 @@ Swal.fire({
                 if (response.data.success) {
                     Swal.fire({
                         title: "登出成功!",
-                        text: "您已被登出。",
                         icon: "success"
                     }).then(function () {
                         sessionStorage.clear();

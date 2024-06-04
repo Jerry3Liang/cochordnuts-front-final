@@ -45,7 +45,7 @@
 
             </ul>
         </div>
-        <button class="btn btn-primary w-15 py-1" type="button" @click="callModifyPwd()">確認修改</button>
+        <button class="btn btn-primary" type="button" @click="callModifyPwd()">確認修改</button>
     </div>
 </template>
 
@@ -166,9 +166,7 @@ function callModifyPwd() {
 
 <style>
 .center {
-
     margin: auto;
-
     max-width: 80%;
 }
 

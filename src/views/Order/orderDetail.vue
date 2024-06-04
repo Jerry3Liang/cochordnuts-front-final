@@ -66,6 +66,42 @@
         </tbody>
 
 </table>
+<!-- 訂單金額 -->
+
+
+<table class="table">
+        <thead>
+                <tr>
+                <th scope="col"><h2>訂單金額</h2></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                </tr>
+        </thead>
+        <thead>
+                <tr>
+                <td  scope="col">運費</td>
+                <td scope="col"></td>
+                <td scope="col"></td>
+                <td scope="col"></td>
+                <td scope="col"></td>
+                <td scope="col">60</td>
+                </tr>
+        </thead>
+        <thead>
+                <tr>
+                <th scope="col">訂單金額</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">{{total}}</th>
+                </tr>
+        </thead>
+</table>
+
 <table class="table">
         <thead>     
         <tr>
@@ -101,8 +137,14 @@
                 <td></td>
         </tr>
         <tr>
-                <th scope="row">發票號碼</th>
-                <th>{{receipt}}</th>
+                <td scope="row">發票號碼</td>
+                <td>{{receipt}}</td>
+                <td></td>
+                <td></td>
+        </tr>
+        <tr>
+                <th scope="row">訂單狀態</th>
+                <th v-if="order">{{order.status}}</th>
                 <th></th>
                 <th></th>
         </tr>
@@ -166,49 +208,6 @@
         </table> 
 
 
-
-
-
-
-
-
-
-
-        <!-- 訂單金額 -->
-
-
-        <table class="table">
-        <thead>
-                <tr>
-                <th scope="col"><h2>訂單金額</h2></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                </tr>
-        </thead>
-        <thead>
-                <tr>
-                <td  scope="col">運費</td>
-                <td scope="col"></td>
-                <td scope="col"></td>
-                <td scope="col"></td>
-                <td scope="col"></td>
-                <td scope="col">60</td>
-                </tr>
-        </thead>
-        <thead>
-                <tr>
-                <th scope="col">訂單金額</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col">{{total}}</th>
-                </tr>
-        </thead>
-        </table>
         <div class="form-floating">
                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" disabled>{{ note }}</textarea>
                 <label for="floatingTextarea2">Comments</label>
@@ -385,6 +384,7 @@ function  findOrderAndOrderDetail(){
         isCustomerCaseExist.value=response.data.isCustomerCaseExist;
         console.log("isCustomerCaseExist",isCustomerCaseExist.value)
         order.value=response.data.order
+        console.log(order.value.status)
         paymentStatus.value=response.data.order.paymentStatus
         for(let i =0 ;i<response.data.orderDetailDto.length;i++){//讀取後端傳入OrderDetailDto
                 OrderDetailDto.value.push(response.data.orderDetailDto[i])//放入od陣列

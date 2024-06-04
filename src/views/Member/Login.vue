@@ -22,7 +22,7 @@
             </label>
         </div>
         
-        <button class="btn btn-primary w-15 py-1" type="button" @click="login()">Sign in</button>
+        <button class="btn btn-primary" type="button" @click="login()">登入</button>
         <RouterLink style="margin-left: 20px;" to="/rePassword">忘記密碼</RouterLink>
     </form>
 

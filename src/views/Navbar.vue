@@ -6,7 +6,11 @@
     <div style="width: 25%; margin-left: 20%; margin-top: 2%;">
       <Search @searchcons="dosearch"></Search>
     </div>
-
+    <div v-if="isLoggedIn" style="margin-left: 16%; margin-top: 10%;margin-bottom: 5px;">
+      <div>{{ user.name }}，歡迎回來 ! </div>
+      <div>上次登入時間:{{ user.loginTime }}</div>
+    </div>
+    
   </div>
 
   <!-- <nav class="navbar navbar-expand-lg" style="background-color: white"> -->
@@ -60,10 +64,10 @@
             <RouterLink class="nav-link active" aria-current="page" to="/product/isPreorder">預購商品</RouterLink>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" @click="handleMemberCenterAccess($event)">
               會員中心
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" v-show="showMemberDropdown">
               <li>
                 <RouterLink to="/member" class="dropdown-item">會員基本資料</RouterLink>
               </li>
@@ -114,28 +118,53 @@
       </div>
     </div>
 
-    <div v-if="isLoggedIn">
-      <div>{{ user.name }}，歡迎回來 ! </div>
-      <div>上次登入時間:{{ user.loginTime }}</div>
-    </div>
-    
+
   </nav>
 
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import Swal from 'sweetalert2'
+import { ref,computed,onBeforeUnmount } from 'vue';
 import Search from '@/components/Search.vue';
-import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const props = defineProps({ isLoggedIn: Boolean,user: Object  });
 
 const loginOrLogoutText = computed(() => props.isLoggedIn ? '登出' : '登入');
 const loginOrLogoutLink = computed(() => props.isLoggedIn ? '/secure/logout' : '/secure/login');
+const showMemberDropdown = ref(false);
 
 function dosearch(data) {
   console.log(data);
 }
+function handleMemberCenterAccess(event) {
+  showMemberDropdown.value = false;
+  if (!props.isLoggedIn) {
+    event.preventDefault();
+    Swal.fire({
+            text: '請先登入!',
+            icon: 'warning',
+            allowOutsideClick: false,
+            confirmButtonText: '前往登入',
+            showCancelButton: true,
+            cancelButtonText: "取消",
+        }).then(function(result) {
+          if(result.isConfirmed){
+                    router.push({ name:"login-link"});
+                } else {
+                    return;
+                };
+        });
+  }  else {
+    showMemberDropdown.value = true;
+  }
+  }
+
+  onBeforeUnmount(() => {
+  showMemberDropdown.value = false;
+});
 
 </script>
 

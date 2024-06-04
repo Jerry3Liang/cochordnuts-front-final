@@ -10,8 +10,6 @@ background:#eee;">
         </div>
         <div class="col col-2" >
             <h5 v-show="eachCartItem.discount==1" class="text-grey">定價： ＄{{eachCartItem.price}}</h5>
-        <!-- </div>
-        <div  class=" col-2" > -->
             <h5 v-show="eachCartItem.discount!=1" class="text-grey " style="text-decoration: line-through;">定價： ＄{{eachCartItem.price}}</h5>
             <h5 v-show="eachCartItem.discount!=1" style="color: red;">特價： ＄{{Math.round(eachCartItem.discount*eachCartItem.price)}}</h5>
         </div>
@@ -26,7 +24,9 @@ background:#eee;">
             <button v-if="eachCartItem.inventory>eachCartItem.count" type="button" class="btn btn-outline-dark" @click="increaseOne(eachCartItem)" >+</button>
             <button v-if="eachCartItem.inventory===eachCartItem.count" type="button" class="btn btn-outline-dark" @click="increaseOne(eachCartItem)" disabled >+    </button>
             <div  class="col-12" >
-                <h5 class="text-grey " style="font:bold;"> 金額： ＄{{Math.round(eachCartItem.discount*eachCartItem.price)*eachCartItem.count}}</h5>
+                <h5 v-show="eachCartItem.discount==1"class="text-grey " style="font:bold;"> 金額： ＄{{eachCartItem.price*eachCartItem.count}}</h5>
+                <h5 v-show="eachCartItem.discount!=1" class="text-grey " style="text-decoration: line-through;">定價： ＄{{eachCartItem.price*eachCartItem.count}}</h5>
+                <h5 v-show="eachCartItem.discount!=1" style="color: red;">特價金額： ＄{{eachCartItem.count*Math.round(eachCartItem.discount*eachCartItem.price)}}</h5>
             </div>
             <div  class=" col col-10" >
                 <img type="button" src="/delete.png" title="刪除品項" width="25px" alt="刪除品項" style="border-left: .5cm;" @click="deleteThisItem(eachCartItem)" ></img>

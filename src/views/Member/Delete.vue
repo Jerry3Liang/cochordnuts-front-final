@@ -34,6 +34,7 @@ Swal.fire({
                         icon: "success"
                     }).then(function () {
                         sessionStorage.clear();
+                        localStorage.clear();
                         router.push({ name: "home-link" });
                     });
                 } else {
