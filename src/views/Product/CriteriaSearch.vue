@@ -2,10 +2,13 @@
     <div style="text-align: center; margin-top: 1%;">
         <h3 v-if="products">搜尋結果</h3>
         <h3 v-if="!products">查無資料，您可能會喜歡……</h3>
-        <hr>
     </div>
-    <div class="row">
+    <div class="row" v-if="products">
+        <hr>
         <ProductCard v-for="product in products" :key="product.productNo" :item="product"></ProductCard>
+    </div>
+    <div v-if="!products">
+        <Recommend></Recommend>
     </div>
     <div v-if="!products">
         <BestProducts></BestProducts>
@@ -31,6 +34,7 @@
 
     import ProductCard from '@/components/ProductCard.vue';
     import BestProducts from './BestProducts.vue';
+    import Recommend from './Recommend.vue';
 
     const route = useRoute();
     const products = ref(null);
@@ -66,23 +70,21 @@
 
     function dosearch(){
         
-
         if(route.query.startPrice == ""){
             startPrice.value == null;
-        }else{
-            startPrice.value == route.query.startPrice;
+        }else if(route.query.startPrice != null){
+            startPrice.value = route.query.startPrice;
         }
 
         if(route.query.endPrice == ""){
             endPrice.value == null;
-        }else{
-            endPrice.value == route.query.endPrice;
-        }
-        if(route.query.musicStyle != null){
-            musicStyle.value = route.query.musicStyle;
+        }else if(route.query.endPrice != null){
+            endPrice.value = route.query.endPrice;
         }
         if(route.query.productName == ""){
             productName.value = null;
+        }else if(route.query.productName != null){
+            productName.value = route.query.productName;
         }
         if(route.query.artistName == ""){
             artistName.value = null;
@@ -91,9 +93,16 @@
         }
         if(route.query.startDate == ""){
             startDate.value = null;
+        }else if(route.query.startDate != null){
+            startDate.value = route.query.startDate;
         }
         if(route.query.endDate == ""){
             endDate.value = null;
+        }else if(route.query.endDate != null){
+            endDate.value = route.query.endDate;
+        }
+        if(route.query.musicStyle != null){
+            musicStyle.value = route.query.musicStyle;
         }
         if(route.query.language != null){
             language.value = route.query.language;

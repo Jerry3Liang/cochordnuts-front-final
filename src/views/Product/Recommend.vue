@@ -1,5 +1,5 @@
 <template>
-    <div class="row" v-show="products">
+    <div class="row" v-show="products" style="margin: 3%; text-align: center;">
         <h2>為你推薦</h2>
         <hr>
         <ProductCard v-for="product in products" :key="product.productNo" :item="product"></ProductCard>
