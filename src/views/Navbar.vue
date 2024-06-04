@@ -81,17 +81,8 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item dropdown">
-            <!--Product -->
-            <RouterLink class="nav-link dropdown-toggle" to="/products" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              客戶服務
-            </RouterLink>
-            <ul class="dropdown-menu">
-              <li>
-                <RouterLink class="dropdown-item" to="/Customer/CustomerAnswer">客服提問</RouterLink>
-              </li>
-            </ul>
+          <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/Customer/CustomerAnswer" @click="handleMemberCenterAccess($event)">客服提問</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" to="/cart">購物車</RouterLink>
