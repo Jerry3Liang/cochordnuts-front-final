@@ -135,7 +135,7 @@ function dosearch(data) {
 function handleMemberCenterAccess(event) {
   showMemberDropdown.value = false;
   if (!props.isLoggedIn) {
-    event.preventDefault();  // 阻止下拉菜单展开
+    event.preventDefault();
     Swal.fire({
             text: '請先登入!',
             icon: 'warning',
