@@ -1,5 +1,7 @@
 <template>
-    <div class="row">
+    <div class="row" style="margin: 3%; text-align: center;">
+        <h2>西洋商品</h2>
+        <hr>
         <ProductCard v-for="product in products" :key="product.productNo" :item="product"></ProductCard>
     </div>    
 </template>
