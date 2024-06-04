@@ -14,13 +14,20 @@
   
         <div class="row; d-flex flex-row align-items-center mt-3 p-2 bg-white rounded" style="margin-bottom: .4cm;">
           <div class="col text-start"> <RouterLink class="btn btn-outline-warning btn-sm ml-2 end" type="button" to="/">回商品頁面</RouterLink></div>
-          <div class="col text-end"  >總金額: {{totalAmount}}</div>
+          <div class="col text-end"  >商品總金額: {{totalBeforeDiscount}}</div>
+          <div class="col text-end"  >已折扣: {{discountedAmount}}</div>
+          <div class="col text-end" style="text-decoration:underline;" >訂單總金額: {{totalAmount}}</div>
           <!-- <CartItem></CartItem> -->
           <div class="rounded col text-end"><button @click="goInertOrder" type="button" class="btn btn-danger btn-block btn-lg ml-2 pay-button">確認購買</button></div> 
         </div>
       </div>
     </div>
   </div>
+
+  <!-- <div>
+ <h1>類似商品</h1>
+ <ProductCard></ProductCard>   
+  </div> -->
   </template>
       
   <script setup >
@@ -30,12 +37,15 @@
   import Swal from 'sweetalert2'
   import axiosapi from '@/plugins/axios.js'
   import CartItem from './CartItem.vue'
+  import ProductCard from '../../components/ProductCard.vue'
   import router from '@/router/router'
   import { ref, watch } from 'vue'
   import { useRouter } from 'vue-router'
   const cartList=ref([])
   const routerr = useRouter();
+  const totalBeforeDiscount = ref(null);
   const totalAmount = ref(null);
+  const discountedAmount = ref(null);
   const inCart = ref(null);
   const Toast = Swal.mixin({
         toast: true,
@@ -124,9 +134,12 @@
         console.log(cartList.value[0])
         // cartList.value=response.data.list
         totalAmount.value=0;
+        discountedAmount.value=0;
         let xx=0
         for (response.data.list[xx]; xx < response.data.list.length; xx++) {
+          discountedAmount.value=discountedAmount.value+(response.data.list[xx].count*Math.round((response.data.list[xx].price)-response.data.list[xx].price*response.data.list[xx].discount));
           totalAmount.value = totalAmount.value+(response.data.list[xx].count*Math.round(response.data.list[xx].price*response.data.list[xx].discount));
+          totalBeforeDiscount.value = totalBeforeDiscount.value+(response.data.list[xx].count*response.data.list[xx].price);
         }
       })
     }
@@ -163,6 +176,8 @@
       // }
       inCart.count=id.count++;
       totalAmount.value=totalAmount.value+Math.round(id.price*id.discount)
+      discountedAmount.value=discountedAmount.value+Math.round(id.price-(id.price*id.discount));
+      totalBeforeDiscount.value=totalBeforeDiscount.value+(id.price);
       if (response.data.inventory===id.count) {
         // inCart.count=id.count++;
         // console.log("id.count111 =" , id.count);
@@ -183,6 +198,8 @@
   function decreaseQuanty(id) {
     inCart.count=id.count--;
     totalAmount.value=totalAmount.value-Math.round(id.price*id.discount)
+    discountedAmount.value=discountedAmount.value-Math.round(id.price-(id.price*id.discount));
+    totalBeforeDiscount.value=totalBeforeDiscount.value-(id.price);
     let obj = {
       productId: id.productId,
       memberNo: memberNo
@@ -227,8 +244,12 @@
             console.log("response: ", response);
             let xx=0
             totalAmount.value=0;
+            discountedAmount.value=0;
+            totalBeforeDiscount.value=0;
             for (response.data.list[xx]; xx < response.data.list.length; xx++) {
               totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
+              discountedAmount.value=discountedAmount.value+(response.data.list[xx].count*Math.round((response.data.list[xx].price)-response.data.list[xx].price*response.data.list[xx].discount));
+              totalBeforeDiscount.value = totalBeforeDiscount.value+(response.data.list[xx].count*response.data.list[xx].price);
               listItems();
             }
           });
