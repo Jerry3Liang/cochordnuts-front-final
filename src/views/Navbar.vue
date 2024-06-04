@@ -147,7 +147,7 @@ function handleMemberCenterAccess(event) {
           if(result.isConfirmed){
                     router.push({ name:"login-link"});
                 } else {
-                    router.push({name: "home-link"});
+                    return;
                 };
         });
   }  else {
