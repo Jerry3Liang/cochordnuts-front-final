@@ -102,25 +102,78 @@
       axiosapi.post("/cart/list", obj).then(function(response){
         for (let x = 0; x < response.data.list.length; x++) {
           if (response.data.list[x].inventory<=0) {
-            Swal.fire({
+           
+           
+
+
+           
+            // Swal.fire({
+            //   text: `"${response.data.list[x].productName}"已無庫存`,
+            //   icon: "warning",
+            //   showCancelButton: true,
+            //   confirmButtonColor: "#3085d6",
+            //   cancelButtonColor: "#d33",
+            //   confirmButtonText: `確定`,
+            //   cancelButtonText: `聯繫客服`
+            // })
+            // .then((result) => {
+            //   if (result.isConfirmed) {
+            //     let obj = {
+            //       productId: response.data.list[x].productId,
+            //       memberNo: memberNo
+            //     } 
+            //     axiosapi.post("/cart/deleteItem", obj)
+            //     location.reload();
+            //   }
+            // })
+
+
+
+            const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: "btn btn-danger",
+                cancelButton: "btn btn-danger"
+              },
+              buttonsStyling: true
+            });
+            swalWithBootstrapButtons.fire({
+              // title: "Are you sure?",
               text: `"${response.data.list[x].productName}"已無庫存`,
               icon: "warning",
-              showCancelButton: false,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: `確定`,
-              // cancelButtonText: `取消`
-            })
-            .then((result) => {
+              showCancelButton: true,
+              confirmButtonText: "移出購物車",
+              cancelButtonText: "聯繫客服",
+              reverseButtons: false
+            }).then((result) => {
               if (result.isConfirmed) {
+                {
                 let obj = {
                   productId: response.data.list[x].productId,
                   memberNo: memberNo
                 } 
                 axiosapi.post("/cart/deleteItem", obj)
+                swalWithBootstrapButtons.fire({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  icon: "success"
+                })
                 location.reload();
               }
-            })
+              } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+              ) {
+                // swalWithBootstrapButtons.fire({
+                //   title: "Cancelled",
+                //   text: "Your imaginary file is safe :)",
+                //   icon: "error"
+                // });
+                router.push({name: "customer-customerAnswer-link"})
+              }
+            });
+
+
+
           }
         inCart.value = response.data.list;
         console.log("response.data.list: ", response.data.list);
@@ -256,10 +309,11 @@
           Swal.fire({
             title: "Deleted!",
             text: `您已從您的購物車移除"${id.productName}"`,
-            icon: "success"
+            icon: "success",
+            showCloseButton: true
           });
-          location.reload();
         })
+        // location.reload();
       }
     });
   }
