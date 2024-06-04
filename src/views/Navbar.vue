@@ -135,20 +135,27 @@ function dosearch(data) {
 function handleMemberCenterAccess(event) {
   showMemberDropdown.value = false;
   if (!props.isLoggedIn) {
-    event.preventDefault();
+    event.preventDefault();  // 阻止下拉菜单展开
     Swal.fire({
             text: '請先登入!',
             icon: 'warning',
             allowOutsideClick: false,
-            confirmButtonText: '確認',
-        }).then(() => {
-            router.push({ name: "login-link" });
+            confirmButtonText: '前往登入',
+            showCancelButton: true,
+            cancelButtonText: "取消",
+        }).then(function(result) {
+          if(result.isConfirmed){
+                    router.push({path: "/secure/login"});
+                } else {
+                    router.push({path: "/"});
+                };
         });
   }  else {
     showMemberDropdown.value = true;
   }
   }
-onBeforeUnmount(() => {
+
+  onBeforeUnmount(() => {
   showMemberDropdown.value = false;
 });
 
