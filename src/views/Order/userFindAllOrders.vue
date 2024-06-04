@@ -68,7 +68,8 @@ console.log(orderNo)
 }
 onMounted(function () {
     doChangePage();
-    console.log(member.value)
+    console.log(member.value);
+    console.log("hahaha");
 
 })
 

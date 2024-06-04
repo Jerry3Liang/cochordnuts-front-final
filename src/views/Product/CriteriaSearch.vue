@@ -30,7 +30,7 @@
     import { useRoute } from 'vue-router';
     import axios from '@/plugins/axios.js';
     import Paginate from 'vuejs-paginate-next';
-
+    import Swal from 'sweetalert2';
 
     import ProductCard from '@/components/ProductCard.vue';
     import BestProducts from './BestProducts.vue';
@@ -69,6 +69,7 @@
     })
 
     function dosearch(){
+        
         
         if(route.query.startPrice == ""){
             startPrice.value == null;
@@ -116,6 +117,12 @@
     
     
     function goSearch(page){
+        Swal.fire({
+            text: "Loading......",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+        });
+
         if(page){
             start.value = (page -1) * rows.value;
             initial.value = page;
@@ -137,11 +144,13 @@
             "musicYear" : musicYear.value,
             "productStatus" : 1,
         }
-        
         console.log("data=",data);
         axios.post("/products/search", data).then(function(response){
             console.log("response=", response);
             products.value = response.data;
+            setTimeout(function() {
+                Swal.close();
+            }, 500);
         }).catch(function(error){
             console.log("error=", error);
             products.value = null;

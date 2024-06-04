@@ -2,7 +2,7 @@
     <div style="margin: auto;">
         <Carousel></Carousel>
     </div>
-    <div style="margin: 3%; text-align: center;" v-if="showRecommend">
+    <div v-if="showRecommend">
         <Recommend></Recommend>
     </div>
     <div>

@@ -665,7 +665,7 @@ function ckeckOut() {//結帳
                                             "productName": `CoChordNut唱片行 訂單編號：${orderNo.value}`,
                                             "amount": total.value,
                                             "currency": "TWD",
-                                            "orderId": orderNo.value ,
+                                            "orderId": orderNo.value+10000 ,
                                             "confirmUrl": `${host.value}/order/paymentSuccess?orderNumber=${orderNo.value}&amount=${total.value}`
                                         }
 
@@ -692,7 +692,7 @@ function ckeckOut() {//結帳
                             "orderNo": orderNo.value,
                             "memberNo" : sessionStorage.getItem("memberNo"),
                         }
-                        axiosapi.post(`http://localhost:8080/ecpayCheckout`, ECdata).then(function(response){
+                        axiosapi.post(`/ecpayCheckout`, ECdata).then(function(response){
                             console.log("response=", response.data);
                             document.getElementById("formContainer").innerHTML = response.data;
                             document.getElementById("allPayAPIForm").submit();
