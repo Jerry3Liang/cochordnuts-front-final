@@ -145,9 +145,9 @@ function handleMemberCenterAccess(event) {
             cancelButtonText: "取消",
         }).then(function(result) {
           if(result.isConfirmed){
-                    router.push({path: "/secure/login"});
+                    router.push({ name:"login-link"});
                 } else {
-                    router.push({path: "/"});
+                    router.push({name: "home-link"});
                 };
         });
   }  else {
