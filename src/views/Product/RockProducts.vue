@@ -1,30 +1,36 @@
 <template>
     <div class="row" style="margin: 3%; text-align: center;">
-        <h2>華語商品</h2>
+        <h2>搖滾音樂</h2>
         <hr>
         <ProductCard v-for="product in products" :key="product.productNo" :item="product"></ProductCard>
-    </div>    
+    </div>
+        
 </template>
     
 <script setup>
     import { ref, onMounted } from 'vue';
     import axios from '@/plugins/axios.js';
     import ProductCard from '@/components/ProductCard.vue';
-    
+
     const products = ref(null);
     onMounted(function(){
-        callFindChinese();
+        callFindRock();
     })
-    function callFindChinese(){
+    function callFindRock(){
+
         
-        axios.get(`/products/languageFind/${1}`).then(function(response){
+
+
+        axios.get(`/products/styleFind/${2}`).then(function(response){
 			console.log("response", response.data);
             products.value = response.data
         }).catch(function(error){
-            console.log("callFindChinese error", error);
+            console.log("callFindRock error", error);
         })
+
+
     }
-    
+
 </script>
     
 <style>

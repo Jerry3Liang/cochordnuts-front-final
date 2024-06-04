@@ -1,6 +1,6 @@
 <template>
     <!-- <div v-if="products"> -->
-        <div style="text-align: center; margin-top: 1%;">
+        <div style="text-align: center; margin: 3%;">
             <h1>全部商品</h1>
             <hr>
         </div>

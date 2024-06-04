@@ -1,5 +1,22 @@
 <template>
     <!-- <h3>Info</h3> -->
+    <div style="font-style: italic; text-align: right">
+        <RouterLink :to="{path:'/product/search', query: { artistName: productObj.artistType, }}">
+            <span style="color: #003D79;">{{ productObj.artistType }}</span></RouterLink>
+        
+        <span>、</span>
+        <RouterLink :to="{path:'/product/search', query: { language: productObj.languageType, }}">
+            <span style="color: #003D79;">{{ productObj.languageType }}</span></RouterLink>
+                
+        <span>、</span>
+        <RouterLink :to="{path:'/product/search', query: { musicStyle: productObj.styleType, }}">
+            <span style="color: #003D79;">{{ productObj.styleType }}</span></RouterLink>
+        
+        <span>、</span>
+        <RouterLink :to="{path:'/product/search', query: { musicYear: productObj.musicYear, }}">
+            <span style="color: #003D79;">{{ productObj.musicYear }}</span></RouterLink>
+        
+    </div>
         <figure class="card" style="width: 25rem; margin-right: 5%; float: left;">
             <img :src="`${path}${productObj.productNo}`" class="img-thumbnail" alt="無法載入">
         </figure>
@@ -21,9 +38,16 @@
                 <input type="text" size="2" v-model="count" style="text-align: center; height: 100%;">
                 <button type="button" class="countBtn" @click="plusItem">+</button>
             </div>
-            <div>
+            <div v-show="productObj.stock != 0">
                 <button type="button" class="btn btn-outline-danger" style="margin: 2%;" @click="cartAdd(productObj.productNo)">🛒加入購物車</button>
                 <button type="button" class="btn btn-outline-primary" @click="wishAdd(productObj.productNo)">🤍加入願望清單</button>
+            </div>
+            <!-- <span>目前已無庫存</span> -->
+            <div v-show="productObj.stock === 0">
+                <button type="button" class="btn btn-outline-danger" style="margin: 2%;" @click="cartAdd(productObj.productNo)" disabled>🛒加入購物車</button>
+                <button type="button" class="btn btn-outline-primary" @click="wishAdd(productObj.productNo)">🤍加入願望清單</button>
+                <!-- <button type="button" class="btn btn-outline-primary" @click="wishAdd(productObj.productNo)">🤍加入願望清單</button> -->
+
             </div>
         </div>
     
@@ -191,5 +215,5 @@
     .countBtn:hover{
         background-color: #D0D0D0;
     }
-
+    
 </style>

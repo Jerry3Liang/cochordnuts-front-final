@@ -10,6 +10,8 @@ import EnglishProduct from "./EnglishProduct.vue";
 import SearchProduct from "./CriteriaSearch.vue";
 import WishList from "./WishList.vue";
 import Recommend from "./Recommend.vue";
+import Rock from "./RockProducts.vue";
+import Pops from "./PopProducts.vue";
 
 
 export default [
@@ -24,4 +26,7 @@ export default [
     { name: "prodSearch-link", path: "/product/search", component: SearchProduct },
     { name: "wishList-link", path: "/wishList", component: WishList },
     { name: "recommend-link", path: "/recommend", component: Recommend },
+    { name: "rock-link", path: "/rock", component: Rock },
+    { name: "pop-link", path: "/pops", component: Pops },
+
 ]

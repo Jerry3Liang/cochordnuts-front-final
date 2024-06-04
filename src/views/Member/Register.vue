@@ -5,7 +5,7 @@
             <div class="stepwizard">
                 <div class="stepwizard-row">
                     <div class="stepwizard-step">
-                        <button type="button" class="btn btn-primary btn-circle">1</button>
+                        <button type="button" class="btn btn-primary btn-circle" disabled="disabled">1</button>
                         <p>驗證信箱</p>
                     </div>
                     <div class="stepwizard-step">
@@ -52,7 +52,7 @@
                         <p>驗證信箱</p>
                     </div>
                     <div class="stepwizard-step">
-                        <button type="button" class="btn btn-primary btn-circle">2</button>
+                        <button type="button" class="btn btn-primary btn-circle" disabled="disabled">2</button>
                         <p>填寫基本資料</p>
                     </div>
                     <div class="stepwizard-step">
@@ -152,11 +152,11 @@
                         <p>驗證信箱</p>
                     </div>
                     <div class="stepwizard-step">
-                        <button type="button" class="btn btn-default btn-circle" disabled="disabled">2</button>
+                        <button type="button" class="btn btn-default btn-circle" style="border-color: black;" @click="goToStep(2)">2</button>
                         <p>填寫基本資料</p>
                     </div>
                     <div class="stepwizard-step">
-                        <button type="button" class="btn btn-primary btn-circle">3</button>
+                        <button type="button" class="btn btn-primary btn-circle" disabled="disabled">3</button>
                         <p>選擇喜好</p>
                     </div>
                     <div class="stepwizard-step">
@@ -188,15 +188,15 @@
                         <p>驗證信箱</p>
                     </div>
                     <div class="stepwizard-step">
-                        <button type="button" class="btn btn-default btn-circle" disabled="disabled">2</button>
+                        <button type="button" class="btn btn-default btn-circle" style="border-color: black;" @click="goToStep(2)">2</button>
                         <p>填寫基本資料</p>
                     </div>
                     <div class="stepwizard-step">
-                        <button type="button" class="btn btn-default btn-circle" disabled="disabled">3</button>
+                        <button type="button" class="btn btn-default btn-circle" style="border-color: black;" @click="goToStep(3)">3</button>
                         <p>選擇喜好</p>
                     </div>
                     <div class="stepwizard-step">
-                        <button type="button" class="btn btn-primary btn-circle">4</button>
+                        <button type="button" class="btn btn-primary btn-circle" disabled="disabled">4</button>
                         <p>確認送出</p>
                     </div>
                 </div>
@@ -232,8 +232,7 @@
                         :value="user.favoriteIds.map(getProductStyleName).join(', ')" readonly>
                 </div>
                 <div class="input-group" style="display: flex;justify-content: right;">
-                    <button class="btn btn-primary mt-2" type="submit"
-                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">確認並送出</button>
+                    <button class="btn btn-primary" type="submit">確認並送出</button>
                 </div>
             </form>
         </div>
@@ -446,6 +445,24 @@ function callCreate() {
     });
 }
 
+function goToStep(step){
+    switch (step) {
+        case 2:
+            favorite.value = false;
+            emailVerified.value = true;
+            emailSent.value = true;
+            confirmation.value = false;
+            break;
+        case 3:
+            confirmation.value = false;
+            favorite.value=true;
+            break;
+        default:
+            break;
+    }
+};
+
+
 </script>
 <style>
 body {
@@ -502,8 +519,6 @@ body {
 .input-group {
     margin-top: 50px;
     flex: 0 0 500px;
-    /* 固定宽度，调整到适合的长度 */
     width: 450px;
-    /* 确保宽度固定 */
 }
 </style>
