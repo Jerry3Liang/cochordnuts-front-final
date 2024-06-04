@@ -37,20 +37,27 @@
                 <RouterLink to="/product/en" class="dropdown-item">西洋</RouterLink>
               </li>
               <li>
-                <RouterLink to="/product/isBest" class="dropdown-item">熱銷商品</RouterLink>
+                <RouterLink to="/pops" class="dropdown-item">流行音樂</RouterLink>
               </li>
               <li>
-                <RouterLink to="/product/isDiscount" class="dropdown-item">折扣商品</RouterLink>
+                <RouterLink to="/rock" class="dropdown-item">搖滾音樂</RouterLink>
               </li>
-              <li>
-                <RouterLink to="/product/isPreorder" class="dropdown-item">預購商品</RouterLink>
-              </li>
+              
               
               
             </ul>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" to="/products">全部商品</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/product/isBest">熱銷商品</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/product/isDiscount">折扣商品</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/product/isPreorder">預購商品</RouterLink>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

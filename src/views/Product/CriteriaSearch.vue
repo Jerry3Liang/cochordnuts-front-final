@@ -10,12 +10,24 @@
     <div v-if="!products">
         <BestProducts></BestProducts>
     </div>
+    <Paginate class="justify-content-center"
+                :first-last-button="true"
+                first-button-text="&lt;&lt;"
+                last-button-text="&gt;&gt;"
+                prev-text="&lt;"
+                next-text="&gt;"
+                :page-count="pages"
+                :initial-page="initial"
+                :click-handler="dosearch"
+                ></Paginate>
 </template>
     
 <script setup>
     import { ref, onMounted, watch } from 'vue';
     import { useRoute } from 'vue-router';
     import axios from '@/plugins/axios.js';
+    import Paginate from 'vuejs-paginate-next';
+
 
     import ProductCard from '@/components/ProductCard.vue';
     import BestProducts from './BestProducts.vue';
@@ -29,6 +41,16 @@
     const endPrice = ref(null);
     const startDate = ref(null);
     const endDate = ref(null);
+
+    const musicStyle = ref(null);
+    const language = ref(null);
+    const musicYear = ref(null);
+
+    const pages = ref(100);
+    const initial = ref(1);
+    const start = ref(0);
+    const rows = ref(20);
+    const total = ref(0);
 
     
     watch(function(){
@@ -56,20 +78,55 @@
         }else{
             endPrice.value == route.query.endPrice;
         }
+        if(route.query.musicStyle != null){
+            musicStyle.value = route.query.musicStyle;
+        }
+        if(route.query.productName == ""){
+            productName.value = null;
+        }
+        if(route.query.artistName == ""){
+            artistName.value = null;
+        }else if(route.query.artistName != null){
+            artistName.value = route.query.artistName;
+        }
+        if(route.query.startDate == ""){
+            startDate.value = null;
+        }
+        if(route.query.endDate == ""){
+            endDate.value = null;
+        }
+        if(route.query.language != null){
+            language.value = route.query.language;
+        }
+        if(route.query.musicYear != null){
+            musicYear.value = route.query.musicYear;
+        }
 
         goSearch();
     }
     
     
-    function goSearch(){
+    function goSearch(page){
+        if(page){
+            start.value = (page -1) * rows.value;
+            initial.value = page;
+        } else {
+            start.value = 0;
+        }
         
         let data = {
-            "productName" : route.query.productName,
-            "artistName" : route.query.artistName,
+            "start" : start.value,
+            "rows" : rows.value,
+            "productName" : productName.value,
+            "artistName" : artistName.value,
             "startPrice" : startPrice.value,
             "endPrice" : endPrice.value,
-            "startDate" : route.query.startDate,
-            "endDate" : route.query.endDate,
+            "startDate" : startDate.value,
+            "endDate" : endDate.value,
+            "musicStyle" : musicStyle.value,
+            "language" : language.value,
+            "musicYear" : musicYear.value,
+            "productStatus" : 1,
         }
         
         console.log("data=",data);
@@ -79,6 +136,15 @@
         }).catch(function(error){
             console.log("error=", error);
             products.value = null;
+        })
+
+        axios.post("/products/searchCount", data).then(function(response){
+			console.log("count=", response.data);
+            total.value = response.data
+            pages.value = Math.ceil(response.data / rows.value);
+            // lastPageRows.value = response.data % rows.value;
+        }).catch(function(error){
+            console.log("searchCount", error);
         })
         
 
