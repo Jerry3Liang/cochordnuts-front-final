@@ -1,31 +1,28 @@
 <template>
     <div class="container" v-if="member">
-
         <div class="col-md-9" style="margin: auto;">
             <div class="card">
                 <div class="card-body">
-
                     <div class="col-md-12">
                         <h3>修改會員資料</h3>
                         <hr>
                     </div>
-
                     <div class="row">
                         <div class="col-md-12">
                             <form>
                                 <div class="form-group row">
                                     <label for="name" class="col-4 col-form-label">姓名:</label>
                                     <div class="col-8">
-                                        <input id="name" name="name" placeholder="姓名" class="form-control here"
+                                        <input id="name" name="name" placeholder="姓名(必填)" class="form-control here"
                                             type="text" v-model="member.name" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="birthday" class="col-4 col-form-label">生日:</label>
                                     <div class="col-8">
-                                        <input id="birthday" name="birthday" placeholder="生日" class="form-control here"
-                                            type="date" v-model="member.birthday" :max="maxBirthday()"
-                                            :min="minBirthday()" required>
+                                        <input id="birthday" name="birthday" placeholder="生日(必填)"
+                                            class="form-control here" type="date" v-model="member.birthday"
+                                            :max="maxBirthday()" :min="minBirthday()" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -46,7 +43,7 @@
                                 <div class="form-group row">
                                     <label for="email" class="col-4 col-form-label">Email:</label>
                                     <div class="col-8">
-                                        <input id="email" name="email" placeholder="Email" class="form-control here"
+                                        <input id="email" name="email" placeholder="Email(必填)" class="form-control here"
                                             type="email" v-model="member.email" required>
                                     </div>
                                 </div>
@@ -60,7 +57,7 @@
                                 <div class="form-group row">
                                     <label for="phone" class="col-4 col-form-label">電話:</label>
                                     <div class="col-8">
-                                        <input id="phone" name="phone" placeholder="電話" class="form-control here"
+                                        <input id="phone" name="phone" placeholder="電話(必填)" class="form-control here"
                                             type="tel" v-model="member.phone" required>
                                     </div>
                                 </div>
@@ -85,6 +82,19 @@
                                             class="form-control here" type="tel" v-model="member.recipientPhone">
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label for="favorites" class="col-4 col-form-label">喜好:</label>
+                                    <div class="col-8" style="margin-top: 10px;">
+                                        <div class="form-check form-check-inline" v-for="style in productStyles"
+                                            :key="style.id">
+                                            <input class="form-check-input" type="checkbox" :value="style.id"
+                                                v-model="member.favoriteIds" :id="'style-' + style.id">
+                                            <label style="font-size: 17px;font-weight: 500;" class="form-check-label"
+                                                :for="'style-' + style.id">{{ style.name
+                                                }}</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                             <div class="button-container">
                                 <button class="btn btn-primary" type="button" @click="callModify()">確認修改</button>
@@ -97,24 +107,36 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script setup>
 import Swal from 'sweetalert2'
 import axiosapi from '@/plugins/axios.js';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const member = ref(null);
 
+const productStyles = ref([
+    { id: 1, name: '流行' },
+    { id: 2, name: '搖滾' },
+    { id: 3, name: '爵士' },
+    { id: 4, name: '古典' },
+    { id: 5, name: '民謠' },
+]);
+
 onMounted(() => {
     const loggedInMemberNo = sessionStorage.getItem("memberNo");
     axiosapi.get(`/members/${loggedInMemberNo}`)
         .then(response => {
-            member.value = response.data.list[0];
+            console.log("API response:", response.data);
+            const memberData = response.data.list[0];
+            member.value = {
+                ...memberData,
+                favoriteIds: memberData.favorites
+            };
         })
         .catch(error => {
             Swal.fire({
@@ -151,7 +173,6 @@ function callModify() {
         });
         return;
     }
-
     Swal.fire({
         title: "確認修改?",
         icon: "warning",
@@ -160,10 +181,24 @@ function callModify() {
         cancelButtonColor: "#d33",
         confirmButtonText: "確認"
     }).then(result => {
+
         if (result.isConfirmed) {
+            const modifiedData = {
+                name: member.value.name,
+                birthday: member.value.birthday,
+                email: member.value.email,
+                phone: member.value.phone,
+                address: member.value.address,
+                recipient: member.value.recipient,
+                recipientAddress: member.value.recipientAddress,
+                recipientPhone: member.value.recipientPhone,
+                memberNo: sessionStorage.getItem("memberNo"),
+                favoriteIds: member.value.favoriteIds
+            };
             let loggedInMemberNo = sessionStorage.getItem("memberNo");
-            axiosapi.put(`/members/${loggedInMemberNo}`, member.value)
+            axiosapi.put(`/members/${loggedInMemberNo}`, modifiedData)
                 .then(response => {
+                    console.log('Response from PUT:', member.value);
                     if (response.data.success) {
                         Swal.fire({
                             title: "修改成功!",
@@ -197,11 +232,10 @@ function callModify() {
 }
 </script>
 
+
 <style scoped>
 .container {
-
     margin: auto;
-
     max-width: 80%;
 }
 
