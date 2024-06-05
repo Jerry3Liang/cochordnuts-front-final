@@ -86,6 +86,15 @@
                                             disabled>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="recipientPhone" class="col-4 col-form-label">喜好:</label>
+                                    <div class="col-8">
+                                        <input id="favorites" name="favorites" placeholder="喜好" type="text"
+                                            class="form-control here" :value="favoritesDisplay" disabled>
+                                    </div>
+                                </div>
+
                             </form>
                             <RouterLink to="/memberModify">
                                 <button class="btn btn-primary" type="button">修改</button>
@@ -95,25 +104,46 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script setup>
 import Swal from 'sweetalert2'
 import axiosapi from '@/plugins/axios.js';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const member = ref(null);
+
+const favorites = ref([]);
+
+const productStyles = ref([
+    { id: 1, name: '流行' },
+    { id: 2, name: '搖滾' },
+    { id: 3, name: '爵士' },
+    { id: 4, name: '古典' },
+    { id: 5, name: '民謠' },
+]);
+
+function getProductStyleName(id) {
+    const style = productStyles.value.find(item => item.id === id);
+    return style ? style.name : '';
+}
+
+const favoritesDisplay = computed(() => {
+    return favorites.value.map(getProductStyleName).join(', ');
+});
 
 onMounted(() => {
     const loggedInMemberNo = sessionStorage.getItem("memberNo");
     if (loggedInMemberNo != null) {
         axiosapi.get(`/members/${loggedInMemberNo}`)
             .then(response => {
+                console.log("API response:", response);
                 member.value = response.data.list[0];
+
+                favorites.value = member.value.favorites;
             })
             .catch(error => {
                 console.error('Error fetching member data:', error);
@@ -130,7 +160,6 @@ onMounted(() => {
     }
 });
 
-
 const formatBirthday = (dateString) => {
     if (dateString.includes('T')) {
         return dateString.split('T')[0];
@@ -142,16 +171,13 @@ const formatBirthday = (dateString) => {
 
 <style scoped>
 .container {
-
     margin: auto;
-
     max-width: 80%;
 }
 
 .card {
     margin-top: 40px;
 }
-
 
 .form-group.row {
     margin-bottom: 15px;
