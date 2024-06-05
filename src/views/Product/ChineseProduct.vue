@@ -3,13 +3,21 @@
         <h2>華語商品</h2>
         <hr>
         <ProductCard v-for="product in products" :key="product.productNo" :item="product"></ProductCard>
-    </div>    
+    </div>
+    
+
+
+    
 </template>
     
 <script setup>
     import { ref, onMounted } from 'vue';
     import axios from '@/plugins/axios.js';
     import ProductCard from '@/components/ProductCard.vue';
+    import { throttle } from 'lodash'
+    import Observer from "@/components/Observer.vue"
+
+
     
     const products = ref(null);
     onMounted(function(){

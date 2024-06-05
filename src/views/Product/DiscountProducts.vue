@@ -40,7 +40,7 @@
     })
     function callFindDiscount(page){
 
-        console.log(router.value.fullPath);
+        // console.log(router.value.fullPath);
         if(router.value.fullPath === "/product/isDiscount"){
             pageShow.value = true;
             rows.value = 16;

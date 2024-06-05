@@ -42,7 +42,7 @@
     })
     function callFindBest(page){
         
-        console.log(router.value.fullPath);
+        // console.log(router.value.fullPath);
         if(router.value.fullPath === "/product/isBest"){
             pageShow.value = true;
             rows.value = 16;

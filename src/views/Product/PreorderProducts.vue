@@ -42,7 +42,7 @@
     })
     function callFindPreorder(page){
 
-        console.log(router.value.fullPath);
+        // console.log(router.value.fullPath);
         if(router.value.fullPath === "/product/isPreorder"){
             pageShow.value = true;
             rows.value = 16;

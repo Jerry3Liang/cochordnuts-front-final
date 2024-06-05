@@ -12,6 +12,14 @@ import WishList from "./WishList.vue";
 import Recommend from "./Recommend.vue";
 import Rock from "./RockProducts.vue";
 import Pops from "./PopProducts.vue";
+import ChineseProductInf from "./ChineseProductInf.vue";
+import JpKrProductInf from "./JpKrProductInf.vue";
+import EnglishProductInf from "./EnglishProductInf.vue";
+import PopsInf from "./PopProductsInf.vue";
+import RockInf from "./RockProductsInf.vue"
+import MoreTypes from "./MoreTypes.vue";
+import TaiwaneseProductInf from "./TaiwaneseProductInf.vue";
+import PureProductInf from "./PureProductInf.vue";
 
 
 export default [
@@ -28,5 +36,14 @@ export default [
     { name: "recommend-link", path: "/recommend", component: Recommend },
     { name: "rock-link", path: "/rock", component: Rock },
     { name: "pop-link", path: "/pops", component: Pops },
+    { name: "prodCNinf-link", path: "/product/cnInf", component: ChineseProductInf },
+    { name: "prodTWinf-link", path: "/product/twInf", component: TaiwaneseProductInf },
+    { name: "prodJPKRinf-link", path: "/product/JpKrInf", component: JpKrProductInf },
+    { name: "prodENinf-link", path: "/product/enInf", component: EnglishProductInf },
+    { name: "prodPureinf-link", path: "/product/pureInf", component: PureProductInf },
+    { name: "popInf-link", path: "/popsInf", component: PopsInf },
+    { name: "rockInf-link", path: "/rockInf", component: RockInf },
+    { name: "moreTypes-link", path: "/moreTypes", component: MoreTypes },
+
 
 ]

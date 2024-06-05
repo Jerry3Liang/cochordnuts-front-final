@@ -6,6 +6,7 @@
                     <img :src="`${path}${item.productNo}`" class="card-img-top" alt="無法載入" style="height: 18rem;">
                     <div class="card-body">
                         <p class="prodtext">{{ item.productName }}</p>
+                        <p class="prodtext">{{ item.artistType }}</p>
                         <div v-show="item.discount == 1" style="text-align: left;">
                             <span  class="prodtext" style="font-size: large;">NT. {{ item.unitPrice }}</span>
                         </div>

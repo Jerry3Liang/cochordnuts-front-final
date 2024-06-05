@@ -32,19 +32,22 @@
             </RouterLink>
             <ul class="dropdown-menu">
               <li>
-                <RouterLink to="/product/cn" class="dropdown-item">華語</RouterLink>
+                <RouterLink to="/product/cnInf" class="dropdown-item">華語</RouterLink>
               </li>
               <li>
-                <RouterLink to="/product/JpKr" class="dropdown-item">日韓</RouterLink>
+                <RouterLink to="/product/JpKrInf" class="dropdown-item">日韓</RouterLink>
               </li>
               <li>
-                <RouterLink to="/product/en" class="dropdown-item">西洋</RouterLink>
+                <RouterLink to="/product/enInf" class="dropdown-item">西洋</RouterLink>
               </li>
               <li>
-                <RouterLink to="/pops" class="dropdown-item">流行音樂</RouterLink>
+                <RouterLink to="/popsInf" class="dropdown-item">流行音樂</RouterLink>
               </li>
               <li>
                 <RouterLink to="/rock" class="dropdown-item">搖滾音樂</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/moreTypes" class="dropdown-item">更多分類</RouterLink>
               </li>
               
               
