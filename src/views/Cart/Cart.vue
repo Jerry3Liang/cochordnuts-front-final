@@ -169,7 +169,7 @@
             // }
           // )
           
-          if (response.data.list[x].count=response.data.list[x].inventory){
+          if (response.data.list[x].count===response.data.list[x].inventory){
             
             Swal.fire({
               title: "已達所有庫存",
@@ -180,9 +180,13 @@
               // timer: 2000
               
             })
-          }
+          //   .then((result) => {
+          //     if (result.isConfirmed) {
+          //     }
+            
+          // })
           
-        }
+        }}
             // inCart.count=response.data.inventory;
         
         inCart.value = response.data.list;
