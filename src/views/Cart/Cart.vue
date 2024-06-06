@@ -34,6 +34,7 @@
   
   //import url from 'https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap';
   
+
   import Swal from 'sweetalert2'
   import axiosapi from '@/plugins/axios.js'
   import CartItem from './CartItem.vue'
@@ -59,6 +60,13 @@
         }
         });
   
+  // function toast() {
+  //   $bvToast.toast(`Toast with action link`, {
+  //         href: '#foo',
+  //         title: 'Example'
+  //       })
+  //     }
+
     let user=sessionStorage.getItem("userName")
     let memberNo=sessionStorage.getItem("memberNo");
   
@@ -101,6 +109,14 @@
       }
       axiosapi.post("/cart/list", obj).then(function(response){
         for (let x = 0; x < response.data.list.length; x++) {
+          if (response.data.list[x].count===response.data.list[x].inventory){
+            
+            // toast();
+
+            Toast.fire({
+              icon: "warning",
+              title: `${response.data.list[x].productName}已達所有庫存`
+            });
           if (response.data.list[x].inventory<=0) {
             // Swal.fire({
             //   text: `"${response.data.list[x].productName}"已無庫存`,
@@ -159,23 +175,18 @@
                 /* Read more about handling dismissals below */
                 result.dismiss === Swal.DismissReason.cancel
               ) {
-                // swalWithBootstrapButtons.fire({
-                //   title: "Cancelled",
-                //   text: "Your imaginary file is safe :)",
-                //   icon: "error"
-                // });
+                swalWithBootstrapButtons.fire({
+                  // title: "客服",
+                  text: "將有客服人員為您協助 :)",
+                  icon: "success"
+                });
                 
                 router.push({name: "customer-customerAnswer-link"})
               }
             }
           )
           }
-          if (response.data.list[x].count===response.data.list[x].inventory){
-            
-            Toast.fire({
-              icon: "warning",
-              title: `${response.data.list[x].productName}已達所有庫存`
-            });
+          
             // Swal.fire({
             //   title: "已達所有庫存",
             //   text: `已加入所有"${response.data.list[x].productName}"庫存，共${response.data.list[x].inventory}件`,
