@@ -125,18 +125,20 @@ function callModifyPwd() {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "確認!"
+            confirmButtonText: "確認"
         }).then(function (result) {
             if (result.isConfirmed) {
                 let memberNo = sessionStorage.getItem("memberNo");
                 axiosapi.put(`/member/changepwd/${memberNo}`, member.value)
                     .then(function (response) {
                         if (response.data.success) {
+                            sessionStorage.clear();
+                            localStorage.clear();
+                            router.push({ name: "login-link" });
                             Swal.fire({
-                                title: "修改成功!",
+                                title: "修改成功，請重新登入 !",
                                 icon: "success"
                             }).then(function () {
-                                router.push({ name: "member-link" });
                             });
                         } else {
                             Swal.fire({
