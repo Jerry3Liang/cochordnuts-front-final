@@ -35,6 +35,8 @@
   //import url from 'https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap';
   
 
+
+
   import Swal from 'sweetalert2'
   import axiosapi from '@/plugins/axios.js'
   import CartItem from './CartItem.vue'
@@ -52,7 +54,7 @@
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 2500,
+        timer: 6000,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.onmouseenter = Swal.stopTimer;
@@ -60,6 +62,8 @@
         }
         });
   
+
+        
   // function toast() {
   //   $bvToast.toast(`Toast with action link`, {
   //         href: '#foo',
@@ -112,11 +116,14 @@
           if (response.data.list[x].count===response.data.list[x].inventory){
             
             // toast();
-
+            
             Toast.fire({
               icon: "warning",
-              title: `${response.data.list[x].productName}已達所有庫存`
-            });
+              title: `${response.data.list[x].productName}目前只剩${response.data.list[x].inventory}件`
+            })
+          }
+        }
+        for (let x = 0; x < response.data.list.length; x++) {
           if (response.data.list[x].inventory<=0) {
             // Swal.fire({
             //   text: `"${response.data.list[x].productName}"已無庫存`,
@@ -203,7 +210,7 @@
             
           // })
           
-        }
+        
       }
             // inCart.count=response.data.inventory;
         
