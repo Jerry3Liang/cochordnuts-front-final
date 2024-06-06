@@ -94,10 +94,10 @@ function login() {
                     router.push({ name: "home-link" })
                 }
             });
-        } else {
+        } else if(response.data.memberStatus==0) {
             Swal.fire({
-                text: '請檢查帳號和密碼',
-                icon: 'error',
+                text: '請聯繫客服人員確認帳戶狀態 !',
+                icon: 'warning',
                 allowOutsideClick: false,
                 confirmButtonText: '確認',
             })
