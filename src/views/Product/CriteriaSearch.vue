@@ -22,7 +22,7 @@
                 next-text="&gt;"
                 :page-count="pages"
                 :initial-page="initial"
-                :click-handler="goSearch"
+                :click-handler="dosearch"
                 ></Paginate>
 </template>
     
