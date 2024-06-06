@@ -94,19 +94,21 @@
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" to="/Customer/CustomerAnswer" @click="handleMemberCenterAccess($event)">客服提問</RouterLink>
           </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/cart">購物車</RouterLink>
-          </li>
+          
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" to="/wishList">願望清單</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" :to="loginOrLogoutLink">
-              {{ loginOrLogoutText }}
+              {{ loginOrLogoutText }} <img src="/user.png" />
             </RouterLink>
           </li>
           <li class="nav-item" v-if="!isLoggedIn">
             <RouterLink class="nav-link active" aria-current="page" to="/register">註冊</RouterLink>
+          </li>
+
+          <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/cart">購物車<img src="/shopping-bag.png" /></RouterLink>
           </li>
         </ul>
       </div>
