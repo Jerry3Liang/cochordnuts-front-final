@@ -1,5 +1,5 @@
 <template>
-    <form class="row g-3">
+    <form class="row g-3" style="margin-top: 20px;">
 <label for="outputMember" class="form-label"><h2>購物車商品明細</h2></label> 
     <table class="table table-striped table-hover">
 

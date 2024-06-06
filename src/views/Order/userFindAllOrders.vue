@@ -18,6 +18,7 @@
                 <th scope="col">更新時間</th>
                 <th scope="col">付款狀態</th>
                 <th scope="col">狀態</th>
+                <th scope="col">檢視</th>
             </tr>
         </thead>
         <tbody>
@@ -29,8 +30,8 @@
                 <td>{{ anOrder.lastModifiedDate }}</td>
                 <td>{{ anOrder.paymentStatus }}</td>
                 <td>{{ anOrder.status }}</td>
-                <button type="button" class="btn btn-outline-secondary"
-                    @click="seeOrderDetail(anOrder.orderNo)">查看詳細內容</button>
+                <td><button type="button" class="btn btn-outline-success"
+                    @click="seeOrderDetail(anOrder.orderNo)">查看詳細內容</button></td>
                 
             </tr>
         </tbody>
