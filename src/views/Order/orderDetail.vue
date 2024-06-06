@@ -420,7 +420,7 @@ function  findOrderAndOrderDetail(){
                 note.value=response.data.order.note
                 status.value=response.data.order.status
                 
-                if(status.value=='已出貨' ||status.value=='完成訂單'){
+                if(status.value=='已出貨' ||status.value=='完成訂單' || status.value=='訂單取消'){
                         console.log(status.value)
                         isOrderCancel.value=false
                 }else{
