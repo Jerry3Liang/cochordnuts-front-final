@@ -43,7 +43,7 @@
                 <button type="button" class="btn btn-outline-primary" @click="wishAdd(productObj.productNo)">🤍加入願望清單</button>
             </div>
             <!-- <span>目前已無庫存</span> -->
-            <div v-show="productObj.stock === 0">
+            <div v-show="productObj.stock <= 0">
                 <button type="button" class="btn btn-outline-danger" style="margin: 2%;" @click="cartAdd(productObj.productNo)" disabled>🛒加入購物車</button>
                 <button type="button" class="btn btn-outline-primary" @click="wishAdd(productObj.productNo)">🤍加入願望清單</button>
                 <!-- <button type="button" class="btn btn-outline-primary" @click="wishAdd(productObj.productNo)">🤍加入願望清單</button> -->

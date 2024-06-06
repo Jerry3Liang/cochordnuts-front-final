@@ -14,6 +14,7 @@
         <BestProducts></BestProducts>
     </div>
     <Paginate class="justify-content-center"
+                v-if="products"
                 :first-last-button="true"
                 first-button-text="&lt;&lt;"
                 last-button-text="&gt;&gt;"
@@ -21,7 +22,7 @@
                 next-text="&gt;"
                 :page-count="pages"
                 :initial-page="initial"
-                :click-handler="dosearch"
+                :click-handler="goSearch"
                 ></Paginate>
 </template>
     
@@ -148,12 +149,14 @@
         axios.post("/products/search", data).then(function(response){
             console.log("response=", response);
             products.value = response.data;
-            setTimeout(function() {
+            // setTimeout(function() {
                 Swal.close();
-            }, 500);
+            // }, 500);
         }).catch(function(error){
             console.log("error=", error);
             products.value = null;
+            Swal.close();
+
         })
 
         axios.post("/products/searchCount", data).then(function(response){

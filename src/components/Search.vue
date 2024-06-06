@@ -19,7 +19,8 @@
             <table>
                 <tr><td style="width: 15%;">商品名稱：</td><td style="width: 50%;"><input type="text" v-model="productName"></td></tr>
                 <tr><td>演唱者：</td><td><input type="text" v-model="artistName"></td></tr>
-                <tr><td>價格：</td><td><input type="text" size="8" v-model="startPrice">~<input type="text" size="8" v-model="endPrice" :min="priceMin" @blur="updatePriceMin"></td></tr>
+                <!-- <tr><td>價格：</td><td><input type="text" size="8" v-model="startPrice">~<input type="text" size="8" v-model="endPrice" :min="priceMin" @change="updatePriceMin"></td></tr> -->
+                <tr><td>價格：</td><td><input type="text" size="8" v-model="startPrice">~<input type="text" size="8" v-model="endPrice" @change="updatePriceMin"></td></tr>
                 <tr><td>發行日：</td><td style="width: fit-content;"><input type="date" v-model="startDate"  @change="updateEndDateMin">~<input type="date" v-model="endDate" :min="endDateMin"></td></tr>
             </table>
         </div>
@@ -68,9 +69,9 @@
     }
 
     function updatePriceMin(){
-        priceMin.value = startPrice.value;
-        if(endPrice.value < priceMin.value){
-            endPrice.value = priceMin.value;
+        // priceMin.value = startPrice.value;
+        if(endPrice.value < startPrice.value){
+            endPrice.value = startPrice.value;
         }
     }
 

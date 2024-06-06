@@ -46,9 +46,9 @@
               <li>
                 <RouterLink to="/rock" class="dropdown-item">搖滾音樂</RouterLink>
               </li>
-              <li>
+              <!-- <li>
                 <RouterLink to="/moreTypes" class="dropdown-item">更多分類</RouterLink>
-              </li>
+              </li> -->
               
               
               

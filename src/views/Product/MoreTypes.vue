@@ -24,7 +24,7 @@
 </script>
     
 <style>
-    table{
+    /* table{
         margin: auto;
         margin-top: 5%;
         border: 1px dashed gray;
@@ -34,5 +34,5 @@
     td{
         text-align: center;
         font-size: large;
-    }
+    } */
 </style>
