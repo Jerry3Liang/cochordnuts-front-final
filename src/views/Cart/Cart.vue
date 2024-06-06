@@ -95,18 +95,13 @@
         router.push({name: "login-link"})
       })
     }
-    else {
+    else if (memberNo!= null){
       let obj = {
         memberNo: memberNo
       }
       axiosapi.post("/cart/list", obj).then(function(response){
         for (let x = 0; x < response.data.list.length; x++) {
-          if (response.data.list[x].inventory<=0) {
-           
-           
-
-
-           
+          // if (response.data.list[x].inventory===0) {
             // Swal.fire({
             //   text: `"${response.data.list[x].productName}"已無庫存`,
             //   icon: "warning",
@@ -126,61 +121,76 @@
             //     location.reload();
             //   }
             // })
-
-
-
-            const swalWithBootstrapButtons = Swal.mixin({
-              customClass: {
-                confirmButton: "btn btn-danger",
-                cancelButton: "btn btn-danger"
-              },
-              buttonsStyling: true
-            });
-            swalWithBootstrapButtons.fire({
+            // const swalWithBootstrapButtons = Swal.mixin({
+            //   customClass: {
+            //     confirmButton: "btn btn-danger",
+            //     cancelButton: "btn btn-danger"
+            //   },
+            //   buttonsStyling: true
+            // });
+            // swalWithBootstrapButtons.fire({
               // title: "Are you sure?",
-              text: `"${response.data.list[x].productName}"已無庫存`,
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonText: "移出購物車",
-              cancelButtonText: "聯繫客服",
-              reverseButtons: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-                {
-                let obj = {
-                  productId: response.data.list[x].productId,
-                  memberNo: memberNo
-                } 
-                axiosapi.post("/cart/deleteItem", obj)
-                swalWithBootstrapButtons.fire({
-                  title: "Deleted!",
-                  text: "Your file has been deleted.",
-                  icon: "success"
-                })
-                location.reload();
-              }
-              } else if (
+            //   text: `"${response.data.list[x].productName}"已無庫存`,
+            //   icon: "warning",
+            //   showCancelButton: true,
+            //   confirmButtonText: "移出購物車",
+            //   cancelButtonText: "聯繫客服",
+            //   reverseButtons: false
+            // }).then((result) => {
+            //   if (result.isConfirmed) {
+                
+            //     let obj = {
+            //       productId: response.data.list[x].productId,
+            //       memberNo: memberNo
+            //     } 
+            //     axiosapi.post("/cart/deleteItem", obj)
+            //     swalWithBootstrapButtons.fire({
+            //       title: "移除!",
+            //       text: `"${response.data.list[x].productName}"已移出購物車`,
+                  // icon: "success"
+                // }).then(function(){
+                  // location.reload();
+// 
+                // })
+                
+                // sleep(2000);
+              
+              // } else if (
                 /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-              ) {
+                // result.dismiss === Swal.DismissReason.cancel
+              // ) {
                 // swalWithBootstrapButtons.fire({
                 //   title: "Cancelled",
                 //   text: "Your imaginary file is safe :)",
                 //   icon: "error"
                 // });
-                router.push({name: "customer-customerAnswer-link"})
-              }
-            });
-
-
-
+                // router.push({name: "customer-customerAnswer-link"})
+              // }
+            // }
+          // )
+          
+          if (response.data.list[x].count=response.data.list[x].inventory){
+            
+            Swal.fire({
+              title: "已達所有庫存",
+              text: `已加入所有"${response.data.list[x].productName}"庫存，共${response.data.list[x].inventory}件`,
+              icon: "warning",
+              showCancelButton: false,
+              showConfirmButton: true,
+              // timer: 2000
+              
+            })
           }
+          
+        }
+            // inCart.count=response.data.inventory;
+        
         inCart.value = response.data.list;
         console.log("response.data.list: ", response.data.list);
         // console.log("response.data.list[0].price: ", response.data.list[0].price);
         // console.log("response.data.list[0].count: ", response.data.list[0].count);
         // console.log("response: ", response.data.list[0]);
-        console.log("response.data.list.length: ", response.data.list.length);}
+        console.log("response.data.list.length: ", response.data.list.length);
         for(let i = 0 ; i < response.data.list.length ; i++){
           cartList.value.push(response.data.list[i])
         }
@@ -231,8 +241,8 @@
       totalAmount.value=totalAmount.value+Math.round(id.price*id.discount)
       discountedAmount.value=discountedAmount.value+Math.round(id.price-(id.price*id.discount));
       totalBeforeDiscount.value=totalBeforeDiscount.value+(id.price);
-      if (response.data.inventory===id.count) {
-        // inCart.count=id.count++;
+      if (response.data.inventory===id.count|response.data.inventory<id.count) {
+        id.count=response.data.inventory;
         // console.log("id.count111 =" , id.count);
         console.log("id.count: ", id.count);
         Swal.fire({
@@ -303,17 +313,19 @@
               totalAmount.value = totalAmount.value+(response.data.list[xx].price*response.data.list[xx].count*response.data.list[xx].discount);
               discountedAmount.value=discountedAmount.value+(response.data.list[xx].count*Math.round((response.data.list[xx].price)-response.data.list[xx].price*response.data.list[xx].discount));
               totalBeforeDiscount.value = totalBeforeDiscount.value+(response.data.list[xx].count*response.data.list[xx].price);
-              listItems();
+              // listItems();
             }
           });
           Swal.fire({
             title: "Deleted!",
-            text: `您已從您的購物車移除"${id.productName}"`,
+            text: `您已移除"${id.productName}"`,
             icon: "success",
-            showCloseButton: true
-          });
+            showCloseButton: true,
+            timer: 3000
+          }).then(function(){location.reload();})
+          
         })
-        // location.reload();
+        
       }
     });
   }
