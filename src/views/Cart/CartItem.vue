@@ -2,7 +2,7 @@
     <div class=" col d-flex  align-items-center p-3 bg-white mt-4 px-3 rounded  " style="font-family: 'Manrope', sans-serif;
 background:#eee;">
         <div class="mr-1 text-center col-2">
-            <RouterLink :to="`/product/detail?id=${eachCartItem.productId}`" ><img class="rounded " :src="`${path}${item.productNo}`"  width="140"></RouterLink>
+            <RouterLink :to="`/product/detail?id=${eachCartItem.productId}`" ><img class="rounded " :src="`${path}${eachCartItem.productId}`"  width="140"></RouterLink>
         </div>
         <div class="d-flex flex-column  product-details col-3" >
             <h5 class="d-flex flex-row product-desc ">{{eachCartItem.artist}}</h5>
