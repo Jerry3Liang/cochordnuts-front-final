@@ -2,7 +2,7 @@
     <div class=" col d-flex  align-items-center p-3 bg-white mt-4 px-3 rounded  " style="font-family: 'Manrope', sans-serif;
 background:#eee;">
         <div class="mr-1 text-center col-2">
-            <RouterLink :to="`/product/detail?id=${eachCartItem.productId}`" ><img class="rounded " :src="`http://localhost:8080/products/photo/${eachCartItem.productId}`"  width="140"></RouterLink>
+            <RouterLink :to="`/product/detail?id=${eachCartItem.productId}`" ><img class="rounded " :src="`${path}${item.productNo}`"  width="140"></RouterLink>
         </div>
         <div class="d-flex flex-column  product-details col-3" >
             <h5 class="d-flex flex-row product-desc ">{{eachCartItem.artist}}</h5>
@@ -37,6 +37,7 @@ background:#eee;">
             <!-- <h5 class="d-flex " style="color:#E7ECEA ;">___________________________________________________________________________________________________</h5> -->
 </template>
 <script setup>
+const path = import.meta.env.VITE_PHOTO_URL;
 const props = defineProps(["eachCartItem", "modelValue"])
 const emits = defineEmits(["decreaseOne", "increaseOne", "deleteThisItem", "increaseBtn", "update:modelValue"])
 
