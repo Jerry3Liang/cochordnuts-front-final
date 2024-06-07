@@ -98,13 +98,11 @@
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" to="/Customer/CustomerAnswer" @click="handleMemberCenterAccess2($event)">客服提問</RouterLink>
           </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/cart" @click="handleMemberCenterAccess($event)">購物車</RouterLink>
-          </li>
+          
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" to="/wishList" @click="handleMemberCenterAccess($event)">願望清單</RouterLink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-show="!isGoogleLogin">
             <RouterLink class="nav-link active" aria-current="page" :to="loginOrLogoutLink">
               {{ loginOrLogoutText }} <img src="/user.png" />
             </RouterLink>
@@ -117,7 +115,7 @@
           </li>
 
           <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/cart">購物車<img src="/shopping-bag.png" /></RouterLink>
+            <RouterLink class="nav-link active" aria-current="page" to="/cart" @click="handleMemberCenterAccess($event)">購物車<img src="/shopping-bag.png" /></RouterLink>
           </li>
         </ul>
       </div>
