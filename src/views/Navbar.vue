@@ -8,9 +8,13 @@
     </div>
     <div v-if="isLoggedIn" style="margin-left: 16%; margin-top: 10%;margin-bottom: 5px;">
       <div>{{ user.name }}，歡迎回來 ! </div>
-      <div>上次登入時間:{{ user.loginTime }}</div>
+      <div>上次登入時間: {{ user.loginTime }}</div>
     </div>
-    
+    <div v-if="isGoogleLogin" style="margin-left: 16%; margin-top: 10%;margin-bottom: 5px;">
+      <div>{{googleName}}，歡迎回來 ! </div>
+      <div>上次登入時間: {{lastLoginTime}}</div>
+    </div>
+
   </div>
 
   <!-- <nav class="navbar navbar-expand-lg" style="background-color: white"> -->
@@ -49,9 +53,9 @@
               <!-- <li>
                 <RouterLink to="/moreTypes" class="dropdown-item">更多分類</RouterLink>
               </li> -->
-              
-              
-              
+
+
+
             </ul>
           </li>
           <li class="nav-item">
@@ -92,16 +96,21 @@
             </ul>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/Customer/CustomerAnswer" @click="handleMemberCenterAccess($event)">客服提問</RouterLink>
+            <RouterLink class="nav-link active" aria-current="page" to="/Customer/CustomerAnswer" @click="handleMemberCenterAccess2($event)">客服提問</RouterLink>
           </li>
-          
           <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/wishList">願望清單</RouterLink>
+            <RouterLink class="nav-link active" aria-current="page" to="/cart" @click="handleMemberCenterAccess($event)">購物車</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link active" aria-current="page" to="/wishList" @click="handleMemberCenterAccess($event)">願望清單</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" :to="loginOrLogoutLink">
               {{ loginOrLogoutText }} <img src="/user.png" />
             </RouterLink>
+          </li>
+          <li class="nav-item" v-show="isGoogleLogin">
+            <button class="nav-link active" aria-current="page" @click="logout">登出</button>
           </li>
           <li class="nav-item" v-if="!isLoggedIn">
             <RouterLink class="nav-link active" aria-current="page" to="/register">註冊</RouterLink>
@@ -120,8 +129,9 @@
 </template>
 
 <script setup>
-import Swal from 'sweetalert2'
-import { ref,computed,onBeforeUnmount } from 'vue';
+import Swal from 'sweetalert2';
+import axiosApi from '@/plugins/axios.js';
+import { ref,computed,onBeforeUnmount, onMounted } from 'vue';
 import Search from '@/components/Search.vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -131,13 +141,23 @@ const props = defineProps({ isLoggedIn: Boolean,user: Object  });
 const loginOrLogoutText = computed(() => props.isLoggedIn ? '登出' : '登入');
 const loginOrLogoutLink = computed(() => props.isLoggedIn ? '/secure/logout' : '/secure/login');
 const showMemberDropdown = ref(false);
+const isGoogleLogin = ref(false);
+const googleName = ref("");
+const lastLoginTime = ref("");
+
+onMounted(function(){
+  googleName.value = sessionStorage.getItem("googleName");
+  lastLoginTime.value = sessionStorage.getItem("lastLoginTime");
+  isGoogleLogin.value = sessionStorage.getItem("isGoogleLogin");
+})
+
 
 function dosearch(data) {
   console.log(data);
 }
 function handleMemberCenterAccess(event) {
   showMemberDropdown.value = false;
-  if (!props.isLoggedIn) {
+  if (!props.isLoggedIn && !isGoogleLogin.value) {
     event.preventDefault();
     Swal.fire({
             text: '請先登入!',
@@ -158,9 +178,99 @@ function handleMemberCenterAccess(event) {
   }
   }
 
+function handleMemberCenterAccess2(event) {
+  if (!props.isLoggedIn && !isGoogleLogin.value) {
+    event.preventDefault();
+    Swal.fire({
+      text: '請先登入!',
+      icon: 'warning',
+      allowOutsideClick: false,
+      confirmButtonText: '前往登入',
+      showCancelButton: true,
+      cancelButtonText: "取消",
+    }).then(function(result) {
+      if(result.isConfirmed){
+        router.push({ name:"login-link"});
+      } else {
+        router.push({ name:"home-link"});
+      }
+    });
+  }  else {
+    showMemberDropdown.value = true;
+  }
+}
+
   onBeforeUnmount(() => {
   showMemberDropdown.value = false;
 });
+
+//Google logout 方法
+function logout(){
+  console.log("call logout");
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You will be logged out!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, logout!"
+  }).then(function (result) {
+    if (result.isConfirmed) {
+      let lastLoginTime = sessionStorage.getItem("lastLoginTime");
+      let googleName = sessionStorage.getItem("googleName");
+      let googleEmail = sessionStorage.getItem("googleEmail");
+      let isGoogleLogin = sessionStorage.getItem("isGoogleLogin");
+      let memberNo = sessionStorage.getItem("memberNo");
+      let jsonData = {
+        memberNo: memberNo,
+        lastLoginTime: lastLoginTime,
+        googleName: googleName,
+        googleEmail: googleEmail,
+        isGoogleLogin: isGoogleLogin
+      };
+      console.log('last=' + lastLoginTime);
+      axiosApi.post("/google/logout", jsonData)
+          .then(function (response) {
+            if (response.data.success) {
+              Swal.fire({
+                title: "Logged out!",
+                text: "You have been logged out.",
+                icon: "success"
+              }).then(function () {
+                // 清除指定的 sessionStorage 项目
+                sessionStorage.removeItem("lastLoginTime");
+                sessionStorage.removeItem("googleName");
+                sessionStorage.removeItem("googleEmail");
+                sessionStorage.removeItem("isGoogleLogin");
+                sessionStorage.removeItem("memberNo");
+                window.location.reload();
+              });
+            } else {
+              Swal.fire({
+                text: response.data.message || 'Logout failed!',
+                icon: 'error',
+                allowOutsideClick: false,
+                confirmButtonText: '確認',
+              }); router.push({ name: "login-link" });
+            }
+          })
+          .catch(function (error) {
+            console.error('Logout failed:', error);
+            Swal.fire({
+              text: '登出失敗：' + error.message,
+              icon: 'error',
+              allowOutsideClick: false,
+              confirmButtonText: '確認',
+            });
+          });
+    } else {
+      router.push({ name: "home-link" });
+    };
+  });
+}
+
+
 
 </script>
 
