@@ -215,7 +215,7 @@ function confirmModify(){
                                 allowOutsideClick: false,
                                 confirmButtonText: '確認',
                         });
-                        router.push({path: "/order/userFindAllOrders"})
+                        router.push({path:"/order/OrderDetail",query:{'orderNumber':order.value.orderNo}})
 
                         }).catch(function (error) {
                         Swal.fire({
@@ -236,7 +236,7 @@ function confirmModify(){
 }
 
 function cancelModify(){
-    router.push({path:"/order/userFindAllOrders"})
+    router.push({path:"/order/OrderDetail",query:{'orderNumber':order.value.orderNo}})
 }
 
 </script>
