@@ -49,7 +49,7 @@
         <swiper-slide>
             <img :src="`${path}${2}`" /></swiper-slide>
         <swiper-slide>
-            <img :src="`${path}${3}`" /></swiper-slide>
+            <img :src="`${path}${40}`" /></swiper-slide>
         <swiper-slide>
             <img :src="`${path}${4}`" /></swiper-slide>
         <swiper-slide>
@@ -57,11 +57,11 @@
         <swiper-slide>
             <img :src="`${path}${6}`" /></swiper-slide>
         <swiper-slide>
-            <img :src="`${path}${7}`" /></swiper-slide>
+            <img :src="`${path}${42}`" /></swiper-slide>
         <swiper-slide>
-            <img :src="`${path}${8}`" /></swiper-slide>
+            <img :src="`${path}${69}`" /></swiper-slide>
         <swiper-slide>
-            <img :src="`${path}${9}`"/></swiper-slide>
+            <img :src="`${path}${77}`"/></swiper-slide>
     </swiper>
 
 
