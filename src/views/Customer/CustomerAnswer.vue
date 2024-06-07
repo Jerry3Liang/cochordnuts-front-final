@@ -24,6 +24,9 @@ const subject = ref("");
 const router = useRouter();
 const memberNo = sessionStorage.getItem("memberNo");
 
+//顯示全部回覆訊息
+const caseMessages = ref(null);
+
 
 //
 function callCreateMessage() {
@@ -55,7 +58,8 @@ function callCreateMessage() {
             allowOutsideClick: false,
             confirmButtonText: '確認'
           });
-          router.push("/");
+          callFindMsgByCaseNo(response.data.customerCaseNo);
+          subject.value = "";
         } else {
           Swal.fire({
             text: response.data.message,
@@ -73,6 +77,29 @@ function callCreateMessage() {
             confirmButtonText: '確認'
           });
       });
+}
+
+function callFindMsgByCaseNo(caseNo) {
+  axiosApi.get(`/rest/findCaseContent/${caseNo}`).then(function(response) {
+    customerCase.value = response.data;
+    console.log(response.data);
+    setTimeout(function() {
+      Swal.close();
+    }, 500);
+    router.push({path:"/Customer/CaseDetail", query:{caseNumber:caseNo, mNo:memberNo}});//跳轉到根據 caseNo 的回覆畫面
+  }).catch(function(error) {
+    console.log("callFind error", error);
+    Swal.fire({
+      text: '失敗：'+error.message,
+      icon: 'error',
+      allowOutsideClick: false,
+      confirmButtonText: '確認',
+    }).then(function() {
+      if(error && error.response.status && error.response.status===403) {
+        // router.push("/secure/login");
+      }
+    });
+  });
 }
 
 </script>
