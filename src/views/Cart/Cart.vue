@@ -2,7 +2,7 @@
   
   <div  class="container mt-5 mb-5 flex">
     <div class="flex justify-content-center row">
-      <div style="background-color: rgb(19, 99, 173, 0.214);">
+      <div style="background-color: #faf5f5">
       <!-- <div style="background-color: #cc9999;"> -->
         <div class="p-5">
           <h2>{{ user }} 的購物車 </h2>
@@ -158,7 +158,8 @@
               showCancelButton: true,
               confirmButtonText: "移出購物車",
               cancelButtonText: "聯繫客服",
-              reverseButtons: false
+              reverseButtons: false,
+              allowOutsideClick: false
             }).then((result) => {
               if (result.isConfirmed) {
                 
