@@ -8,7 +8,7 @@
       <h3 class="card-text" v-text="caseDetail.message"></h3>
       <h5 class="card-text">
         <div class="form-floating card-text">
-          <textarea class="form-control" id="floatingTextarea2" style="height: 70px" v-model="answerMessage"></textarea>
+          <textarea class="form-control" id="floatingTextarea2" style="height: 100px" v-model="answerMessage"></textarea>
           <label for="floatingTextarea2">請輸入修改內容</label>
           <button type="button" class="btn btn-info" style="margin-top: 10px" @click="callModifyMsg(caseDetail.caseDetailNo)">修改</button>
         </div>
