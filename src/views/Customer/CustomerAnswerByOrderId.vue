@@ -62,7 +62,7 @@ function callCreateMessage() {
             allowOutsideClick: false,
             confirmButtonText: '確認'
           });
-          router.push("/");
+          router.push({path:"/Customer/CustomerCaseByMemberId"})
         } else {
           Swal.fire({
             text: response.data.message,
@@ -81,6 +81,7 @@ function callCreateMessage() {
           });
       });
 }
+
 
 </script>
 
