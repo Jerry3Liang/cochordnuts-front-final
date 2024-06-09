@@ -70,6 +70,8 @@
 
     function updatePriceMin(){
         // priceMin.value = startPrice.value;
+        endPrice.value = parseInt(endPrice.value);
+        startPrice.value = parseInt(startPrice.value);
         if(endPrice.value < startPrice.value){
             endPrice.value = startPrice.value;
         }
