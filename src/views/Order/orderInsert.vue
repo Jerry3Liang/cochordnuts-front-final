@@ -665,7 +665,7 @@ function ckeckOut() {//結帳
                                             "productName": `CoChordNut唱片行 訂單編號：${orderNo.value}`,
                                             "amount": total.value,
                                             "currency": "TWD",
-                                            "orderId": orderNo.value+10000 ,
+                                            "orderId": orderNo.value+1000000 ,
                                             "confirmUrl": `${host.value}/order/paymentSuccess?orderNumber=${orderNo.value}&amount=${total.value}`
                                         }
 
